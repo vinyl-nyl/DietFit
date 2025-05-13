@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SettingsView: View {
-    @StateObject private var userSettings = UserSettings.loadFromAppStorage()  // UserDefaults에서 불러오기
+    @StateObject private var userSettings = UserSettings.loadFromAppStorage()  
     @State private var showUserInfoListView = false
     
     

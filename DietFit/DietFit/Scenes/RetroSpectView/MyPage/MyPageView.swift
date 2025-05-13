@@ -15,7 +15,7 @@ struct MyPageView: View {
 
     var body: some View {
         NavigationStack {
-            HStack {
+            VStack {
                
                 Button{
                 showMyGoalView.toggle()
@@ -24,7 +24,7 @@ struct MyPageView: View {
                 }
                 .padding()
                 .sheet(isPresented: $showMyGoalView) {
-                    RetroSpectView() // MyGoalView 시트로 표시
+                    RetroSpectView()
                 }
                 
                 // UserInfoListView 버튼
@@ -34,7 +34,7 @@ struct MyPageView: View {
                 }
                 .padding()
                 .sheet(isPresented: $showUserInfoListView) {
-                    UserInfoListView() // UserInfoListView 시트로 표시
+                    UserInfoListView()
                 }
                 
                 Button{showSettingsView.toggle()
@@ -53,7 +53,6 @@ struct MyPageView: View {
 
 #Preview {
     MyPageView()
-        .modelContainer(for: [RetroSpect.self])
-        
+        .modelContainer(for: [UserInfo.self, RetroSpect.self], inMemory: true)
 }
 

@@ -11,44 +11,46 @@ import SwiftData
 
 struct UserInfoFormView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var name: String = ""
-    @State private var age: String = ""
-    @State private var height: String = ""
-    @State private var weight: String = ""
+    @Environment(\.dismiss) private var dismiss
 
-    @Binding var userInfos: [UserInfo]  // 리스트에서 정보를 받아옵니다.
+    @State private var name = ""
+    @State private var height = ""
+    @State private var weight = ""
 
     var body: some View {
-        Form {
-            Section(header: Text("사용자 정보 입력")) {
+        NavigationStack {
+            Form {
                 TextField("이름", text: $name)
-                TextField("나이", text: $age)
-                    .keyboardType(.numberPad)
                 TextField("키 (cm)", text: $height)
                     .keyboardType(.decimalPad)
                 TextField("몸무게 (kg)", text: $weight)
                     .keyboardType(.decimalPad)
             }
+            .navigationTitle("새 사용자")
+            .toolbar {
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("저장") {
+                        guard let heightDouble = Double(height),
+                              let weightDouble = Double(weight) else {
+                            return
+                        }
 
-            Button("저장") {
-                if let age = Int(age), let height = Double(height), let weight = Double(weight) {
-                    let newUser = UserInfo(name: name, age: age, height: height, weight: weight)
-                    userInfos.append(newUser)
+                        let newUser = UserInfo(name: name, height: heightDouble, weight: weightDouble)
+                        modelContext.insert(newUser)
+                        dismiss()
+                    }
                 }
-                clearFields()
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("취소") {
+                        dismiss()
+                    }
+                }
             }
         }
-        .navigationTitle("사용자 정보 입력")
-    }
-
-    private func clearFields() {
-        name = ""
-        age = ""
-        height = ""
-        weight = ""
     }
 }
 
 #Preview {
-    UserInfoFormView(userInfos: .constant([]))
+    UserInfoFormView()
+        .modelContainer(for: UserInfo.self, inMemory: true)
 }

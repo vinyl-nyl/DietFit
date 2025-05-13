@@ -11,48 +11,40 @@ import SwiftData
 
 struct UserInfoListView: View {
     @Environment(\.modelContext) private var modelContext
-    @State private var userInfos: [UserInfo] = []
-    @State private var showAddForm: Bool = false
+    @Query private var userInfos: [UserInfo]
+    @State private var showAddForm = false
 
     var body: some View {
         NavigationStack {
-            VStack {
-                List {
-                    ForEach(userInfos) { userInfo in
-                        HStack {
-                            Text(userInfo.name)
-                            Spacer()
-                            Text("\(userInfo.age)세")
-                            Text("\(userInfo.height, specifier: "%.1f") cm")
-                            Text("\(userInfo.weight, specifier: "%.1f") kg")
-                        }
-                        .swipeActions {
-                            Button(role: .destructive) {
-                                if let index = userInfos.firstIndex(where: { $0.id == userInfo.id }) {
-                                    userInfos.remove(at: index)
-                                }
-                            } label: {
-                                Label("삭제", systemImage: "trash")
-                            }
-                        }
+            List {
+                ForEach(userInfos) { userInfo in
+                    HStack {
+                        Text(userInfo.name)
+                        Spacer()
+                        Text("\(userInfo.height, specifier: "%.1f") cm")
+                        Text("\(userInfo.weight, specifier: "%.1f") kg")
                     }
-                    .onDelete { indexSet in
-                        userInfos.remove(atOffsets: indexSet)
-                    }
-                }
-                .navigationTitle("사용자 정보")
-                .toolbar {
-                    ToolbarItem(placement: .navigationBarTrailing) {
-                        Button(action: {
-                            showAddForm.toggle()
-                        }) {
-                            Image(systemName: "plus")
+                    .swipeActions {
+                        Button(role: .destructive) {
+                            modelContext.delete(userInfo)
+                        } label: {
+                            Label("삭제", systemImage: "trash")
                         }
                     }
                 }
-                .sheet(isPresented: $showAddForm) {
-                    UserInfoFormView(userInfos: $userInfos)
+            }
+            .navigationTitle("사용자 정보")
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        showAddForm.toggle()
+                    } label: {
+                        Image(systemName: "plus")
+                    }
                 }
+            }
+            .sheet(isPresented: $showAddForm) {
+                UserInfoFormView()
             }
         }
     }
@@ -60,4 +52,6 @@ struct UserInfoListView: View {
 
 #Preview {
     UserInfoListView()
+        .modelContainer(for: UserInfo.self, inMemory: true)
 }
+
