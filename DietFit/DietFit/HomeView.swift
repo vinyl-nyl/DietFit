@@ -11,11 +11,65 @@ import SwiftUI
 struct HomeView: View {
     @State private var name: String = "준일"
     @State var showAlert: Bool = false
+    @State var nowDate: Date = Date.now
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
+                    ZStack {
+                        VStack(spacing: 0) {
+                            HStack {
+                                Text("하루 목표 달성")
+                                    .fontWeight(.semibold)
+                                    .padding(.horizontal, 20)
+                                    .padding(.vertical, 10)
+
+                                Spacer()
+                            }
+
+                            Rectangle()
+                                .frame(height: 0.2)
+                                .foregroundStyle(.primary)
+                                .opacity(0.5)
+
+                            HStack(spacing: 60) {
+                                Button {
+
+                                } label: {
+                                    VStack(spacing: 10) {
+                                        CircularProgressView(progress: 0.25, iconName: "dumbbell.fill")
+
+                                        Text("운동")
+                                    }
+                                }
+
+                                Button {
+
+                                } label: {
+                                    VStack(spacing: 10) {
+                                        CircularProgressView(progress: 0.55, iconName: "fork.knife")
+
+                                        Text("식단")
+                                    }
+                                }
+                            }
+                            .font(.callout)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(.black)
+                            .padding(.vertical, 20)
+                        }
+                        .frame(maxWidth: .infinity)
+
+                        RoundedRectangle(cornerRadius: 15)
+                            .foregroundStyle(.secondary)
+                            .opacity(0.15)
+                    }
+
+                    Divider()
+                        .padding(.top, 20)
+                        .padding(.bottom, 20)
+
                     HStack {
                         VStack(alignment: .leading) {
                             Text("Today's BMI")
@@ -114,14 +168,14 @@ struct HomeView: View {
             }
             .padding(.vertical, 20)
             .padding(.horizontal, 20)
-            .navigationTitle("다이어핏")
+            .navigationTitle("요약")
         }
     }
 
 
 
     // TODO: BMI = weight / (height(M)*height(M)) 함수 구현하기
-    // TODO: BMI 수치로 비만지수 분류하기
+    // TODO: BMI 비만지수 분류하기
     /*
      BMI      수치분류
      ~ 18.5      저체중
