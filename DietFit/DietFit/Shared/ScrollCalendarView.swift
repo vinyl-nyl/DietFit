@@ -10,7 +10,7 @@ import SwiftUI
 struct ScrollCalendarView: View {
     @Environment(\.colorScheme) private var colorScheme
 
-    @Binding var selectDate: Date
+    @Binding var selectedDate: Date
 
      private let calendar = Calendar.current
      private let today = Date()
@@ -25,7 +25,7 @@ struct ScrollCalendarView: View {
             ScrollView(.horizontal) {
                 HStack {
                     ForEach(daysOfMonth, id: \.self) { date in
-                        let isSelected = calendar.isDate(date, inSameDayAs: selectDate)
+                        let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
                         let dateInfo = generateDateInfo(date)
 
                         VStack {
@@ -34,7 +34,7 @@ struct ScrollCalendarView: View {
                                     .foregroundStyle(.buttonPrimary)
                                 Button { // 선택한 날짜 가운데 정렬
                                     withAnimation {
-                                        selectDate = date
+                                        selectedDate = date
                                         scrollTargetId = date
                                     }
                                 } label: {
@@ -64,13 +64,13 @@ struct ScrollCalendarView: View {
                 withAnimation {
 //                    proxy.scrollTo(today)
                     let startOfDay = calendar.startOfDay(for: today)
-                    selectDate = startOfDay
+                    selectedDate = startOfDay
                     scrollTargetId = startOfDay
                 }
             }
-            .onChange(of: selectDate) {
+            .onChange(of: selectedDate) {
                 withAnimation {
-                    scrollTargetId = selectDate
+                    scrollTargetId = selectedDate
                 }
             }
             .scrollPosition(id: $scrollTargetId, anchor: .center)
@@ -114,5 +114,5 @@ struct ScrollCalendarView: View {
 }
 
 #Preview {
-    ScrollCalendarView(selectDate: .constant(Date()))
+    ScrollCalendarView(selectedDate: .constant(Date()))
 }
