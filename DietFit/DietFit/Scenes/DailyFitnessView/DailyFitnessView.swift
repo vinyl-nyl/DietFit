@@ -31,9 +31,14 @@ struct DailyFitnessView: View {
                     .clipShape(Capsule())
 
             }
-
         }
+        .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
+
+        }, content: {
+            FitnessSearchView()
+        })
     }
+
 }
 
 #Preview {
