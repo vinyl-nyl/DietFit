@@ -8,7 +8,6 @@
 import Foundation
 import SwiftUI
 
-// Equatable 프로토콜을 추가합니다.
 struct BMIEntry: Identifiable, Equatable {
     let id = UUID()
     let date: Date

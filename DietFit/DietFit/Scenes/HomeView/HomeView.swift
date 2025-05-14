@@ -23,6 +23,7 @@ struct HomeView: View {
         case week = "주"
         case month = "월"
         case year = "년"
+        case all = "전체"
 
         var id: String { self.rawValue }
     }
@@ -43,6 +44,9 @@ struct HomeView: View {
         case .year:
             guard let startDate = calendar.date(byAdding: .year, value: -1, to: now) else { return bmiEntries }
             return bmiEntries.filter { $0.date >= startDate }
+
+        case .all:
+            return bmiEntries
         }
     }
 
@@ -55,14 +59,28 @@ struct HomeView: View {
 
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Today's BMI")
-                                .fontWeight(.semibold)
+                            HStack(spacing: 0) {
+                                Text("Today's BMI")
+                                    .fontWeight(.semibold)
+
+                                VStack {
+                                    Button {
+                                        showBmiSheet = true
+                                    } label: {
+                                        Image(systemName: "info.circle")
+                                            .font(.caption2)
+                                    }
+                                    .buttonStyle(.plain)
+                                    Spacer()
+                                }
+                            }
+
 
                             Button {
                                 if Double(todayBmi) == nil {
                                     showWeightInput = true
                                 } else {
-                                    showBmiSheet = true
+                                    showWeightInput = false
                                 }
                             } label: {
                                 if let bmi = Double(todayBmi) {
