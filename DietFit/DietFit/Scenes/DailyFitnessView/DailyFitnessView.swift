@@ -16,7 +16,7 @@ struct DailyFitnessView: View {
 
     var body: some View {
 
-        VStack(alignment: .center) {
+        VStack() {
 
             HStack {
                 Button {
@@ -45,38 +45,55 @@ struct DailyFitnessView: View {
 
             }
             .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             ScrollCalendarView(selectDate: $selectDate)
-
-            VStack(spacing: 0) {
-                Text("운동을 기록해주세요.")
-                    .font(.title3)
-                    .bold()
-                    .frame(maxWidth: .infinity, alignment: .leading)
+        }
 
 
-                Button {
-                    presentAddFitness = true
-                } label: {
+        ScrollView {
 
-                    Image(systemName: "plus")
-                        .resizable()
-                        .frame(width: 15, height: 15)
-                        .tint(.gray)
+            VStack {
+                VStack(spacing: 16) {
+                    Text("운동 기록하기")
+                        .font(.title3)
                         .bold()
-                        .padding(15)
-                        .clipShape(Capsule())
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding()
+
+
+                    Button {
+                        presentAddFitness = true
+                    } label: {
+
+                        VStack(alignment: .center, spacing: 16) {
+                            HStack(spacing: 25) {
+                                Image(systemName: "plus")
+                            }
+                            .font(.title)
+                            .imageScale(.large)
+                        }
+                        .dynamicTypeSize(.large)
+
+                    }
+                    .buttonStyle(.plain)
+                    .frame(width: 300, height: 120)
+                    .background(Color(.systemGray6))
+                    .modifier(CardStyleModifier())
+                    .padding()
 
                 }
+                .frame(width: 360, height: 280)
+                .modifier(CardStyleModifier())
+                .padding()
 
-            }
-            .frame(width: 360, height: 360)
-            .modifier(CardStyleModifier())
 
 
-            Spacer()
 
         }
+
+
+        }
+        .background(Color(.systemGray6))
         .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
 
         }, content: {
