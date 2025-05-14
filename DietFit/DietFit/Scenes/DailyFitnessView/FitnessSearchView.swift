@@ -40,7 +40,7 @@ struct FitnessSearchView: View {
                     ForEach(areas, id: \.self) { area in
 
                         NavigationLink {
-
+                            CategoryView(area: area)
                         } label: {
                             Text(area)
                                 .lineLimit(1)
