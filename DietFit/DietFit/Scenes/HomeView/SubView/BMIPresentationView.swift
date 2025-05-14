@@ -37,6 +37,17 @@ struct BMIPresentationView: View {
     }
 }
 
+func BMIColor(circleColor: Color, text: String) -> some View {
+    HStack {
+        Circle()
+            .frame(width: 10, height: 10)
+            .foregroundStyle(circleColor)
+        Text(text)
+            .font(.callout)
+            .foregroundStyle(.secondary)
+    }
+}
+
 #Preview {
     BMIPresentationView()
 }

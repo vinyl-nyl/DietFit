@@ -50,7 +50,8 @@ struct TodayGoalsView: View {
 
             RoundedRectangle(cornerRadius: 15)
                 .foregroundStyle(.secondary)
-                .opacity(0.1)
+                .opacity(0.08)
+                .shadow(radius: 10, x: 0, y: 10)
         }
     }
 }

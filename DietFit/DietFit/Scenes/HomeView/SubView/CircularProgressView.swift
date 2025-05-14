@@ -26,7 +26,7 @@ struct CircularProgressView: View {
                 Circle()
                     .trim(from: 0.0, to: progress)
                     .stroke(
-                        Color.green,
+                        Color.buttonPrimary,
                         style: StrokeStyle(lineWidth: 10, lineCap: .round)
                     )
                     .rotationEffect(.degrees(-90)) // 시작점을 위로

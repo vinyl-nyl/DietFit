@@ -9,8 +9,12 @@ import Charts
 import SwiftUI
 
 struct HomeView: View {
-    @State var showAlert: Bool = false
-    @State var nowDate: Date = Date.now
+    @State var showBmiSheet: Bool = false
+    @State private var showWeightInput = false
+
+    @State private var inputWeight: String = ""
+    @State var todayBmi: String = ""
+
     @State private var bmiEntries: [BMIEntry] = []
 
     var body: some View {
@@ -29,19 +33,63 @@ struct HomeView: View {
                                 .fontWeight(.semibold)
 
                             Button {
-                                showAlert = true
+                                if Double(todayBmi) == nil {
+                                    showWeightInput = true
+                                } else {
+                                    showBmiSheet = true
+                                }
+
                             } label: {
-                                Text("23")
-                                    .font(.largeTitle)
+                                Text(todayBmi)
+                                    .font(Double(todayBmi) != nil ? .largeTitle : .title3)
                                     .bold()
-                                    .foregroundStyle(.green)
+                                    .foregroundStyle(.buttonPrimary)
                             }
                         }
-                        .sheet(isPresented: $showAlert) {
+                        .sheet(isPresented: $showBmiSheet) {
                             HStack {
                                 BMIPresentationView()
                             }
                             .padding(.horizontal, 20)
+                            .presentationDetents([.medium])
+                        }
+                        .sheet(isPresented: $showWeightInput) {
+                            VStack(alignment: .leading) {
+                                HStack {
+                                    Button("취소") {
+                                        showWeightInput = false
+                                    }
+
+                                    .tint(.red)
+
+                                    Spacer()
+
+                                    Button("확인") {
+                                        if Double(inputWeight) != nil {
+                                            showWeightInput = false
+                                        }
+                                    }
+                                    .buttonStyle(.borderedProminent)
+                                    .tint(.green)
+                                }
+                                .padding(.horizontal)
+                                .padding(.top)
+
+                                Spacer().frame(height: 20)
+
+                                // 본문 영역
+                                VStack(spacing: 20) {
+                                    Text("오늘의 몸무게를 입력해주세요")
+                                        .font(.headline)
+
+                                    TextField("몸무게 (kg)", text: $inputWeight)
+                                        .keyboardType(.decimalPad)
+                                        .textFieldStyle(.roundedBorder)
+                                        .padding(.horizontal)
+                                }
+
+                                Spacer()
+                            }
                             .presentationDetents([.medium])
                         }
 
@@ -87,7 +135,7 @@ struct HomeView: View {
                                     x: .value("Date", entry.date),
                                     y: .value("Weight", entry.weight)
                                 )
-                                .foregroundStyle(.green)
+                                .foregroundStyle(.buttonPrimary)
                             }
                         }
                         .frame(height: 200)
@@ -100,32 +148,14 @@ struct HomeView: View {
         }
         .onAppear {
             bmiEntries = loadBMIData()
+
+            if let todayEntry = bmiEntries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+                todayBmi = String(format: "%.1f", todayEntry.BMI)
+            } else {
+                todayBmi = "몸무게를 입력해주세요"
+            }
         }
     }
-    // TODO: BMI = weight / (height(M)*height(M)) 함수 구현하기
-    // TODO: BMI 비만지수 분류하기
-    /*
-     BMI      수치분류
-     ~ 18.5      저체중
-     18.5 ~ 24.9  정상 체중
-     25.0 ~ 29.9   과체중
-     30.0 이상     비만
-     */
-}
-
-func BMIColor(circleColor: Color, text: String) -> some View {
-    HStack {
-        Circle()
-            .frame(width: 10, height: 10)
-            .foregroundStyle(circleColor)
-        Text(text)
-            .font(.callout)
-            .foregroundStyle(.secondary)
-    }
-}
-
-func date(year: Int, month: Int, day: Int = 1) -> Date {
-    Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
 }
 
 #Preview {
