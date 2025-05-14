@@ -29,7 +29,7 @@ struct UserInfoFormView: View {
             .navigationTitle("새 사용자")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("저장") {
+                    Button {
                         guard let heightDouble = Double(height),
                               let weightDouble = Double(weight) else {
                             return
@@ -38,11 +38,17 @@ struct UserInfoFormView: View {
                         let newUser = UserInfo(name: name, height: heightDouble, weight: weightDouble)
                         modelContext.insert(newUser)
                         dismiss()
+                    } label: {
+                        Text("저장")
+                            .tint(.buttonPrimary)
                     }
                 }
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("취소") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("취소")
+                            .tint(.red)
                     }
                 }
             }

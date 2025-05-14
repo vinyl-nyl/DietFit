@@ -20,8 +20,16 @@ struct RetroSpectView: View {
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
 
-                Button("목표 추가") {
+                Button {
                     addGoal()
+                } label: {
+                Text("목표 추가")
+                        .foregroundColor(.white)
+                                .padding()
+                                .background(
+                                    RoundedRectangle(cornerRadius: 12)
+                                        .fill(.buttonPrimary)
+                                )
                 }
                 .disabled(newGoalText.isEmpty)
                 .padding()
@@ -48,6 +56,7 @@ struct RetroSpectView: View {
             .navigationTitle("나의 목표")
             .toolbar {
                 EditButton()
+                    .tint(.buttonPrimary)
             }
         }
     }

@@ -21,6 +21,7 @@ struct SettingsView: View {
                         showUserInfoListView = true
                     } label: {
                         Text("사용자 정보 설정")
+                            .tint(.buttonPrimary)
                     }
                     .sheet(isPresented: $showUserInfoListView) {
                         UserInfoListView()
