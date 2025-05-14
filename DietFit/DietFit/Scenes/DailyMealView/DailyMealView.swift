@@ -53,48 +53,47 @@ struct DailyMealView: View {
             }
 
             GeometryReader { geo in
-                let width = geo.size.width
-
                 ScrollView {
                     VStack(spacing: 16) {
-                        // 하루통계
+                        // 통계
                         VStack(spacing: 16) {
                             Text("오늘의 성과")
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, width * 0.1)
+                                .padding(.leading, 40)
+                            VStack {
+                                ZStack {
+                                    Circle()
+                                        .inset(by: -30)
+                                        .rotation(.degrees(-180))
+                                        .trim(from: 0, to: 0.5)
+                                        .stroke(colorScheme == .dark ? Color(.systemGray4)  : Color(.systemGray6), style: .init(lineWidth: 40, lineCap: .round))
+                                        .frame(width: 200, height: 200)
+                                        .offset(y: 50)
 
-                            ZStack {
-                                Circle()
-                                //                                        .fill(style: Color.white)
-                                //                                        .inset(by: 0)
-                                    .rotation(.degrees(-180))
-                                    .trim(from: 0, to: 0.5)
-                                    .stroke(colorScheme == .dark ? Color(.systemGray4)  : Color(.systemGray6), style: .init(lineWidth: 50, lineCap: .round))
-                                    .frame(width: width * 0.6, height: width * 0.6)
+                                    Circle()
+                                        .inset(by: -30)
+                                        .rotation(.degrees(-180))
+                                        .trim(from: 0, to: 0.2)
+                                        .stroke(Color.buttonPrimary, style: .init(lineWidth: 40, lineCap: .round))
+                                        .frame(width: 200, height: 200)
+                                        .offset(y: 50)
+//                                        .animation(.easeInOut, value: percentage)
 
-                                Circle()
-//                                    .inset(by: 25)
-                                    .rotation(.degrees(-180))
-                                    .trim(from: 0, to: 0.2)
-                                    .stroke(Color.buttonPrimary, style: .init(lineWidth: 50, lineCap: .round))
-                                    .frame(width: width * 0.76, height: width * 0.6)
-//                                    .animation(.easeInOut, value: percentage)
-
-
-                                Text("달성률%")
+                                    VStack {
+                                        Text("500")
+                                            .font(.title)
+                                            .bold()
+                                            .foregroundStyle(Color.buttonPrimary)
+                                        Text("/ 2000 Kcal")
+                                            .font(.title3)
+                                    }
+                                    .offset(y: 25)
+                                }
                             }
-//                            .background(.black)
-
-                            HStack {
-                                Text("0 Kcal 소모")
-                                Text("2000 Kcal 더 먹자")
-
-                            }
-
                         }
-                        .frame(width: width * 0.9, height: width * 0.9)
+                        .frame(width: 360, height: 280)
                         .modifier(CardStyleModifier())
 
                         // 식단
@@ -103,24 +102,24 @@ struct DailyMealView: View {
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.leading, width * 0.1)
+                                .padding(.leading, 40)
 
-                            Grid(horizontalSpacing: width * 0.05, verticalSpacing: width * 0.05) {
+                            Grid(horizontalSpacing: 20, verticalSpacing: 20) {
                                 ForEach(0..<2) { row in
                                     GridRow {
                                         ForEach(0..<2) { col in
-                                            CardMealButtonView(type: mealTypes[row * 2 + col], width: width)
+                                            CardMealButtonView(type: mealTypes[row * 2 + col])
 
                                         }
                                     }
                                 }
                             }
                         }
-                        .frame(width: width * 0.9, height: width * 0.9)
+                        .frame(width: 360, height: 360)
                         .modifier(CardStyleModifier())
 
                         // 메모
-                        CardMemoView(width: width)
+                        CardMemoView()
                     }
                     .padding(.top)
                     

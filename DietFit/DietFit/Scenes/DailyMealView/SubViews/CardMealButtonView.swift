@@ -11,36 +11,40 @@ struct CardMealButtonView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let type: MealType
-    let width: CGFloat
-    
-    var body: some View {
-            Button {
 
+    var body: some View {
+        VStack {
+            Button {
+                
             } label: {
-                VStack(alignment: .leading, spacing: width * 0.04) {
-                    HStack(spacing: width * 0.075) {
+                VStack(alignment: .leading, spacing: 16) {
+                    HStack(spacing: 25) {
                         Image(systemName: type.icon)
                         Image(systemName: "plus")
                     }
                     .font(.title)
                     .imageScale(.large)
+
                     VStack(alignment: .leading, spacing: 2) {
                         Text(type.rawValue)
                             .font(.callout)
                         Text("0 Kcal")
                             .font(.headline)
+                            .lineLimit(1)
                     }
                 }
+                .dynamicTypeSize(.large)
             }
-            .frame(width: width * 0.35, height: width * 0.32)
-            .background(colorScheme == .dark ? .black : Color(.systemGray6))
-            .clipShape(RoundedRectangle(cornerRadius: 20))
             .buttonStyle(.plain)
+        }
+        .frame(width: 140, height: 130)
+        .background(colorScheme == .dark ? .black : Color(.systemGray6))
+        .clipShape(RoundedRectangle(cornerRadius: 20))
 
     }
 }
 
 #Preview {
-    CardMealButtonView(type: MealType.breakfast, width: 360)
+    CardMealButtonView(type: MealType.breakfast)
 }
 
