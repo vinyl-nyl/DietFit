@@ -7,55 +7,58 @@
 
 import SwiftUI
 
-enum FitnessType: String, CaseIterable, Identifiable {
-    case 근력운동 = "근력운동"
-    case 유산소 = "유산소"
-    case 요가필라테스 = "요가/필라테스"
-
-    var id: Self { return self }
-}
-
 struct FitnessSearchView: View {
     @State private var searchText: String = ""
     @State private var isPresented: Bool = false
     @Environment(\.dismissSearch) var dismissSearch
     @Environment(\.dismiss) var dismiss
 
+    let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
+
+    private var columns = [
+        GridItem(.adaptive(minimum: 100, maximum: .infinity),
+                 spacing: -5,
+                 alignment: .topLeading)
+
+    ]
+
     var body: some View {
         NavigationStack {
-            HStack {
-                SearchedView(searchText: searchText)
-                    .searchable(text: $searchText,
-                                isPresented: $isPresented,
-                                prompt: "운동명으로 검색")
-            }
+            SearchedView(searchText: searchText)
+                .searchable(text: $searchText,
+                            isPresented: $isPresented,
+                            prompt: "운동명으로 검색")
+            VStack {
 
-            Section() {
-                HStack {
-                    ForEach(FitnessType.allCases) { item in
+                Text("Categories")
+                    .padding(.leading)
+                    .font(.title3)
+                    .bold()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                LazyVGrid(columns: columns) {
+                    ForEach(areas, id: \.self) { area in
+
                         NavigationLink {
 
                         } label: {
-                            Button {
-
-                            } label: {
-
-                                Text(item.rawValue)
-                                    .padding(5)
-                                    .background(.green)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
-                                    .tint(.white)
-                            }
-
+                            Text(area)
+                                .lineLimit(1)
+                                .frame(width: 70, height: 20, alignment: .center)
+                                .padding(10)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(.gray, lineWidth: 2)
+                                }
+                                .tint(.black)
+                                .padding(5)
                         }
 
                     }
-
                 }
-
-            } header: {
-                Text("카테고리")
+            
             }
+            
             Spacer()
         }
     }
