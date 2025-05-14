@@ -9,6 +9,7 @@
 /* Begin PBXFileReference section */
 		0B2690712DD1D82F000908BC /* DietFit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DietFit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0B875B1C2DD33C56003C8F1C /* DietFit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = DietFit.xcodeproj; sourceTree = "<group>"; };
+		0B875B712DD33D1A003C8F1C /* DietFit.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; path = DietFit.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -60,6 +61,13 @@
 			sourceTree = "<group>";
 		};
 		0B875B1D2DD33C56003C8F1C /* Products */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0B875B742DD33D1A003C8F1C /* Products */ = {
 			isa = PBXGroup;
 			children = (
 			);
@@ -122,6 +130,10 @@
 				{
 					ProductGroup = 0B875B1D2DD33C56003C8F1C /* Products */;
 					ProjectRef = 0B875B1C2DD33C56003C8F1C /* DietFit.xcodeproj */;
+				},
+				{
+					ProductGroup = 0B875B742DD33D1A003C8F1C /* Products */;
+					ProjectRef = 0B875B712DD33D1A003C8F1C /* DietFit.xcodeproj */;
 				},
 			);
 			projectRoot = "";

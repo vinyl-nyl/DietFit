@@ -12,7 +12,8 @@ struct BMIEntry: Identifiable {
     let id = UUID()
     let date: Date
     let weight: Double
-    let BMI: Double
+    var BMI: Double
+    var animate: Bool = false
 }
 
 func loadBMIData() -> [BMIEntry] {
