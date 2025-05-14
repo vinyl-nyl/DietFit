@@ -10,7 +10,7 @@ import SwiftData
 
 struct UserInfoListView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var userInfos: [UserInfo]
+    @Query(sort: \UserInfo.name) private var userInfos: [UserInfo]
 
     @State private var showAddForm = false
     @State private var selectedUser: UserInfo?
@@ -19,29 +19,35 @@ struct UserInfoListView: View {
     var body: some View {
         NavigationStack {
             List {
-                ForEach(userInfos) { userInfo in
-                    HStack {
-                        Text(userInfo.name)
-                        Spacer()
-                        Text("\(userInfo.height, specifier: "%.1f") cm")
-                        Text("\(userInfo.weight, specifier: "%.1f") kg")
-                    }
-                    .swipeActions(allowsFullSwipe: false) {
-                        // 삭제 버튼
-                        Button(role: .destructive) {
-                            modelContext.delete(userInfo)
-                        } label: {
-                            Label("삭제", systemImage: "trash")
+                if userInfos.isEmpty {
+                    Text("저장된 사용자 정보가 없습니다.")
+                        .foregroundColor(.gray)
+                        .padding()
+                } else {
+                    ForEach(userInfos) { userInfo in
+                        HStack {
+                            Text(userInfo.name)
+                            Spacer()
+                            Text("\(userInfo.height, specifier: "%.1f") cm")
+                            Text("\(userInfo.weight, specifier: "%.1f") kg")
                         }
+                        .swipeActions(allowsFullSwipe: false) {
+                            // 삭제
+                            Button(role: .destructive) {
+                                modelContext.delete(userInfo)
+                                try? modelContext.save()
+                            } label: {
+                                Label("삭제", systemImage: "trash")
+                            }
 
-                        // 수정 버튼
-                        Button {
-                            selectedUser = userInfo
-                            showEditForm = true
-                        } label: {
-                            Label("수정", systemImage: "pencil")
+                            // 수정
+                            Button {
+                                selectedUser = userInfo
+                            } label: {
+                                Label("수정", systemImage: "pencil")
+                            }
+                            .tint(.blue)
                         }
-                        .tint(.blue)
                     }
                 }
             }
@@ -59,13 +65,13 @@ struct UserInfoListView: View {
             .sheet(isPresented: $showAddForm) {
                 UserInfoFormView()
             }
-            // 수정 뷰 시트
             .sheet(item: $selectedUser) { user in
                 UserDetailEditView(userInfo: user)
             }
         }
     }
 }
+
 
 #Preview {
     UserInfoListView()

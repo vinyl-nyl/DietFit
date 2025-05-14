@@ -10,16 +10,19 @@ import SwiftData
 struct SettingsView: View {
     @Environment(\.modelContext) private var context
     @StateObject private var userSettings = UserSettings.loadFromAppStorage()
+    @AppStorage("notificationEnabled") private var notificationEnabled = true
+    @AppStorage("notificationTime") private var notificationTime = Date()
+
     @State private var showUserInfoListView = false
     @State private var profileImage: Image? = nil
-    
     @State private var showResetAlert = false
-    @State private var confirmReset = false
+
+    @Query private var userInfos: [UserInfo]
 
     var body: some View {
         NavigationStack {
             Form {
-             
+                // 프로필 사진 설정
                 VStack {
                     Button {
                         // 프로필 이미지 선택
@@ -28,7 +31,7 @@ struct SettingsView: View {
                             Circle()
                                 .strokeBorder(Color.buttonPrimary, lineWidth: 2)
                                 .frame(width: 80, height: 80)
-                            
+
                             if let profileImage = profileImage {
                                 profileImage
                                     .resizable()
@@ -43,15 +46,15 @@ struct SettingsView: View {
                         }
                     }
                     .buttonStyle(PlainButtonStyle())
-                    
+
                     Text("프로필 사진 설정")
                         .foregroundColor(.buttonPrimary)
                         .padding(.top, 5)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 10)
-                
-           
+
+                // 사용자 정보 설정
                 VStack {
                     Button {
                         showUserInfoListView = true
@@ -61,20 +64,28 @@ struct SettingsView: View {
                     }
                     .sheet(isPresented: $showUserInfoListView) {
                         UserInfoListView()
+                            .environment(\.modelContext, context)
                     }
                 }
 
-                
+                // 알림 설정
                 Section(header: Text("알림")) {
-                    Toggle("알림 켜기/끄기", isOn: $userSettings.notificationEnabled)
+                    Toggle("알림 켜기/끄기", isOn: $notificationEnabled)
                         .padding()
-                    
-                    DatePicker("알림 시간", selection: $userSettings.notificationTime, displayedComponents: .hourAndMinute)
-                        .padding()
-                        .disabled(!userSettings.notificationEnabled)
+
+                    DatePicker(
+                        selection: $notificationTime,
+                        displayedComponents: .hourAndMinute
+                    ) {
+                        Text("알림 시간")
+                            .foregroundColor(notificationEnabled ? .primary : .gray)
+                    }
+                    .padding()
+                    .disabled(!notificationEnabled)
+                    .colorMultiply(notificationEnabled ? .primary : .gray.opacity(0.3))
                 }
 
-          
+                // 단위 설정
                 Section(header: Text("단위 설정")) {
                     Picker("단위 시스템", selection: $userSettings.unitSystem) {
                         Text("cm/kg").tag("cm/kg")
@@ -84,7 +95,7 @@ struct SettingsView: View {
                     .padding()
                 }
 
-                
+                // 데이터 초기화
                 Section {
                     Button(role: .destructive) {
                         showResetAlert = true
@@ -123,19 +134,15 @@ struct SettingsView: View {
         }
     }
 
-    
     func resetAllData() {
         do {
-            // 모델 목록 추가: 삭제할 SwiftData 모델 타입들을 여기에 추가
             try deleteAll(of: UserInfo.self)
             try deleteAll(of: RetroSpect.self)
-            
         } catch {
             print("초기화 실패: \(error)")
         }
     }
 
-    
     func deleteAll<T: PersistentModel>(of type: T.Type) throws {
         let descriptor = FetchDescriptor<T>()
         let items = try context.fetch(descriptor)
@@ -148,4 +155,3 @@ struct SettingsView: View {
 #Preview {
     SettingsView()
 }
-
