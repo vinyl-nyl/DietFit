@@ -43,14 +43,14 @@ struct TodayGoalsView: View {
                         }
                     }
                 }
-                .foregroundStyle(.black)
+                .foregroundStyle(.placeholder)
                 .padding(.vertical, 20)
             }
             .frame(maxWidth: .infinity)
 
             RoundedRectangle(cornerRadius: 15)
                 .foregroundStyle(.secondary)
-                .opacity(0.15)
+                .opacity(0.1)
         }
     }
 }

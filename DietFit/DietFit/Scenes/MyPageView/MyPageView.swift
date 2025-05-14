@@ -43,7 +43,7 @@ struct MyPageView: View {
                 }
                 .padding()
                 .sheet(isPresented: $showSettingsView) {
-                    SettingsView()
+//                    SettingsView()
                 }
             }
             .navigationTitle("마이페이지")
