@@ -14,6 +14,7 @@ struct DietFitApp: App {
         var sharedModelContainer: ModelContainer = {
             let schema = Schema([
                 UserInfo.self,
+                SelectedDate.self,
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
