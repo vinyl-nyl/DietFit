@@ -27,3 +27,7 @@ struct EditRetroSpectView: View {
     }
 }
 
+#Preview {
+    EditRetroSpectView(goal: RetroSpect(title: ""))
+        .modelContainer(for: RetroSpect.self, inMemory: true)
+}
