@@ -8,20 +8,13 @@
 import SwiftUI
 
 struct CardStyleModifier: ViewModifier {
+    @Environment(\.colorScheme) private var colorScheme
+
     func body(content: Content) -> some View {
         content
-            .background(Color.cardBackground)
+            .background(colorScheme == .dark ? Color(.systemGray6) : .white)
             .clipShape(RoundedRectangle(cornerRadius: 20))
-            .shadow(color: Color.backgroundShadow, radius: 10, y: 4)
+//            .shadow(radius: 10, y: 4)
     }
 }
 
-struct TicketModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        content
-            .padding()
-            .background(.ultraThinMaterial)
-            .clipShape(RoundedRectangle(cornerRadius: 20))
-            .shadow(color: .black.opacity(0.1), radius: 10, x: 0, y: 4)
-    }
-}

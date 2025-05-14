@@ -8,95 +8,142 @@
 import SwiftUI
 
 struct DailyMealView: View {
-    let mealTypes = ["아침", "점심", "저녁", "간식"]
+    @Environment(\.colorScheme) private var colorScheme
+
+    @State private var presentCalendar = false
+    @State private var selectDate = Date()
+
+    @State var isOn: Bool = false
+
+    let mealTypes = MealType.allCases
 
     var body: some View {
-        // 상단 바 - 날짜 선택, 유저 아이콘
         VStack(spacing: 0) {
-
-            VStack {
+            // 상단 바 - 날짜 선택, 유저 아이콘
+            VStack(spacing: 0) {
                 HStack {
                     Button {
-
+                        presentCalendar = true
                     } label: {
-                        Text("날짜")
-                        Image(systemName: "star")
+                        Text(dateFormat(selectDate))
+                            .font(.title3)
+                            .bold()
+                        Image(systemName: "arrowtriangle.down.fill")
                     }
-
-                    Spacer()
-
-                    Button {
-
-                    } label: {
-                        // Image
-                        Image(systemName: "star")
+                    .sheet(isPresented: $presentCalendar) {
+                        VStack {
+                            DatePicker("Select a date", selection: $selectDate, displayedComponents: [.date])
+                                .datePickerStyle(.graphical)
+                                .tint(Color.buttonPrimary)
+                                .padding()
+                                .onChange(of: selectDate) {
+                                    presentCalendar = false
+                                }
+                        }
+                        .presentationDetents([.fraction(0.6)])
+                        .presentationDragIndicator(.visible)
                     }
+                    .buttonStyle(.plain)
+                    .padding(.horizontal)
 
                 }
-                .buttonStyle(.plain)
+                .frame(maxWidth: .infinity, alignment: .leading)
 
-                // 캘린더 스크롤 뷰
-                ScrollCalendarView()
+                ScrollCalendarView(selectDate: $selectDate)
             }
-//            .background(Color.buttonPrimary)
-            
-            GeometryReader { geo in
-                ScrollView {
-                    VStack(spacing: 20) {
 
+            GeometryReader { geo in
+                let width = geo.size.width
+
+                ScrollView {
+                    VStack(spacing: 16) {
                         // 하루통계
-                        VStack {
-                            HStack {
-                                Text("하루 통계")
+                        VStack(spacing: 16) {
+                            Text("오늘의 성과")
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, width * 0.1)
+
+                            ZStack {
+                                Circle()
+                                //                                        .fill(style: Color.white)
+                                //                                        .inset(by: 0)
+                                    .rotation(.degrees(-180))
+                                    .trim(from: 0, to: 0.5)
+                                    .stroke(colorScheme == .dark ? Color(.systemGray4)  : Color(.systemGray6), style: .init(lineWidth: 50, lineCap: .round))
+                                    .frame(width: width * 0.6, height: width * 0.6)
+
+                                Circle()
+//                                    .inset(by: 25)
+                                    .rotation(.degrees(-180))
+                                    .trim(from: 0, to: 0.2)
+                                    .stroke(Color.buttonPrimary, style: .init(lineWidth: 50, lineCap: .round))
+                                    .frame(width: width * 0.76, height: width * 0.6)
+//                                    .animation(.easeInOut, value: percentage)
+
+
+                                Text("달성률%")
                             }
-                            .frame(maxWidth: .infinity)
+//                            .background(.black)
+
+                            HStack {
+                                Text("0 Kcal 소모")
+                                Text("2000 Kcal 더 먹자")
+
+                            }
+
                         }
-                        .frame(width: geo.size.width * 0.9, height: 250)
+                        .frame(width: width * 0.9, height: width * 0.9)
                         .modifier(CardStyleModifier())
 
                         // 식단
-                        VStack {
-                            Grid(horizontalSpacing: 40, verticalSpacing: 10) {
-//                                ForEach(mealTypes, id: \.self) { row in
-//                                    ForEach(0..<2) { column i in
-//                                    }
-//                                }
+                        VStack(spacing: 16) {
+                            Text("오늘의 식단")
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding(.leading, width * 0.1)
 
-                                GridRow {
-                                    MealButtonView(title: mealTypes[2], size: geo.size.width * 0.25)
-                                    MealButtonView(title: mealTypes[2], size: geo.size.width * 0.25)
+                            Grid(horizontalSpacing: width * 0.05, verticalSpacing: width * 0.05) {
+                                ForEach(0..<2) { row in
+                                    GridRow {
+                                        ForEach(0..<2) { col in
+                                            CardMealButtonView(type: mealTypes[row * 2 + col], width: width)
 
-                             }
-
-                                GridRow {
-                                    MealButtonView(title: mealTypes[2], size: geo.size.width * 0.25)
-                                    MealButtonView(title: mealTypes[2], size: geo.size.width * 0.25)
+                                        }
+                                    }
                                 }
                             }
                         }
-                        .frame(width: geo.size.width * 0.9, height: 300)
+                        .frame(width: width * 0.9, height: width * 0.9)
                         .modifier(CardStyleModifier())
 
                         // 메모
-                        VStack {
-                            HStack {
-                                Text("메모")
-                            }
-                        }
-                        .frame(width: geo.size.width * 0.9, height: 250)
-                        .modifier(CardStyleModifier())
+                        CardMemoView(width: width)
                     }
                     .padding(.top)
+                    
                     .frame(maxWidth: .infinity)
                 }
+                .background(colorScheme == .dark ? .black : Color(.systemGray6))
             }
         }
         .scrollIndicators(.hidden)
     }
 }
 
+func dateFormat(_ date: Date) -> String {
+    let formatter = DateFormatter()
+    formatter.locale = Locale(identifier: "ko_KR")
+    formatter.dateFormat = "M.d E"
+    return formatter.string(from: date)
+}
+
 #Preview {
     DailyMealView()
 }
+
+
 
 

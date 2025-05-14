@@ -8,39 +8,43 @@
 import SwiftUI
 
 struct ScrollCalendarView: View {
-    private let calendar = Calendar.current
-    private let today = Calendar.current.startOfDay(for: Date())
+    @Environment(\.colorScheme) private var colorScheme
 
-    private var daysOfMonth = generateDaysOfMonth()
+    @Binding var selectDate: Date
 
-    @State private var selectDate: Date = Date()
+     private let calendar = Calendar.current
+     private let today = Date()
+
+    // ?? private를 쓰면 바인딩할때 에러
+     var daysOfMonth = generateDaysOfMonth()
+
     @State private var scrollTargetId: Date?
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(daysOfMonth.indices, id: \.self) { index in
-                        let date = daysOfMonth[index]
+                    ForEach(daysOfMonth, id: \.self) { date in
                         let isSelected = calendar.isDate(date, inSameDayAs: selectDate)
                         let dateInfo = generateDateInfo(date)
 
                         VStack {
                             Group {
                                 Text(dateInfo.weekday)
-                                    .foregroundStyle(Color.buttonPrimary)
-                                Button {
+                                    .foregroundStyle(.buttonPrimary)
+                                Button { // 선택한 날짜 가운데 정렬
                                     withAnimation {
                                         selectDate = date
                                         scrollTargetId = date
                                     }
                                 } label: {
                                     Text(dateInfo.day)
+                                        .font(.subheadline)
                                 }
                                 .buttonStyle(.plain)
-                                .padding(8)
-                                .foregroundStyle(isSelected ? Color.buttonPrimary : .white)
-                                .background(isSelected ? .white : .buttonPrimary)
+                                .frame(width: 36, height: 36)
+                                .foregroundStyle(isSelected ? .white : .buttonPrimary)
+                                .background(isSelected ? .buttonPrimary : .clear)
                                 .clipShape(Circle())
                                 .id(date)
                             }
@@ -51,15 +55,22 @@ struct ScrollCalendarView: View {
                     }
                 }
                 .padding()
+                .background(colorScheme == .dark ? .black : .white)
                 .scrollTargetLayout()
             }
-            //            .scrollTargetBehavior(.viewAligned)
+//            .scrollTargetBehavior(.viewAligned)
             .scrollIndicators(.hidden)
-            .onAppear {
+            .onAppear { // 뷰가 보일 때 오늘을 가운데 선택, 정렬
                 withAnimation {
 //                    proxy.scrollTo(today)
-                    selectDate = today
-                    scrollTargetId = today
+                    let startOfDay = calendar.startOfDay(for: today)
+                    selectDate = startOfDay
+                    scrollTargetId = startOfDay
+                }
+            }
+            .onChange(of: selectDate) {
+                withAnimation {
+                    scrollTargetId = selectDate
                 }
             }
             .scrollPosition(id: $scrollTargetId, anchor: .center)
@@ -67,6 +78,7 @@ struct ScrollCalendarView: View {
 
     }
 
+    // 날짜와 요일 튜플로 반환
     private func generateDateInfo(_ date: Date) -> (day: String, weekday: String){
         let day = String(calendar.component(.day, from: date))
 
@@ -79,6 +91,7 @@ struct ScrollCalendarView: View {
         return (day, weekday)
     }
 
+    // 이번 달 날짜를 배열로 반환
     private static func generateDaysOfMonth() -> [Date] {
         let today = Date()
         let calendar = Calendar.current
@@ -101,5 +114,5 @@ struct ScrollCalendarView: View {
 }
 
 #Preview {
-    ScrollCalendarView()
+    ScrollCalendarView(selectDate: .constant(Date()))
 }
