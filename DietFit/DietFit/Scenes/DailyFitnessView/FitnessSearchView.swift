@@ -58,7 +58,18 @@ struct FitnessSearchView: View {
                 }
             
             }
-            
+            .toolbar {
+                ToolbarItem {
+                    Button {
+                        dismiss()
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(.black)
+                            .bold()
+                    }
+                }
+            }
+
             Spacer()
         }
     }
