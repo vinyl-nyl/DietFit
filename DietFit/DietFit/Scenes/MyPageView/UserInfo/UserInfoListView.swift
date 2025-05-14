@@ -40,6 +40,7 @@ struct UserInfoListView: View {
                         showAddForm.toggle()
                     } label: {
                         Image(systemName: "plus")
+                            .tint(.buttonPrimary)
                     }
                 }
             }
