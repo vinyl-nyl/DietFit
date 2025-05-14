@@ -15,7 +15,7 @@ struct BMIPresentationView: View {
                 .font(.headline)
             BMIColor(circleColor: .red, text: "비만")
             BMIColor(circleColor: .yellow, text: "과체중")
-            BMIColor(circleColor: .green, text: "정상")
+            BMIColor(circleColor: .buttonPrimary, text: "정상")
             BMIColor(circleColor: .secondary, text: "저체중")
         }
 
@@ -45,6 +45,19 @@ func BMIColor(circleColor: Color, text: String) -> some View {
         Text(text)
             .font(.callout)
             .foregroundStyle(.secondary)
+    }
+}
+
+func BMITextColor(bmiData: Double) -> Color {
+    switch bmiData {
+    case ..<18.5:
+        return .secondary
+    case 18.5...24.9:
+        return .buttonPrimary
+    case 25.0...29.9:
+        return .yellow
+    default:
+        return .red
     }
 }
 

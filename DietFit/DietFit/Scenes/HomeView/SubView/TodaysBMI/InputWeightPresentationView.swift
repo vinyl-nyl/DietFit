@@ -8,9 +8,9 @@
 import SwiftUI
 
 struct InputWeightPresentationView: View {
-    @State private var showWeightInput = false
-    @State private var inputWeight: String = ""
-    
+    @Binding var showWeightInput: Bool
+    @Binding var inputWeight: String
+
     var body: some View {
         VStack {
             HStack {
@@ -28,17 +28,19 @@ struct InputWeightPresentationView: View {
                     }
                 }
                 .buttonStyle(.borderedProminent)
-                .tint(.green)
+                .tint(.buttonPrimary)
             }
             .padding(.horizontal)
             .padding(.top)
+            .padding(.bottom, 30)
 
             Spacer().frame(height: 20)
 
             // 본문 영역
-            VStack(spacing: 20) {
-                Text("오늘의 몸무게를 입력해주세요")
-                    .font(.headline)
+            VStack(spacing: 30) {
+                Text("몸무게를 입력해주세요")
+                    .font(.title2)
+                    .fontWeight(.semibold)
 
                 TextField("몸무게 (kg)", text: $inputWeight)
                     .keyboardType(.decimalPad)
@@ -47,8 +49,4 @@ struct InputWeightPresentationView: View {
             }
         }
     }
-}
-
-#Preview {
-    InputWeightPresentationView()
 }

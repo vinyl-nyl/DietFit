@@ -8,12 +8,21 @@
 import Foundation
 import SwiftUI
 
-struct BMIEntry: Identifiable {
+// Equatable 프로토콜을 추가합니다.
+struct BMIEntry: Identifiable, Equatable {
     let id = UUID()
     let date: Date
     let weight: Double
     var BMI: Double
     var animate: Bool = false
+
+    static func == (lhs: BMIEntry, rhs: BMIEntry) -> Bool {
+        return lhs.id == rhs.id &&
+               lhs.date == rhs.date &&
+               lhs.weight == rhs.weight &&
+               lhs.BMI == rhs.BMI &&
+               lhs.animate == rhs.animate
+    }
 }
 
 func loadBMIData() -> [BMIEntry] {

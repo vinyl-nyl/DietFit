@@ -11,6 +11,9 @@ import SwiftUI
 struct TodayGoalsView: View {
     var body: some View {
         ZStack {
+            RoundedRectangle(cornerRadius: 20)
+                .foregroundStyle(Color(.systemGray6))
+
             VStack(spacing: 0) {
                 HStack {
                     Text("하루 목표 달성")
@@ -47,11 +50,6 @@ struct TodayGoalsView: View {
                 .padding(.vertical, 20)
             }
             .frame(maxWidth: .infinity)
-
-            RoundedRectangle(cornerRadius: 15)
-                .foregroundStyle(.secondary)
-                .opacity(0.08)
-                .shadow(radius: 10, x: 0, y: 10)
         }
     }
 }
