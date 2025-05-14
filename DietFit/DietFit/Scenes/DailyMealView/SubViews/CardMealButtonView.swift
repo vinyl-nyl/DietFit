@@ -1,5 +1,5 @@
 //
-//  ExtractedView.swift
+//  CardMealButtonView.swift
 //  DietFit
 //
 //  Created by 박동언 on 5/13/25.
@@ -13,38 +13,39 @@ struct CardMealButtonView: View {
     let type: MealType
 
     var body: some View {
-        VStack {
-            Button {
-                
-            } label: {
-                VStack(alignment: .leading, spacing: 16) {
-                    HStack(spacing: 25) {
-                        Image(systemName: type.icon)
-                        Image(systemName: "plus")
-                    }
-                    .font(.title)
-                    .imageScale(.large)
-
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(type.rawValue)
-                            .font(.callout)
-                        Text("0 Kcal")
-                            .font(.headline)
-                            .lineLimit(1)
-                    }
+        NavigationLink {
+			AddMealView(type: type)
+        } label: {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack(spacing: 25) {
+                    Image(systemName: type.icon)
+                    Image(systemName: "plus")
                 }
-                .dynamicTypeSize(.large)
+                .font(.title)
+                .imageScale(.large)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(type.rawValue)
+                        .font(.callout)
+                    Text("0 Kcal")
+                        .font(.headline)
+                        .lineLimit(1)
+                }
             }
-            .buttonStyle(.plain)
+            .dynamicTypeSize(.large)
+            .frame(width: 140, height: 130)
+            .background(colorScheme == .dark ? .black : Color(.systemGray6))
+            .clipShape(RoundedRectangle(cornerRadius: 20))
         }
-        .frame(width: 140, height: 130)
-        .background(colorScheme == .dark ? .black : Color(.systemGray6))
-        .clipShape(RoundedRectangle(cornerRadius: 20))
+        .buttonStyle(.plain)
+
 
     }
 }
 
 #Preview {
-    CardMealButtonView(type: MealType.breakfast)
+    NavigationStack {
+        CardMealButtonView(type: MealType.breakfast)
+    }
 }
 
