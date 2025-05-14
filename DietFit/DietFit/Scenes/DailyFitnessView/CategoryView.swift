@@ -44,9 +44,9 @@ struct CategoryView: View {
                             .cornerRadius(20)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(.gray, lineWidth: 2)
+                                    .stroke(Color(.systemGray6), lineWidth: 2)
                             }
-                            .tint(area == self.area ? .white : .black)
+                            .tint(area == self.area ? .white : .gray)
                             .padding(5)
 
                     }
