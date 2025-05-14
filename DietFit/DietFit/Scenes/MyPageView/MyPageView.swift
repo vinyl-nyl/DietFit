@@ -18,7 +18,8 @@ struct MyPageView: View {
     @State private var userHeight: Double = 175
     @State private var userWeight: Double = 68
     @State private var userDetail: String? = nil
-
+    
+    @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var context
     @Query private var userInfos: [UserInfo]  // UserInfo 데이터를 불러옴
 
@@ -33,31 +34,25 @@ struct MyPageView: View {
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.buttonPrimary)
-                            Spacer()
-                            VStack(alignment: .leading) {
+                                Spacer()
+                            VStack(alignment: .trailing) {
                                 Text(userName)
                                     .font(.title2)
                                     .bold()
-                                Text("키: \(Int(userHeight))cm  몸무게: \(Int(userWeight))kg")
+                                Text("키: \(Int(userHeight))cm 몸무게: \(Int(userWeight))kg")
                                     .font(.subheadline)
-                                    .foregroundColor(.gray)
+                                    .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
                                 if let detail = userDetail {
                                     Text(detail)
                                         .font(.footnote)
-                                        .foregroundColor(.gray)
+                                        .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
                                 }
                             }
-                            Spacer()
+                            
                         }
                     }
-                    .padding()
+                    .padding(20)
                     .frame(width: 360)
-                    .background(Color.white)
-                    .cornerRadius(15)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.buttonPrimary, lineWidth: 2)
-                    )
 
                     // 목표 설정 버튼
                     descriptionCard(text: "매일 나만의 목표를 설정하고, 본인이 목표를 달성했는지에 대한 내용을 기록하세요.")
@@ -75,7 +70,7 @@ struct MyPageView: View {
                     Button {
                         showUserInfoListView.toggle()
                     } label: {
-                        buttonLabel(text: "사용자 정보 목록", opacity: 0.8)
+                        buttonLabel(text: "사용자 정보 목록", opacity: 1.0)
                     }
                     .sheet(isPresented: $showUserInfoListView) {
                         UserInfoListView()
@@ -95,7 +90,7 @@ struct MyPageView: View {
                     Button {
                         showSettingsView.toggle()
                     } label: {
-                        buttonLabel(text: "설정", opacity: 0.6)
+                        buttonLabel(text: "설정", opacity: 1.0)
                     }
                     .sheet(isPresented: $showSettingsView) {
                         SettingsView()
@@ -110,20 +105,25 @@ struct MyPageView: View {
     // Description 카드
     func descriptionCard(text: String) -> some View {
         Text(text)
+            .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
             .font(.subheadline)
             .foregroundColor(.gray)
             .padding()
-            .frame(width: 360, height: 110, alignment: .leading)
-            .background(Color.gray.opacity(0.1))
+            .frame(height: 90)
+            .frame(maxWidth: .infinity)
+            .padding(.horizontal)
+            .background(colorScheme == .dark ? Color(.systemGray6) : .white)
             .cornerRadius(20)
     }
 
     // 버튼 레이블
     func buttonLabel(text: String, opacity: Double) -> some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 10)
                 .fill(Color.buttonPrimary.opacity(opacity))
-                .frame(width: 360, height: 70)
+                .frame(maxWidth: .infinity)
+                .frame(height: 50)
+                .padding(.horizontal)
             Text(text)
                 .font(.title3)
                 .foregroundColor(.white)

@@ -37,18 +37,25 @@ struct UserDetailEditView: View {
             .navigationTitle("사용자 수정")
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("저장") {
+                    Button {
                         // SwiftData에서는 모델이 바인딩되어 있으므로 자동 반영됨
                         dismiss()
+                    } label: {
+                        Text("저장")
+                            .tint(.buttonPrimary)
                     }
                 }
 
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("취소") {
+                    Button {
                         dismiss()
+                    } label: {
+                        Text("취소")
+                            .tint(.buttonPrimary)
                     }
                 }
             }
+
         }
     }
 }

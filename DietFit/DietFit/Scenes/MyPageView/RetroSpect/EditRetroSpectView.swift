@@ -18,8 +18,11 @@ struct EditRetroSpectView: View {
                 TextField("목표 제목", text: $goal.title)
             }
 
-            Button("저장") {
+            Button {
                 dismiss()
+            } label:{
+                Text("저장")
+                    .tint(.buttonPrimary)
             }
             .disabled(goal.title.isEmpty)
         }

@@ -9,6 +9,7 @@ import SwiftData
 
 struct RetroSpectView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(\.colorScheme) private var colorScheme
     @Query private var goals: [RetroSpect]
 
     @AppStorage("newGoalText") private var newGoalText: String = ""

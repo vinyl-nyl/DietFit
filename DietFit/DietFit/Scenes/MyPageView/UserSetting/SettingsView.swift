@@ -9,16 +9,15 @@ import SwiftData
 
 struct SettingsView: View {
     @Environment(\.modelContext) private var context
-    @StateObject private var userSettings = UserSettings.loadFromAppStorage()
-    @AppStorage("notificationEnabled") private var notificationEnabled = true
-    @AppStorage("notificationTime") private var notificationTime = Date()
-
+    @Query private var settingsList: [UserSettings]
+    @Query private var userInfos: [UserInfo]
+    
+    @State private var userSettings: UserSettings?
     @State private var showUserInfoListView = false
     @State private var profileImage: Image? = nil
     @State private var showResetAlert = false
-
-    @Query private var userInfos: [UserInfo]
-
+    @Environment(\.colorScheme) private var colorScheme
+    
     var body: some View {
         NavigationStack {
             Form {
@@ -68,32 +67,34 @@ struct SettingsView: View {
                     }
                 }
 
-                // 알림 설정
-                Section(header: Text("알림")) {
-                    Toggle("알림 켜기/끄기", isOn: $notificationEnabled)
+                if let settings = userSettings {
+                    let notificationEnabledBinding = Binding<Bool>(
+                        get: { settings.notificationEnabled },
+                        set: { settings.notificationEnabled = $0 }
+                    )
+                    
+                    let notificationTimeBinding = Binding<Date>(
+                        get: { settings.notificationTime },
+                        set: { settings.notificationTime = $0 }
+                    )
+
+                    Section(header: Text("알림")) {
+                        Toggle("알림 켜기/끄기", isOn: notificationEnabledBinding)
+                            .padding()
+
+                        DatePicker(
+                            selection: notificationTimeBinding,
+                            displayedComponents: .hourAndMinute
+                        ) {
+                            Text("알림 시간")
+                                .foregroundColor(settings.notificationEnabled ? .primary : .gray)
+                        }
                         .padding()
-
-                    DatePicker(
-                        selection: $notificationTime,
-                        displayedComponents: .hourAndMinute
-                    ) {
-                        Text("알림 시간")
-                            .foregroundColor(notificationEnabled ? .primary : .gray)
+                        .disabled(!settings.notificationEnabled)
+                        .colorMultiply(settings.notificationEnabled ? .primary : .gray.opacity(0.3))
                     }
-                    .padding()
-                    .disabled(!notificationEnabled)
-                    .colorMultiply(notificationEnabled ? .primary : .gray.opacity(0.3))
                 }
 
-                // 단위 설정
-                Section(header: Text("단위 설정")) {
-                    Picker("단위 시스템", selection: $userSettings.unitSystem) {
-                        Text("cm/kg").tag("cm/kg")
-                        Text("ft/lbs").tag("ft/lbs")
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding()
-                }
 
                 // 데이터 초기화
                 Section {
@@ -108,20 +109,8 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("사용자 설정")
-            .onChange(of: userSettings.name) {
-                userSettings.saveToAppStorage()
-            }
-            .onChange(of: userSettings.email) {
-                userSettings.saveToAppStorage()
-            }
-            .onChange(of: userSettings.notificationEnabled) {
-                userSettings.saveToAppStorage()
-            }
-            .onChange(of: userSettings.notificationTime) {
-                userSettings.saveToAppStorage()
-            }
-            .onChange(of: userSettings.unitSystem) {
-                userSettings.saveToAppStorage()
+            .onAppear {
+                loadOrCreateUserSettings()
             }
             .alert("모든 데이터를 초기화하시겠습니까?", isPresented: $showResetAlert) {
                 Button("초기화", role: .destructive) {
@@ -134,16 +123,28 @@ struct SettingsView: View {
         }
     }
 
-    func resetAllData() {
+    private func loadOrCreateUserSettings() {
+        if let existing = settingsList.first {
+            userSettings = existing
+        } else {
+            let newSettings = UserSettings()
+            context.insert(newSettings)
+            userSettings = newSettings
+        }
+    }
+
+    private func resetAllData() {
         do {
             try deleteAll(of: UserInfo.self)
             try deleteAll(of: RetroSpect.self)
+            try deleteAll(of: UserSettings.self)
+            loadOrCreateUserSettings() // 초기화 후 재생성
         } catch {
             print("초기화 실패: \(error)")
         }
     }
 
-    func deleteAll<T: PersistentModel>(of type: T.Type) throws {
+    private func deleteAll<T: PersistentModel>(of type: T.Type) throws {
         let descriptor = FetchDescriptor<T>()
         let items = try context.fetch(descriptor)
         for item in items {
