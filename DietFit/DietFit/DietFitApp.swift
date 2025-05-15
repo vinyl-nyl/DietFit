@@ -30,13 +30,10 @@ struct DietFitApp: App {
         }()
 
         WindowGroup {
-<<<<<<< HEAD
 //            StartView()
             ContentView()
 //            DailyMealView()
-=======
-            StartView()
->>>>>>> 3241b277c7b6b4d81100c3d8988c1309969ca7b0
+///*            */StartView()
         }
         .modelContainer(sharedModelContainer)
     }
