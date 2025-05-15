@@ -10,12 +10,12 @@ import SwiftData
 
 @Model
 final class Goal {
-    var mealGoals: Int
-    var fitnessGoals: Int
-	var id = UUID()
+    var value: Int
+    var type: GoalType
+    var id = UUID()
 
-    init(mealGoals: Int = 0, fitnessGoals: Int = 0) {
-        self.mealGoals = mealGoals
-        self.fitnessGoals = fitnessGoals
+    init(value: Int, type: GoalType) {
+        self.value = value
+        self.type = type
     }
 }

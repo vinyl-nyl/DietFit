@@ -20,6 +20,5 @@ struct StyleModifier: ViewModifier {
                 content
             }
         }
-        .padding()
     }
 }

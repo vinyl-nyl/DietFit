@@ -8,73 +8,141 @@ import SwiftUI
 import SwiftData
 
 struct RetroSpectView: View {
-    @Environment(\.modelContext) private var modelContext
+    @Environment(\.modelContext) private var context
     @Environment(\.colorScheme) private var colorScheme
-    @Query(sort: \RetroSpect.createdAt, order: .reverse) private var goals: [RetroSpect]
 
-    @State private var newGoalText: String = ""
+    @Query private var goals: [Goal]
+
+    @State private var mealGoal: String = ""
+    @State private var fitGoal: String = ""
+
+    @State private var showAlert = false
+
+    @State private var alertMessage: String = ""
 
     var body: some View {
         NavigationStack {
             VStack {
-                TextField("새 목표 입력", text: $newGoalText)
+                HStack {
+                    Text("나의목표")
+                        .font(.largeTitle)
+                        .bold()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+
+                HStack {
+                    Text("식단")
+                        .font(.title3)
+                        .bold()
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+
+                TextField("식단 목표 입력", text: $mealGoal)
                     .textFieldStyle(.roundedBorder)
-                    .padding()
+                    .padding(.horizontal)
+                    .tint(.buttonPrimary)
+
+                HStack {
+                    Text("운동")
+                        .font(.title3)
+                        .bold()
+                }
+                .padding(.top, 20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.horizontal)
+
+                TextField("운동 목표 입력", text: $fitGoal)
+                    .textFieldStyle(.roundedBorder)
+                    .padding(.horizontal)
+                    .tint(.buttonPrimary)
+
 
                 Button {
-                    addGoal()
+                    guard !mealGoal.isEmpty || !fitGoal.isEmpty else {
+                        alertMessage = "최소 하나의 목표를 입력해주세요."
+                        showAlert = true
+                        return
+                    }
+
+                    guard let mealGoalInt = Int(mealGoal), mealGoalInt > 0 else {
+                         alertMessage = "식단 목표는 0보다 큰 숫자로 입력해주세요."
+                         showAlert = true
+                         return
+                     }
+
+                     guard let fitGoalInt = Int(fitGoal), fitGoalInt > 0 else {
+                         alertMessage = "운동 목표는 0보다 큰 숫자로 입력해주세요."
+                         showAlert = true
+                         return
+                     }
+
+                    addGoal(value: mealGoalInt, type: .meal)
+                    addGoal(value: fitGoalInt, type: .fitness)
+
                 } label: {
-                    Text("목표 추가")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(
-                            RoundedRectangle(cornerRadius: 12)
-                                .fill(Color.buttonPrimary)
-                        )
+                    Text("저장")
+                        .font(.title3)
+                               .bold()
+                               .foregroundStyle(.white)
+                               .frame(maxWidth: .infinity)
+                               .padding()
+                               .background(Color.buttonPrimary)
+                               .clipShape(Capsule())
                 }
-                .disabled(newGoalText.isEmpty)
                 .padding()
+                .alert(isPresented: $showAlert) {
+                    Alert(title: Text("입력 오류"), message: Text(alertMessage), dismissButton: .default(Text("확인")))
+                }
 
                 Divider()
 
                 List {
-                    Section(header: Text("목표 목록")) {
-                        ForEach(goals) { goal in
-                            NavigationLink(destination: EditRetroSpectView(goal: goal)) {
-                                VStack(alignment: .leading) {
-                                    Text(goal.title)
-                                        .font(.headline)
-                                    Text(goal.createdAt, format: .dateTime.year().month().day())
-                                        .font(.caption)
-                                        .foregroundColor(.gray)
-                                }
-                            }
+                    Section(header: Text("식단 목표 목록")) {
+                        ForEach(goals.filter { $0.type == .meal }) { goal in
+                            Text("식단 목표 \(goal.value)")
+                                .font(.headline)
                         }
-                        .onDelete(perform: deleteGoals)
+                        .onDelete { indexSet in deleteGoals(offsets: indexSet, type: .meal) }
+                    }
+
+                    Section(header: Text("운동 목표 목록")) {
+                        ForEach(goals.filter { $0.type == .fitness }) { goal in
+                            Text("운동 목표 \(goal.value)")
+                                .font(.headline)
+                        }
+                        .onDelete { indexSet in deleteGoals(offsets: indexSet, type: .fitness) }
                     }
                 }
             }
-            .navigationTitle("나의 목표")
+            .modifier(StyleModifier())
+            .background(Color(.systemGray6))
         }
     }
 
-    private func addGoal() {
-        let newGoal = RetroSpect(title: newGoalText)
-        modelContext.insert(newGoal)
+    private func addGoal(value: Int, type: GoalType) {
+        let goal = Goal(value: value, type: type)
+        context.insert(goal)
         do {
-            try modelContext.save()
-            newGoalText = ""
+            try context.save()
+            if type == .meal {
+                mealGoal = ""
+            } else {
+                fitGoal = ""
+            }
         } catch {
-            print("Error saving new goal: \(error)")
+            print("Error saving goal: \(error)")
         }
     }
 
-    private func deleteGoals(offsets: IndexSet) {
+    private func deleteGoals(offsets: IndexSet, type: GoalType) {
+        let filteredGoals = goals.filter { $0.type == type }
         for index in offsets {
-            modelContext.delete(goals[index])
+            context.delete(filteredGoals[index])
         }
         do {
-            try modelContext.save()
+            try context.save()
         } catch {
             print("Error deleting goal: \(error)")
         }
@@ -83,6 +151,6 @@ struct RetroSpectView: View {
 
 #Preview {
     RetroSpectView()
-        .modelContainer(for: RetroSpect.self, inMemory: true)
+    //        .modelContainer(for: RetroSpect.self, inMemory: true)
 }
 

@@ -125,15 +125,13 @@ struct AddMealView: View {
                 saveFood()
             } label: {
                 Text("저장")
+                    .bold()
+                    .foregroundStyle(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(Color.buttonPrimary)
+                    .clipShape(Capsule())
             }
-            .buttonStyle(.plain)
-            .font(.title3)
-            .bold()
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .padding()
-            .background(Color.buttonPrimary)
-            .clipShape(Capsule())
             .padding()
             .alert(isPresented: $showAlert) {
                 Alert(title: Text("입력 오류"), message: Text(alertMessage), dismissButton: .default(Text("확인")))
