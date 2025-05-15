@@ -9,7 +9,6 @@ import SwiftUI
 import SwiftData
 
 struct DailyMealView: View {
-    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
 
     @ObservedObject var mealVM: DailyMealViewModel
@@ -21,7 +20,7 @@ struct DailyMealView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // 상단 바 - 날짜 선택, 유저 아이콘
+                // DatePicker와 Scroll Calendar
                 VStack(spacing: 0) {
                     HStack {
                         DatePickerButtonView(mealVM: mealVM)
@@ -33,14 +32,14 @@ struct DailyMealView: View {
 
                 ScrollView {
                     VStack(spacing: 16) {
-                        // 통계
+                        // 오늘의 성과: 간략한 통계를 시각적으로 제공
                         VStack(spacing: 16) {
                             CardSummaryView(mealVM: mealVM)
                         }
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
 
-                        // 식단
+                        // 오늘의 식단: 각 끼니별 음식과 칼로리 저장 기능
                         VStack(spacing: 16) {
                             Text("오늘의 식단")
                                 .font(.title3)
@@ -67,7 +66,7 @@ struct DailyMealView: View {
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
 
-                        // 메모
+                        // 오늘의 메모: 가벼운 메모 저장 기능
                         VStack(spacing: 16) {
                             CardMemoView(mealVM: mealVM, type: .meal)
                                 .buttonStyle(.plain)

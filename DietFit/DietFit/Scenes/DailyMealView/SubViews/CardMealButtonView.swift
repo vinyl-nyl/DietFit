@@ -21,7 +21,10 @@ struct CardMealButtonView: View {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 25) {
                     Image(systemName: mealtype.icon)
+                        .foregroundStyle(.buttonPrimary)
+
                     Image(systemName: "plus")
+
                 }
                 .font(.title)
                 .imageScale(.large)

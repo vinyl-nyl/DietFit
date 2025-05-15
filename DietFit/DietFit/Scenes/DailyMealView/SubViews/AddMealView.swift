@@ -181,7 +181,7 @@ struct AddMealView: View {
             context.insert(todayRecord)
         }
 
-        // 초기화, 리스트 업데이트
+        // 저장, 리스트 업데이트
         try? context.save()
         updateFood()
     }

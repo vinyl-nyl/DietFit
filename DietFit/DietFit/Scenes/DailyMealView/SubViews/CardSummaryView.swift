@@ -43,9 +43,6 @@ struct CardSummaryView: View {
                     .frame(width: 200, height: 200)
                     .offset(y: 50)
 
-                let dayTotal = records
-                                .first(where: { $0.date == mealVM.selectedDate })?
-                                .meals.reduce(0) { $0 + $1.totalCalories } ?? 0
                 VStack {
                     Text("\(dayTotal)")
                         .font(.title)

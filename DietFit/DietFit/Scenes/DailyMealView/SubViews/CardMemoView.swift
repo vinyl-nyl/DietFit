@@ -25,7 +25,7 @@ struct CardMemoView: View {
     }
 
     var body: some View {
-        Text("메모")
+        Text("오늘의 메모")
             .font(.title3)
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -46,7 +46,7 @@ struct CardMemoView: View {
                             .foregroundStyle(.primary)
                             .padding()
                     } else {
-                        Text("운동 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
+                        Text("운동 일지를 기록하세요.\n느낀 점이나 회고도 좋아요.")
                             .foregroundStyle(.secondary)
                             .padding()
                     }
@@ -57,7 +57,7 @@ struct CardMemoView: View {
                             .foregroundStyle(.primary)
                             .padding()
                     } else {
-                        Text("식단 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
+                        Text("식단 일지를 기록하세요.\n느낀 점이나 회고도 좋아요.")
                             .foregroundStyle(.secondary)
                             .padding()
                     }
@@ -70,6 +70,6 @@ struct CardMemoView: View {
 }
 
 #Preview {
-//    CardMemoView(mealVM: DailyMealViewModel())
+    CardMemoView(mealVM: DailyMealViewModel(), type: .meal)
 }
 

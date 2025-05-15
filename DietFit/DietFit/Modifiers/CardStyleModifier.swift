@@ -27,7 +27,6 @@ struct CardStyleModifier: ViewModifier {
         .clipShape(RoundedRectangle(cornerRadius: 20))
 
     }
-    //            .shadow(radius: 10, y: 4)
 }
 
 

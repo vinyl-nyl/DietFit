@@ -18,6 +18,7 @@ struct ScrollCalendarView: View {
      private let today = Date().startOfDay // 시분초 정규화
 
     var body: some View {
+        // 날짜를 제어하고 초기 위치를 지정하기 위해 scrollViewReader 사용
         ScrollViewReader { proxy in
             ScrollView(.horizontal) {
                 HStack {
@@ -57,18 +58,8 @@ struct ScrollCalendarView: View {
                 .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
-                // 뷰 랜더링이 완료 된 시점에 실행
-//            .onAppear {
-//                DispatchQueue.main.async {
-//                    if mealVM.selectedDate == today { // 처음 앱 진입 시에만 오늘 날짜로 설정
-//                        mealVM.selectedDate = today
-//                        scrollTargetId = today
-//                    }
-//                }
-//            }
-            .task {
+            .onAppear {
                 if mealVM.selectedDate == today { // 처음 앱 진입 시에만 오늘 날짜로 설정
-                    mealVM.selectedDate = today
                     scrollTargetId = today
                 }
             }
