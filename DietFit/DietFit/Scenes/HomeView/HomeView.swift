@@ -121,7 +121,6 @@ struct HomeView: View {
             }
             .navigationTitle("요약")
         }
-        .padding(.vertical, 20)
         .padding(.horizontal, 20)
         .onAppear {
             bmiEntries = loadBMIData()
