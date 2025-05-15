@@ -17,8 +17,12 @@ struct CardMemoView: View {
 
     var type: MemoType
 
-    var todayMemo: String? {
+    var todayMealMemo: String? {
         mealRecords.first(where: { $0.date == mealVM.selectedDate})?.mealMemo
+    }
+
+    var todayFitnessMemo: String? {
+        mealRecords.first(where: { $0.date == mealVM.selectedDate})?.fitnessMemo
     }
 
     var body: some View {
@@ -35,15 +39,33 @@ struct CardMemoView: View {
                 RoundedRectangle(cornerRadius: 10)
                     .stroke(Color.gray.opacity(0.5), lineWidth: 1)
 
-                if let memo = todayMemo, !memo.isEmpty {
-                    Text(memo)
-                        .foregroundStyle(.primary)
-                        .padding()
-                } else {
-                    Text("\(type.rawValue) 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
-                        .foregroundStyle(.secondary)
-                        .padding()
+                switch type {
+                case .fitness:
+                    if let memo = todayFitnessMemo, !memo.isEmpty {
+                        Text(memo)
+                            .foregroundStyle(.primary)
+                            .padding()
+                    } else {
+                        Text("운동 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }
+
+                case .meal:
+                    if let memo = todayMealMemo, !memo.isEmpty {
+                        Text(memo)
+                            .foregroundStyle(.primary)
+                            .padding()
+                    } else {
+                        Text("식단 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }
+
                 }
+
+
+
             }
             .buttonStyle(.plain)
             .frame(height: 180)
