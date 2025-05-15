@@ -91,7 +91,7 @@ struct ComposeMemoView: View {
             
             Spacer()
         }
-        .modifier(MemoStyleModifier())
+        .modifier(StyleModifier())
         .onAppear {
             if let memo = mealRecord.first(where: { $0.date == mealVM.selectedDate.startOfDay }) {
                   mealMemo = memo.mealMemo ?? ""

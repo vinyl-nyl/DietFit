@@ -1,5 +1,5 @@
 //
-//  MemoStyleModifier.swift
+//  StyleModifier.swift
 //  DietFit
 //
 //  Created by 박동언 on 5/15/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MemoStyleModifier: ViewModifier {
+struct StyleModifier: ViewModifier {
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
 

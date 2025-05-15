@@ -16,6 +16,7 @@ struct CardMealButtonView: View {
     var body: some View {
         NavigationLink {
             AddMealView(mealType: mealtype)
+                .modifier(StyleModifier())
         } label: {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 25) {
