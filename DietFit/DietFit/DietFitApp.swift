@@ -30,8 +30,8 @@ struct DietFitApp: App {
         }()
 
         WindowGroup {
-//            StartView()
-            ContentView()
+            StartView()
+//            ContentView()
 //            DailyMealView()
 ///*            */StartView()
         }

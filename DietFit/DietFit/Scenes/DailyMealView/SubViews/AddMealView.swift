@@ -19,6 +19,8 @@ struct AddMealView: View {
     @State private var foods: [Food] = []
 
     @State private var showAlert: Bool = false
+    @State private var presentSheet = false
+
     @State private var alertMessage: String = ""
 
     let mealType: MealType
@@ -152,6 +154,10 @@ struct AddMealView: View {
                 }
             }
         }
+        .sheet(isPresented: $presentSheet) {
+//            ComposeView(memo: memo)
+        }
+
     }
 
     private func saveFood() {
@@ -203,6 +209,25 @@ struct AddMealView: View {
     private func deleteFood(at offsets: IndexSet) {
         guard let todayRecord = records.first(where: { $0.date == today }) else {
 			return
+        }
+
+        guard let meal = todayRecord.meals.first(where: { $0.type == mealType }) else {
+            return
+        }
+
+        // 삭제할 Food 제거
+        meal.foods.remove(atOffsets: offsets)
+
+        // 저장
+        try? context.save()
+
+        // 리스트 업데이트
+        updateFood()
+    }
+
+    private func deleteEdit(at offsets: IndexSet) {
+        guard let todayRecord = records.first(where: { $0.date == today }) else {
+            return
         }
 
         guard let meal = todayRecord.meals.first(where: { $0.type == mealType }) else {

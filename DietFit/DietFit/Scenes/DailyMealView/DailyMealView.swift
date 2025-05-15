@@ -11,7 +11,7 @@ struct DailyMealView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
 
-    @StateObject private var mealVM = DailyMealViewModel()
+    @ObservedObject var mealVM: DailyMealViewModel
 
     let Mealtypes = MealType.allCases
 
@@ -78,5 +78,5 @@ struct DailyMealView: View {
 }
 
 #Preview {
-    DailyMealView()
+    DailyMealView(mealVM: DailyMealViewModel())
 }

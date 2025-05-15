@@ -10,6 +10,9 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var tabManager = TabSelectionManager()
 
+    @StateObject private var mealVM = DailyMealViewModel()
+
+
     var body: some View {
         TabView(selection: $tabManager.selectedTabIndex) {
             HomeView()
@@ -18,13 +21,13 @@ struct ContentView: View {
                 }
                 .tag(0)
 
-            DailyMealView()
+            DailyMealView(mealVM: mealVM)
                 .tabItem {
                     Label("식단", systemImage: "fork.knife")
                 }
                 .tag(1)
 
-             DailyFitnessView() // 주석 처리된 뷰
+            DailyFitnessView(mealVM: mealVM) // 주석 처리된 뷰
                  .tabItem {
                      Label("운동", systemImage: "dumbbell.fill")
                  }
