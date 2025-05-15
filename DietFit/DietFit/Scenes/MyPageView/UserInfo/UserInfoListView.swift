@@ -15,6 +15,7 @@ struct UserInfoListView: View {
     @State private var showAddForm = false
     @State private var selectedUser: UserInfo?
     @State private var showEditForm = false
+    @State private var showStartView = false
     @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
@@ -35,8 +36,7 @@ struct UserInfoListView: View {
                         .swipeActions(allowsFullSwipe: false) {
                             // 삭제
                             Button(role: .destructive) {
-                                modelContext.delete(userInfo)
-                                try? modelContext.save()
+                                deleteUser(userInfo)
                             } label: {
                                 Label("삭제", systemImage: "trash")
                             }
@@ -69,10 +69,24 @@ struct UserInfoListView: View {
             .sheet(item: $selectedUser) { user in
                 UserDetailEditView(userInfo: user)
             }
+            .fullScreenCover(isPresented: $showStartView) {
+                StartView() // 사용자 전부 삭제되면 StartView로 전환
+            }
+        }
+    }
+
+    private func deleteUser(_ user: UserInfo) {
+        modelContext.delete(user)
+        try? modelContext.save()
+
+        // 삭제 후 userInfos가 비어있으면 StartView로 이동
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if userInfos.isEmpty {
+                showStartView = true
+            }
         }
     }
 }
-
 
 #Preview {
     UserInfoListView()
