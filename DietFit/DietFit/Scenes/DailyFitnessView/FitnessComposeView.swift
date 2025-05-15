@@ -12,6 +12,7 @@ struct FitnessComposeView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
 
+    let selected: Date
     let area: String
     let exercise: String
 
@@ -56,7 +57,7 @@ struct FitnessComposeView: View {
 
         }
         Button {
-            let model = FitnessModel(name: "Kim", area: area, exercise: exercise, calories: calories ?? 0, duration: duration, intensity: "가볍게")
+            let model = FitnessModel(name: "Kim", insertDate: selected, area: area, exercise: exercise, calories: calories ?? 0, duration: duration, intensity: intensity)
 
             context.insert(model)
 
@@ -78,5 +79,5 @@ struct FitnessComposeView: View {
 
 
 #Preview {
-    FitnessComposeView(area: "Chest", exercise: "Push-ups")
+//    FitnessComposeView(area: "Chest", exercise: "Push-ups")
 }

@@ -21,8 +21,8 @@ final class FitnessModel: Identifiable, Hashable  {
 
     init(id: UUID = UUID(), name: String, insertDate: Date = .now, area: String, exercise: String, calories: Int, duration: Int, intensity: String) {
         self.id = id
-        self.name = name
         self.insertDate = insertDate
+        self.name = name
         self.area = area
         self.exercise = exercise
         self.calories = calories

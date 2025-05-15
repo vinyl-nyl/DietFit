@@ -18,6 +18,7 @@ struct CategoryView: View {
     @Environment(\.dismiss) var dismiss
     @State var area: String = ""
     @State var count: Int = 0
+    @State var selectedDate: Date
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
@@ -77,7 +78,7 @@ struct CategoryView: View {
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView(area: area, exercise: vm.selected)
+            FitnessComposeView(selected: selectedDate, area: area, exercise: vm.selected)
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
