@@ -15,6 +15,9 @@ struct DietFitApp: App {
             let schema = Schema([
                 UserInfo.self,
                 RetroSpect.self,
+                MealRecord.self,
+                Meal.self,
+                Food.self,
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

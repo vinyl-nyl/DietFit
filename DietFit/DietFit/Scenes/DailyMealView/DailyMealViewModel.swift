@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 class DailyMealViewModel: ObservableObject {
     @Published var selectedDate: Date = Date().startOfDay
