@@ -19,14 +19,17 @@ struct ContentView: View {
                 }
                 .tag(0)
 
+
             DailyMealView(mealVM: vm)
+
                 .tabItem {
                     Label("식단", systemImage: "fork.knife")
                 }
                 .tag(1)
 
              DailyFitnessView(mealVM: vm) // 주석 처리된 뷰
-                 .tabItem {
+
+                .tabItem {
                      Label("운동", systemImage: "dumbbell.fill")
                  }
                  .tag(3)
