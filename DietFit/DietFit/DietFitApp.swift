@@ -26,7 +26,7 @@ struct DietFitApp: App {
         }()
 
         WindowGroup {
-            StartView()
+            HomeView()
         }
         .modelContainer(sharedModelContainer)
     }
