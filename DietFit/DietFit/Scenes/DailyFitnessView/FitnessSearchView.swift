@@ -10,7 +10,8 @@ import SwiftUI
 struct FitnessSearchView: View {
     @State private var searchText: String = ""
     @State private var isPresented: Bool = false
-    @Environment(\.dismissSearch) var dismissSearch
+    @State private var isPresentedModal: Bool = false
+    
     @Environment(\.dismiss) var dismiss
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
@@ -24,10 +25,6 @@ struct FitnessSearchView: View {
 
     var body: some View {
         NavigationStack {
-            SearchedView(searchText: searchText)
-                .searchable(text: $searchText,
-                            isPresented: $isPresented,
-                            prompt: "운동명으로 검색")
             VStack {
 
                 Text("Categories")
@@ -48,9 +45,9 @@ struct FitnessSearchView: View {
                                 .padding(10)
                                 .overlay {
                                     RoundedRectangle(cornerRadius: 20)
-                                        .stroke(.gray, lineWidth: 2)
+                                        .stroke(Color(.systemGray6), lineWidth: 2)
                                 }
-                                .tint(.black)
+                                .tint(.gray)
                                 .padding(5)
                         }
 
@@ -58,6 +55,8 @@ struct FitnessSearchView: View {
                 }
             
             }
+            .padding()
+            .searchable(text: $searchText, isPresented: $isPresentedModal, placement: .toolbar, prompt: "운동명으로 검색")
             .toolbar {
                 ToolbarItem {
                     Button {
@@ -75,31 +74,6 @@ struct FitnessSearchView: View {
     }
 }
 
-private struct SearchedView: View {
-    let searchText: String
-
-
-    let items = ["a", "b", "c"]
-    var filteredItems: [String] { items.filter { $0 == searchText.lowercased() } }
-
-
-    @State private var isPresented = false
-    @Environment(\.dismissSearch) private var dismissSearch
-
-
-    var body: some View {
-        if let item = filteredItems.first {
-            Button("Details about \(item)") {
-                isPresented = true
-            }
-            .sheet(isPresented: $isPresented) {
-                NavigationStack {
-                    //
-                }
-            }
-        }
-    }
-}
 
 #Preview {
     FitnessSearchView()
