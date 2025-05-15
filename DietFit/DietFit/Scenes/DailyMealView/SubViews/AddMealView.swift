@@ -153,6 +153,7 @@ struct AddMealView: View {
         }
     }
 
+    // 저장
     private func saveFood() {
         guard let calories = Int(calories) else {
             return
@@ -185,6 +186,7 @@ struct AddMealView: View {
         updateFood()
     }
 
+    // 리스트 업데이트
     private func updateFood() {
         // 오늘 날짜에 MeaRecord 가져오기
         guard let todayRecord = records.first(where: { $0.date == today }) else {
@@ -199,6 +201,7 @@ struct AddMealView: View {
         }
     }
 
+    // 삭제
     private func deleteFood(at offsets: IndexSet) {
         guard let todayRecord = records.first(where: { $0.date == today }) else {
 			return

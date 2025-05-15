@@ -41,7 +41,6 @@ struct CardMealButtonView: View {
         }
         .buttonStyle(.plain)
 
-
     }
 }
 

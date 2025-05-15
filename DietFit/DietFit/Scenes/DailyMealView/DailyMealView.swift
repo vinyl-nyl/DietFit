@@ -72,6 +72,7 @@ struct DailyMealView: View {
                             CardMemoView(mealVM: mealVM, type: .meal)
                                 .buttonStyle(.plain)
                         }
+                        .padding()
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
                     }

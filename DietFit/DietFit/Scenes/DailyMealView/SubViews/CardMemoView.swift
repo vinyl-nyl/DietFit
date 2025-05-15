@@ -10,7 +10,6 @@ import SwiftData
 
 struct CardMemoView: View {
     @Environment(\.colorScheme) private var colorScheme
-
     @ObservedObject var mealVM: DailyMealViewModel
 
     @Query private var mealRecords: [MealRecord]
@@ -30,10 +29,11 @@ struct CardMemoView: View {
             .font(.title3)
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
-            .padding(.leading, 40)
+            .padding(.leading, 30)
 
         NavigationLink {
             ComposeMemoView(mealVM: mealVM)
+                .padding()
         } label: {
             ZStack(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 10)
@@ -61,16 +61,11 @@ struct CardMemoView: View {
                             .foregroundStyle(.secondary)
                             .padding()
                     }
-
                 }
-
-
-
             }
             .buttonStyle(.plain)
             .frame(height: 180)
         }
-
     }
 }
 

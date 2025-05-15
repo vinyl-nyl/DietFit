@@ -23,6 +23,7 @@ struct CardSummaryView: View {
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 40)
+        
         VStack {
             ZStack {
                 Circle()
@@ -41,7 +42,7 @@ struct CardSummaryView: View {
                     .stroke(Color.buttonPrimary, style: .init(lineWidth: 40, lineCap: .round))
                     .frame(width: 200, height: 200)
                     .offset(y: 50)
-                //                                        .animation(.easeInOut, value: percentage)
+
                 let dayTotal = records
                                 .first(where: { $0.date == mealVM.selectedDate })?
                                 .meals.reduce(0) { $0 + $1.totalCalories } ?? 0
@@ -74,7 +75,7 @@ struct CardSummaryView: View {
         guard let todayRecord = records.first(where: { $0.date == mealVM.selectedDate }) else {
             return 0
         }
-		// 
+        // 모든 데이터 더하기
         return todayRecord.meals.reduce(0) { $0 + $1.totalCalories }
     }
 }

@@ -28,7 +28,7 @@ struct ComposeMemoView: View {
 
         VStack(spacing: 16) {
                 HStack {
-                    Image(systemName: "star")
+                    Text("🍔")
 
                     Text("식단")
                         .font(.title3)
@@ -40,7 +40,6 @@ struct ComposeMemoView: View {
                 ZStack(alignment: .topLeading) {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
-
 
                         TextEditor(text: $mealMemo)
                             .tint(.buttonPrimary)
@@ -59,7 +58,7 @@ struct ComposeMemoView: View {
                 .frame(height: 180)
 
                 HStack {
-                    Image(systemName: "star")
+                    Text("⚽️")
 
                     Text("운동")
                         .font(.title3)
@@ -87,8 +86,7 @@ struct ComposeMemoView: View {
                     }
                 }
                 .frame(height: 180)
-
-            
+        
             Spacer()
         }
         .modifier(StyleModifier())
