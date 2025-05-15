@@ -85,7 +85,6 @@ struct MyPageView: View {
                             }
                     }
 
-                   
                     descriptionCard(text: "알림, 단위, 데이터 초기화 등 앱의 다양한 설정을 변경 및 초기화를 할 수 있어요.")
                     Button {
                         showSettingsView.toggle()
