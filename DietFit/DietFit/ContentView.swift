@@ -10,7 +10,7 @@ import SwiftUI
 struct ContentView: View {
     @StateObject private var tabManager = TabSelectionManager()
     @StateObject private var vm = DailyMealViewModel()
-    
+
     var body: some View {
         TabView(selection: $tabManager.selectedTabIndex) {
             HomeView()

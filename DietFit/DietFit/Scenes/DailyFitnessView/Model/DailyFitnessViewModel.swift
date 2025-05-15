@@ -36,6 +36,19 @@ class DailyFitnessViewModel: ObservableObject {
         }
     }
 
+    // 끼니별 총 칼로리 계산
+    func typeCalories(_ records: [MealRecord], date: Date, type: MealType) -> Int {
+        // 해당 날짜에 MealRecord 가져오기
+        guard let dayRecord = records.first(where: { $0.date == date }) else {
+            return 0
+        }
 
+        // 해당 날짜에 MealRecord에서 끼니 가져오기
+        guard let dayMeal = dayRecord.meals.first(where: { $0.type == type }) else {
+            return 0
+        }
+
+        return dayMeal.totalCalories
+    }
 
 }
