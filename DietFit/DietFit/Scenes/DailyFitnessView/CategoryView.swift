@@ -6,9 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 class ViewModel: ObservableObject {
     var title: String = "Hello"
+    @Published var selectedExercise: String = ""
     @Published var list = [String]()
 }
 
@@ -19,7 +21,6 @@ struct CategoryView: View {
     @State private var isPresentedModal: Bool = false
 
     @State var area: String
-    @State var selectedExercise: String = ""
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
@@ -58,7 +59,7 @@ struct CategoryView: View {
         List {
             ForEach(areaToExercises[self.area] ?? [], id: \.self) { exercise in
                 Button {
-                    selectedExercise = exercise
+                    excerciesList.selectedExercise = exercise
                     isPresentedModal = true
                 } label: {
                     Text(exercise)
@@ -76,7 +77,7 @@ struct CategoryView: View {
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView(area: area, exercise: selectedExercise)
+            FitnessComposeView(area: area, exercise: excerciesList.selectedExercise)
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
@@ -168,5 +169,5 @@ extension CategoryView {
 
 
 #Preview {
-    CategoryView(area: "Back")
+//    CategoryView(area: "Back")
 }
