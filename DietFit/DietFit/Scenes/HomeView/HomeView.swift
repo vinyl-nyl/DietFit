@@ -103,10 +103,7 @@ struct HomeView: View {
             .navigationTitle("요약")
         }
         .modifier(StyleModifier())
-<<<<<<< HEAD
-=======
         .padding(.horizontal, 20)
->>>>>>> eb6f0b6 (pull 확인)
     }
 
     private func saveNewWeight() {
