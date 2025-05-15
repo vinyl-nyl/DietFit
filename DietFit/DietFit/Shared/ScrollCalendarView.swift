@@ -57,7 +57,7 @@ struct ScrollCalendarView: View {
                 .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
-				// 뷰 랜더링이 완료 된 시점에 실행
+                // 뷰 랜더링이 완료 된 시점에 실행
 //            .onAppear {
 //                DispatchQueue.main.async {
 //                    if mealVM.selectedDate == today { // 처음 앱 진입 시에만 오늘 날짜로 설정
@@ -73,9 +73,9 @@ struct ScrollCalendarView: View {
                 }
             }
             .onChange(of: mealVM.selectedDate) {
-                withAnimation {
+//                withAnimation {
                     scrollTargetId = mealVM.selectedDate
-                }
+//                }
             }
             .scrollPosition(id: $scrollTargetId, anchor: .center)
         }

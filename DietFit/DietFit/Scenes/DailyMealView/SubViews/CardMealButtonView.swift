@@ -11,10 +11,12 @@ struct CardMealButtonView: View {
     @Environment(\.colorScheme) private var colorScheme
 
     let mealtype: MealType
+    let typeCalories: Int
 
     var body: some View {
         NavigationLink {
             AddMealView(mealType: mealtype)
+                .modifier(StyleModifier())
         } label: {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 25) {
@@ -27,7 +29,7 @@ struct CardMealButtonView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text(mealtype.rawValue)
                         .font(.callout)
-                    Text("0 Kcal")
+                    Text("\(typeCalories) Kcal")
                         .font(.headline)
                         .lineLimit(1)
                 }
@@ -45,7 +47,7 @@ struct CardMealButtonView: View {
 
 #Preview {
     NavigationStack {
-        CardMealButtonView(mealtype: MealType.breakfast)
+        CardMealButtonView(mealtype: MealType.breakfast, typeCalories: 100)
     }
 }
 

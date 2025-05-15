@@ -14,7 +14,8 @@ struct ComposeMemoView: View {
 
     @Query private var mealRecord: [MealRecord]
 
-    @FocusState private var isFocused: Bool
+    @FocusState private var ismealFocused: Bool
+    @FocusState private var isfitFocused: Bool
 
     @ObservedObject var mealVM: DailyMealViewModel
 
@@ -26,11 +27,10 @@ struct ComposeMemoView: View {
             .padding(.horizontal)
 
         VStack(spacing: 16) {
-            ForEach (MemoType.allCases, id: \.self) { type in
                 HStack {
-                    Image(systemName: type.icon)
+                    Image(systemName: "star")
 
-                    Text(type.rawValue)
+                    Text("식단")
                         .font(.title3)
 
                     Spacer()
@@ -41,39 +41,62 @@ struct ComposeMemoView: View {
                     RoundedRectangle(cornerRadius: 10)
                         .stroke(Color.gray.opacity(0.5), lineWidth: 1)
 
-                    if type == .meal {
+
                         TextEditor(text: $mealMemo)
                             .tint(.buttonPrimary)
-                            .focused($isFocused)
+                            .focused($ismealFocused)
                         	// background(.clear)해도 스크롤 가능 영역에 시스템 색상이 그대로 남아있음
                         	// 뷰 내부에 스크롤 가능한 영역 표시 여부 지정
                             .scrollContentBackground(.hidden)
                             .padding(8)
-                    } else {
-                        TextEditor(text: $fitnessMemo)
-                            .tint(.buttonPrimary)
-                            .focused($isFocused)
 
-                            .scrollContentBackground(.hidden)
-                            .padding(8)
-                    }
-
-                    if mealMemo.isEmpty && !isFocused {
+                    if mealMemo.isEmpty && !ismealFocused {
                         Text("식단 일지를 기록하세요.")
                             .foregroundStyle(.secondary)
                             .padding()
                     }
                 }
                 .frame(height: 180)
-            }
+
+                HStack {
+                    Image(systemName: "star")
+
+                    Text("운동")
+                        .font(.title3)
+
+                    Spacer()
+                }
+                .padding(.top, 12)
+
+                ZStack(alignment: .topLeading) {
+                    RoundedRectangle(cornerRadius: 10)
+                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+
+                        TextEditor(text: $fitnessMemo)
+                            .tint(.buttonPrimary)
+                            .focused($isfitFocused)
+
+                            .scrollContentBackground(.hidden)
+                            .padding(8)
+
+
+                    if fitnessMemo.isEmpty && !isfitFocused {
+                        Text("운동 일지를 기록하세요.")
+                            .foregroundStyle(.secondary)
+                            .padding()
+                    }
+                }
+                .frame(height: 180)
+
             
             Spacer()
         }
-        .modifier(MemoStyleModifier())
+        .modifier(StyleModifier())
         .onAppear {
-            if let existing = mealRecord.first(where: { $0.date == mealVM.selectedDate.startOfDay }) {
-                mealMemo = existing.memo ?? ""
-            }
+            if let memo = mealRecord.first(where: { $0.date == mealVM.selectedDate.startOfDay }) {
+                  mealMemo = memo.mealMemo ?? ""
+                  fitnessMemo = memo.fitnessMemo ?? ""
+              }
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden(true)
@@ -94,11 +117,18 @@ struct ComposeMemoView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
                     if let record = mealRecord.first(where: { $0.date == mealVM.selectedDate }) {
-                        record.memo = mealMemo
+                        record.mealMemo = mealMemo
+                        record.fitnessMemo = fitnessMemo
                     } else {
-                        let newMemo = MealRecord(date: mealVM.selectedDate, meals: [], memo: mealMemo)
-                        context.insert(newMemo)
+                        let newRecord = MealRecord(
+                            date: mealVM.selectedDate,
+                            meals: [],
+                            mealMemo: mealMemo,
+                            fitnessMemo: fitnessMemo
+                        )
+                        context.insert(newRecord)
                     }
+
                     dismiss()
                 } label: {
                     Text("저장")

@@ -16,7 +16,7 @@ struct CardMemoView: View {
     @Query private var mealRecords: [MealRecord]
 
     var todayMemo: String? {
-        mealRecords.first(where: { $0.date == mealVM.selectedDate})?.memo
+        mealRecords.first(where: { $0.date == mealVM.selectedDate})?.mealMemo
     }
 
     var body: some View {

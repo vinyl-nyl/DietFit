@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct DailyMealView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
 
     @ObservedObject var mealVM: DailyMealViewModel
+
+    @Query private var records: [MealRecord]
 
     let Mealtypes = MealType.allCases
 
@@ -49,7 +52,13 @@ struct DailyMealView: View {
                                 ForEach(0..<2) { row in
                                     GridRow {
                                         ForEach(0..<2) { col in
-                                            CardMealButtonView(mealtype: Mealtypes[row * 2 + col])
+                                            let type = Mealtypes[row * 2 + col]
+                                            let kcal = mealVM.typeCalories(
+                                                records,
+                                                date: mealVM.selectedDate,
+                                                type: type
+                                            )
+                                            CardMealButtonView(mealtype: Mealtypes[row * 2 + col], typeCalories: kcal)
                                         }
                                     }
                                 }
@@ -78,5 +87,5 @@ struct DailyMealView: View {
 }
 
 #Preview {
-//    DailyMealView()
+    DailyMealView(mealVM: DailyMealViewModel())
 }
