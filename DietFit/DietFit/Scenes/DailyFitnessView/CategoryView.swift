@@ -10,7 +10,7 @@ import SwiftData
 
 class ViewModel: ObservableObject {
     var title: String = "Hello"
-    @Published var list = [String]()
+    @Published var selected: String = ""
 }
 
 struct CategoryView: View {
@@ -24,19 +24,14 @@ struct CategoryView: View {
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
-    @StateObject var excerciesList = ViewModel()
+    @StateObject var vm = ViewModel()
 
     var body: some View {
         ScrollView(.horizontal) {
             HStack() {
                 ForEach(areas, id: \.self) { area in
                     Button {
-                        guard let exercies = areaToExercises[area] else { return }
                         self.area = area
-//                        if !excerciesList.list.isEmpty {
-//                            excerciesList.list.removeAll()
-//                        }
-//                        excerciesList.list.append(exercies)
                     } label: {
                         Text(area)
                             .lineLimit(1)
@@ -59,8 +54,7 @@ struct CategoryView: View {
         List {
             ForEach(areaToExercises[self.area] ?? [], id: \.self) { exercise in
                 Button {
-//                    excerciesList.list.append(exercise)
-
+                    vm.selected = exercise
                     isPresentedModal = true
                 } label: {
                     Text(exercise)
@@ -78,7 +72,7 @@ struct CategoryView: View {
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView(area: area, exercise: excerciesList.list.first ?? "")
+            FitnessComposeView(area: area, exercise: vm.selected)
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
