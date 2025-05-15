@@ -86,12 +86,14 @@ struct MyPageView: View {
                     }
                 }
                 .padding()
+                
                 .navigationTitle("마이페이지")
             }
             .onAppear {
                 updateUserInfo()
             }
         }
+        .modifier(StyleModifier())
     }
 
     
