@@ -15,7 +15,7 @@ struct DailyFitnessView: View {
     @Query(sort: [SortDescriptor(\FitnessModel.insertDate, order: .reverse)])
     var datas: [FitnessModel]
 
-    @ObservedObject var mealVM = DailyMealViewModel()
+    @ObservedObject var mealVM: DailyMealViewModel
 
     @State private var presentCalendar = false
     @State var presentAddFitness: Bool = false
@@ -52,7 +52,7 @@ struct DailyFitnessView: View {
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
+                                .padding(.leading, 40)
 
                             NavigationLink {
                                 CategoryView()
@@ -144,5 +144,5 @@ struct DailyFitnessView: View {
 }
 
 #Preview {
-    DailyFitnessView()
+//    DailyFitnessView()
 }

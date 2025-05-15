@@ -1,0 +1,41 @@
+//
+//  DailyFitnessViewModel.swift
+//  DietFit
+//
+//  Created by Heejung Yang on 5/15/25.
+//
+
+import Foundation
+
+class DailyFitnessViewModel: ObservableObject {
+    @Published var selectedDate: Date = Date().startOfDay
+    @Published var days: [Date] = []
+    @Published var totalCalories: Int = 0
+    @Published var datas: [FitnessModel] = []
+
+    init() {
+        days = generateDays(selectedDate)
+    }
+
+    // 범위를 넘어선 날짜인 경우 days 재생성
+    // selectedDate도 갱신
+     func updateDays(from newDate: Date) {
+         if !days.contains(where: { Calendar.current.isDate($0, inSameDayAs: newDate) }) {
+             days = generateDays(newDate)
+         }
+         selectedDate = newDate
+     }
+
+    // 스크롤 캘린더 원하는 범위의 날짜 배열
+    func generateDays(_ selectedDate: Date) -> [Date] {
+        let calendar = Calendar.current
+        let range = -60...60
+
+        return range.compactMap {
+            calendar.date(byAdding: .day, value: $0, to: selectedDate)
+        }
+    }
+
+
+
+}
