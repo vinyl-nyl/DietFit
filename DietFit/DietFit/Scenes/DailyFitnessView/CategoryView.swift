@@ -14,7 +14,6 @@ class ViewModel: ObservableObject {
 }
 
 struct CategoryView: View {
-    @Environment(\.dismissSearch) var dismissSearch
     @Environment(\.dismiss) var dismiss
 
     @State private var isPresentedModal: Bool = false
@@ -78,11 +77,6 @@ struct CategoryView: View {
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(.ultraThickMaterial)
         }
-
-//        .onAppear {
-//            guard history.count > 0 else { return }
-//            dismiss()
-//        }
 
 
     }

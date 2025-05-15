@@ -90,7 +90,7 @@ struct DailyFitnessView: View {
                 //                }
             }
             .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
-
+                dismiss()
             }, content: {
                 FitnessSearchView()
             })
