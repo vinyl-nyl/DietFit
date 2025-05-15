@@ -43,4 +43,5 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environment(\.locale, Locale(identifier: "ko_kr"))
 }
