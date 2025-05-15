@@ -14,15 +14,15 @@ class UserInfo {
     var name: String
     var height: Double
     var weight: Double
-    var detail: String? // 부가 설명
-    var created: Date // ✅ 저장 시간
+    var detail: String?
+    var createdAt: Date  // ✅ 사용자 정보 저장 시점
 
     init(name: String, height: Double, weight: Double, detail: String? = nil, createdAt: Date = Date()) {
         self.name = name
         self.height = height
         self.weight = weight
         self.detail = detail
-        self.created = createdAt
+        self.createdAt = createdAt
     }
 }
 
