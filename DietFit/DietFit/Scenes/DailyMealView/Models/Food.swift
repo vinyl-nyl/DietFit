@@ -10,6 +10,7 @@ import SwiftData
 
 @Model
 final class Food {
+    var id: UUID = UUID()
     var name: String
     var calories: Int
 
