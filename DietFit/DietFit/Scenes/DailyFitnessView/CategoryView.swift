@@ -29,6 +29,7 @@ struct CategoryView: View {
                 .padding(.leading)
                 .font(.title3)
                 .bold()
+                .padding(.trailing, 10)
 
             ScrollView(.horizontal) {
                 HStack() {
