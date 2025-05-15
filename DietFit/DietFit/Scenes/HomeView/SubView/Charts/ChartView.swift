@@ -19,7 +19,7 @@ struct ChartView: View {
     enum TimeRange: String, CaseIterable, Identifiable {
         case week = "주"
         case month = "월"
-        //case year = "년"
+        case year = "년"
         case all = "전체"
 
         var id: String { self.rawValue }
@@ -36,9 +36,9 @@ struct ChartView: View {
         case .month:
             guard let startDate = calendar.date(byAdding: .month, value: -1, to: now) else { return bmiEntries }
             return bmiEntries.filter { $0.date >= startDate }
-        //case .year:
-            //guard let startDate = calendar.date(byAdding: .year, value: -1, to: now) else { return bmiEntries }
-            //return bmiEntries.filter { $0.date >= startDate }
+        case .year:
+            guard let startDate = calendar.date(byAdding: .year, value: -1, to: now) else { return bmiEntries }
+            return bmiEntries.filter { $0.date >= startDate }
         case .all:
             return bmiEntries
         }
@@ -194,13 +194,13 @@ struct ChartView: View {
                 .frame(height: 200)
                 .onAppear {
                     bmiEntries = loadBMIData()
-                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
                         animationScale = 1
                     }
                 }
                 .onChange(of: filteredEntries) { _, _ in
                     animationScale = 0
-                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.85)) {
                         animationScale = 1
                     }
                 }

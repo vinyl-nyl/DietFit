@@ -8,13 +8,35 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State var selectedIndex = 0
+
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
+        TabView(selection: $selectedIndex) {
+            HomeView()
+                .tabItem {
+                    Label("요약", systemImage: "chart.bar.horizontal.page")
+                }
+                .tag(0)
+
+            DailyMealView()
+                .tabItem {
+                    Label("식단", systemImage: "fork.knife")
+                }
+                .tag(1)
+
+            // DailyFitnessView() // 주석 처리된 뷰
+            //     .tabItem {
+            //         Label("운동", systemImage: "dumbbell.fill")
+            //     }
+            //     .tag(2)
+
+            MyPageView()
+                .tabItem {
+                    Label("내 정보", systemImage: "person.fill")
+                }
+                .tag(2)
         }
-        .padding()
+        .tint(.buttonPrimary)
     }
 }
 
