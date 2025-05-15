@@ -11,10 +11,10 @@ import SwiftData
 @Model
 final class MealRecord {
     var date: Date
-    var meals: [Meal] = []
+    var meals: [Meal]
     var memo: String?
 
-    init(date: Date = Date().startOfDay, meals: [Meal], memo: String? = nil) {
+    init(date: Date = Date().startOfDay, meals: [Meal] = [], memo: String? = nil) {
         self.date = date
         self.meals = meals
         self.memo = memo

@@ -48,9 +48,7 @@ struct CategoryView: View {
                             }
                             .tint(area == self.area ? .white : .black)
                             .padding(5)
-
                     }
-
                 }
             }
         }
