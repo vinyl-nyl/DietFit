@@ -5,7 +5,6 @@
 //  Created by 권도현 on 5/14/25.
 //
 
-
 import SwiftUI
 import SwiftData
 
@@ -63,16 +62,17 @@ struct StartView: View {
             }
             .navigationDestination(isPresented: $showContent) {
                 ContentView()
+                    .navigationBarBackButtonHidden(true) // ContentView에서도 백버튼 숨김
             }
             .alert("모든 정보를 올바르게 입력해주세요.", isPresented: $showAlert) {
                 Button {
-                    
+                    // 확인 버튼 액션 필요 시 추가
                 } label: {
                     Text("확인")
                         .foregroundColor(.blue)
                 }
             }
-
+            .navigationBarBackButtonHidden(true)  // StartView에서 백 버튼 숨김
         }
     }
 
@@ -88,8 +88,6 @@ struct StartView: View {
     }
 }
 
-
 #Preview {
     StartView()
 }
-

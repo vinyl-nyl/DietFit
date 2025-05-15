@@ -14,29 +14,28 @@ struct MyPageView: View {
     @State private var showUserInfoListView = false
     @State private var showSettingsView = false
 
-    @State private var userName: String = "홍길동"
-    @State private var userHeight: Double = 175
-    @State private var userWeight: Double = 68
-    @State private var userDetail: String? = nil
-    
     @Environment(\.colorScheme) private var colorScheme
-    @Environment(\.modelContext) private var context
     @Query private var userInfos: [UserInfo]
+
+    @State private var userName: String = ""
+    @State private var userHeight: Double = 0
+    @State private var userWeight: Double = 0
+    @State private var userDetail: String? = nil
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    
+
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             Image(systemName: "person.crop.circle.fill")
                                 .resizable()
                                 .frame(width: 50, height: 50)
                                 .foregroundColor(.buttonPrimary)
-                                Spacer()
+                            Spacer()
                             VStack(alignment: .trailing) {
-                                Text(userName)
+                                Text(userName.isEmpty ? "사용자 이름 없음" : userName)
                                     .font(.title2)
                                     .bold()
                                 Text("키: \(Int(userHeight))cm 몸무게: \(Int(userWeight))kg")
@@ -48,13 +47,11 @@ struct MyPageView: View {
                                         .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
                                 }
                             }
-                            
                         }
                     }
                     .padding(20)
                     .frame(width: 360)
 
-                    // 목표 설정 버튼
                     descriptionCard(text: "매일 나만의 목표를 설정하고, 본인이 목표를 달성했는지에 대한 내용을 기록하세요.")
                     Button {
                         showMyGoalView.toggle()
@@ -65,7 +62,6 @@ struct MyPageView: View {
                         RetroSpectView()
                     }
 
-                    // 사용자 정보 목록 버튼
                     descriptionCard(text: "이름, 키, 몸무게 등 이용하는 여러분들의 정보를 리스트로 확인하고 관리할 수 있어요.")
                     Button {
                         showUserInfoListView.toggle()
@@ -75,13 +71,7 @@ struct MyPageView: View {
                     .sheet(isPresented: $showUserInfoListView) {
                         UserInfoListView()
                             .onAppear {
-                               
-                                if let user = userInfos.first {
-                                    self.userName = user.name
-                                    self.userHeight = user.height
-                                    self.userWeight = user.weight
-                                    self.userDetail = user.detail
-                                }
+                                updateUserInfo()
                             }
                     }
 
@@ -98,10 +88,22 @@ struct MyPageView: View {
                 .padding()
                 .navigationTitle("마이페이지")
             }
+            .onAppear {
+                updateUserInfo()
+            }
         }
     }
 
-   
+    
+    private func updateUserInfo() {
+        if let user = userInfos.first {
+            self.userName = user.name
+            self.userHeight = user.height
+            self.userWeight = user.weight
+            self.userDetail = user.detail
+        }
+    }
+
     func descriptionCard(text: String) -> some View {
         Text(text)
             .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
@@ -115,7 +117,6 @@ struct MyPageView: View {
             .cornerRadius(20)
     }
 
-    
     func buttonLabel(text: String, opacity: Double) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)
