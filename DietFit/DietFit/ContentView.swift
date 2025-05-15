@@ -27,18 +27,18 @@ struct ContentView: View {
                 }
                 .tag(1)
 
-             DailyFitnessView(mealVM: vm) // 주석 처리된 뷰
+            DailyFitnessView(mealVM: vm) // 주석 처리된 뷰
 
                 .tabItem {
-                     Label("운동", systemImage: "dumbbell.fill")
-                 }
-                 .tag(3)
+                    Label("운동", systemImage: "dumbbell.fill")
+                }
+                .tag(2)
 
             MyPageView()
                 .tabItem {
                     Label("내 정보", systemImage: "person.fill")
                 }
-                .tag(2)
+                .tag(3)
         }
         .tint(.buttonPrimary)
         .environmentObject(tabManager)
