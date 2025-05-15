@@ -38,7 +38,6 @@ struct UserDetailEditView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        // SwiftData에서는 모델이 바인딩되어 있으므로 자동 반영됨
                         dismiss()
                     } label: {
                         Text("저장")

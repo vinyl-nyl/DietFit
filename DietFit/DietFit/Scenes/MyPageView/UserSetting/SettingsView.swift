@@ -102,26 +102,36 @@ struct SettingsView: View {
 
                     // 데이터 초기화
                     Section {
-                        Button(role: .destructive) {
+                        Button {
                             showResetAlert = true
                         } label: {
                             HStack {
                                 Image(systemName: "trash")
                                 Text("모든 데이터 초기화")
                             }
+                            .foregroundColor(.red) // 버튼 텍스트 색상 직접 지정
                         }
                     }
+
                 }
                 .navigationTitle("사용자 설정")
                 .onAppear {
                     loadOrCreateUserSettings()
                 }
                 .alert("모든 데이터를 초기화하시겠습니까?", isPresented: $showResetAlert) {
-                    Button("초기화", role: .destructive) {
+                    Button {
                         resetAllData()
-                        goToStartView = true // 초기화 후 StartView로 전환
+                        goToStartView = true
+                    } label: {
+                        Text("초기화")
+                            .foregroundColor(.red)
                     }
-                    Button("취소", role: .cancel) {}
+
+                    Button {
+                        // 취소 동작 없음
+                    } label: {
+                        Text("취소")
+                    }
                 } message: {
                     Text("이 작업은 되돌릴 수 없습니다. 정말로 모든 데이터를 삭제하시겠습니까?")
                 }
