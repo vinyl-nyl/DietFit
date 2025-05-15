@@ -39,7 +39,7 @@ struct DailyFitnessView: View {
                 ScrollView {
 
                     VStack(spacing: 16) {
-                        CardSummaryView()
+                        CardSummaryView(mealVM: mealVM)
                     }
                     .modifier(CardStyleModifier())
                     .padding(.horizontal, 20)

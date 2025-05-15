@@ -6,10 +6,16 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct CardSummaryView: View {
     @Environment(\.colorScheme) private var colorScheme
-    
+
+    @ObservedObject var mealVM: DailyMealViewModel
+    @Query var records: [MealRecord]
+
+    let today = Date().startOfDay
+
     var body: some View {
         Text("오늘의 성과")
             .font(.title3)
@@ -35,9 +41,11 @@ struct CardSummaryView: View {
                     .frame(width: 200, height: 200)
                     .offset(y: 50)
                 //                                        .animation(.easeInOut, value: percentage)
-                
+                let dayTotal = records
+                                .first(where: { $0.date == mealVM.selectedDate })?
+                                .meals.reduce(0) { $0 + $1.totalCalories } ?? 0
                 VStack {
-                    Text("500")
+                    Text("\(dayTotal)")
                         .font(.title)
                         .bold()
                         .foregroundStyle(Color.buttonPrimary)
@@ -47,6 +55,18 @@ struct CardSummaryView: View {
                 .offset(y: 25)
             }
         }
-        
     }
+
+    private var dayTotal: Int {
+        // 해당 날짜에 MealRecord 가져오기
+        guard let todayRecord = records.first(where: { $0.date == mealVM.selectedDate }) else {
+            return 0
+        }
+		// 
+        return todayRecord.meals.reduce(0) { $0 + $1.totalCalories }
+    }
+}
+
+#Preview {
+    CardSummaryView(mealVM: DailyMealViewModel())
 }

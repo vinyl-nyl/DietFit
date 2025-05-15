@@ -13,7 +13,7 @@ struct DailyMealView: View {
 
     @StateObject private var mealVM = DailyMealViewModel()
 
-    let mealTypes = MealType.allCases
+    let Mealtypes = MealType.allCases
 
     var body: some View {
         NavigationStack {
@@ -32,7 +32,7 @@ struct DailyMealView: View {
                     VStack(spacing: 16) {
                         // 통계
                         VStack(spacing: 16) {
-                            CardSummaryView()
+                            CardSummaryView(mealVM: mealVM)
                         }
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
@@ -49,7 +49,7 @@ struct DailyMealView: View {
                                 ForEach(0..<2) { row in
                                     GridRow {
                                         ForEach(0..<2) { col in
-                                            CardMealButtonView(mealtype: mealTypes[row * 2 + col])
+                                            CardMealButtonView(mealtype: Mealtypes[row * 2 + col])
                                         }
                                     }
                                 }
