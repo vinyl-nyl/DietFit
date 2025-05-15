@@ -33,7 +33,7 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    TodayGoalsView()
+                    TodayGoalsView(mealVM: DailyMealViewModel())
                         .padding(.bottom, 40)
 
                     HStack {
@@ -103,6 +103,7 @@ struct HomeView: View {
             .navigationTitle("요약")
         }
         .modifier(StyleModifier())
+        .padding(.horizontal, 20)
     }
 
     private func saveNewWeight() {
