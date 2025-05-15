@@ -30,10 +30,10 @@ struct ScrollCalendarView: View {
                                 Text(weekdayString)
                                     .foregroundStyle(.buttonPrimary)
                                 Button { // 선택한 날짜 가운데 정렬
-                                    withAnimation {
+//                                    withAnimation {
                                         mealVM.updateSelectedDate(to: date)
                                         scrollTargetId = date
-                                    }
+//                                    }
                                 } label: {
                                     Text(dayString)
                                         .font(.subheadline)
@@ -57,10 +57,13 @@ struct ScrollCalendarView: View {
             }
             .scrollIndicators(.hidden)
             .onAppear { // 뷰가 보일 때 오늘 날짜을 가운데 선택, 정렬
-                withAnimation {
-                    mealVM.selectedDate = today
+//                withAnimation(.easeInOut) {
+                    if mealVM.selectedDate == Date().startOfDay {
+                        // 처음 앱 진입 시에만 오늘 날짜로 설정
+                        mealVM.updateSelectedDate(to: today)
+                    }
                     scrollTargetId = today
-                }
+//                }
             }
             .onChange(of: mealVM.selectedDate) { old, new in
                 withAnimation {

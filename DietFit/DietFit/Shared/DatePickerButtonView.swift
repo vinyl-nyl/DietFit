@@ -18,7 +18,7 @@ struct DatePickerButtonView: View {
         Button {
             presentCalendar = true
         } label: {
-            Text(dateFormat(mealVM.selectedDate))
+            Text(mealVM.selectedDate.dateFormat("M.dd (E)"))
                 .font(.title3)
                 .bold()
             Image(systemName: "arrowtriangle.down.fill")
@@ -27,7 +27,7 @@ struct DatePickerButtonView: View {
         .padding(.horizontal)
         .sheet(isPresented: $presentCalendar) {
             VStack {
-                DatePicker("SelecteDate", selection: $mealVM.selectedDate, displayedComponents: [.date])
+                DatePicker("date", selection: $mealVM.selectedDate, displayedComponents: [.date])
                     .datePickerStyle(.graphical)
                     .tint(Color.buttonPrimary)
                     .onChange(of: mealVM.selectedDate) { old, new in
@@ -39,4 +39,9 @@ struct DatePickerButtonView: View {
             .presentationDragIndicator(.visible)
         }
     }
+}
+
+
+#Preview {
+    DatePickerButtonView(mealVM: DailyMealViewModel())
 }

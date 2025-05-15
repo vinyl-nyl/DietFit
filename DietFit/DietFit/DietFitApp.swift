@@ -16,7 +16,10 @@ struct DietFitApp: App {
                 UserInfo.self,
                 RetroSpect.self,
                 SelectedDate.self,
-                FitnessModel.self
+                FitnessModel.self,
+                MealRecord.self,
+                Meal.self,
+                Food.self,
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
@@ -28,7 +31,7 @@ struct DietFitApp: App {
         }()
 
         WindowGroup {
-            StartView()
+            ContentView()
         }
         .modelContainer(sharedModelContainer)
     }
