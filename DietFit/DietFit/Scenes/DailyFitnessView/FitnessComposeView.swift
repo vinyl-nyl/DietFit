@@ -8,16 +8,23 @@
 import SwiftUI
 
 struct FitnessComposeView: View {
+    @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
+
+    @State var calories: Int = 109
+    @State var duration: Int = 30
+    @State var intensity: Int = 30
+
     @State private var isPresented: Bool = false
 
-    @State var duration: Int = 30
+
     var body: some View {
         List {
+
             Section() {
-                Text("109kcal 태웠어요")
+                TextField("칼로리 입력", value: $calories, format: .number)
             } header: {
-                Text("Header")
+                Text("운동 이름")
             }
 
             Section() {
@@ -35,7 +42,7 @@ struct FitnessComposeView: View {
 
                 HStack {
                     Button {
-                        dismiss()
+                        intensity = 30
                     } label: {
                         Text("가볍게")
                             .padding()
@@ -45,7 +52,7 @@ struct FitnessComposeView: View {
                             .tint(.white)
                     }
                     Button {
-                        dismiss()
+                        intensity = 60
                     } label: {
                         Text("적당히")
                             .padding()
@@ -55,7 +62,7 @@ struct FitnessComposeView: View {
                             .tint(.white)
                     }
                     Button {
-                        dismiss()
+                        intensity = 90
                     } label: {
                         Text("격하게")
                             .padding()
@@ -65,13 +72,15 @@ struct FitnessComposeView: View {
                             .tint(.white)
                     }
                 }
-
-
             } header: {
                 Text("운동 강도")
             }
         }
         Button {
+            let model = FitnessModel(area: "", exercise: "", calories: calories, duration: duration, intensity: intensity)
+
+            context.insert(model)
+
             dismiss()
         } label: {
             Text("Done")

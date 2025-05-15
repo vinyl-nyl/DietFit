@@ -14,13 +14,16 @@ final class FitnessModel: Identifiable, Hashable  {
     var insertDate: Date
     var area: String
     var exercise: String
+    var calories: Int
     var duration: Int
     var intensity: Int
 
-    init(insertDate: Date = .now, area: String, exercise: String, duration: Int, intensity: Int) {
+    init(id: UUID = UUID(), insertDate: Date = .now, area: String, exercise: String, calories: Int, duration: Int, intensity: Int) {
+        self.id = id
         self.insertDate = insertDate
         self.area = area
         self.exercise = exercise
+        self.calories = calories
         self.duration = duration
         self.intensity = intensity
     }
