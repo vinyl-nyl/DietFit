@@ -10,35 +10,32 @@ import SwiftUI
 struct ScrollCalendarView: View {
     @Environment(\.colorScheme) private var colorScheme
 
-    @Binding var selectedDate: Date
+    @State private var scrollTargetId: Date?
+
+    @ObservedObject var mealVM: DailyMealViewModel
 
      private let calendar = Calendar.current
-     private let today = Date()
-
-    // ?? private를 쓰면 바인딩할때 에러
-     var daysOfMonth = generateDaysOfMonth()
-
-    @State private var scrollTargetId: Date?
+     private let today = Date().startOfDay // 시분초 정규화
 
     var body: some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal) {
                 HStack {
-                    ForEach(daysOfMonth, id: \.self) { date in
-                        let isSelected = calendar.isDate(date, inSameDayAs: selectedDate)
-                        let dateInfo = generateDateInfo(date)
-
+                    ForEach(mealVM.days, id: \.self) { date in
+                        let isSelected = calendar.isDate(date, inSameDayAs: mealVM.selectedDate)
+                        let weekdayString = date.dateFormat("E")
+                        let dayString = date.dateFormat("d")
                         VStack {
                             Group {
-                                Text(dateInfo.weekday)
+                                Text(weekdayString)
                                     .foregroundStyle(.buttonPrimary)
                                 Button { // 선택한 날짜 가운데 정렬
                                     withAnimation {
-                                        selectedDate = date
+                                        mealVM.updateSelectedDate(to: date)
                                         scrollTargetId = date
                                     }
                                 } label: {
-                                    Text(dateInfo.day)
+                                    Text(dayString)
                                         .font(.subheadline)
                                 }
                                 .buttonStyle(.plain)
@@ -58,61 +55,23 @@ struct ScrollCalendarView: View {
                 .background(colorScheme == .dark ? .black : .white)
                 .scrollTargetLayout()
             }
-//            .scrollTargetBehavior(.viewAligned)
             .scrollIndicators(.hidden)
-            .onAppear { // 뷰가 보일 때 오늘을 가운데 선택, 정렬
+            .onAppear { // 뷰가 보일 때 오늘 날짜을 가운데 선택, 정렬
                 withAnimation {
-//                    proxy.scrollTo(today)
-                    let startOfDay = calendar.startOfDay(for: today)
-                    selectedDate = startOfDay
-                    scrollTargetId = startOfDay
+                    mealVM.selectedDate = today
+                    scrollTargetId = today
                 }
             }
-            .onChange(of: selectedDate) {
+            .onChange(of: mealVM.selectedDate) { old, new in
                 withAnimation {
-                    scrollTargetId = selectedDate
+                    scrollTargetId = new
                 }
             }
             .scrollPosition(id: $scrollTargetId, anchor: .center)
         }
-
     }
-
-    // 날짜와 요일 튜플로 반환
-    private func generateDateInfo(_ date: Date) -> (day: String, weekday: String){
-        let day = String(calendar.component(.day, from: date))
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "ko-KR")
-        dateFormatter.dateFormat = "E"
-
-        let weekday = dateFormatter.string(from: date)
-
-        return (day, weekday)
-    }
-
-    // 이번 달 날짜를 배열로 반환
-    private static func generateDaysOfMonth() -> [Date] {
-        let today = Date()
-        let calendar = Calendar.current
-
-        guard let dateOfMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: today)) else {
-            return []
-        }
-
-        let startOfMonth = calendar.startOfDay(for: dateOfMonth)
-
-        guard let rangeOfMonth = calendar.range(of: .day, in: .month, for: today) else {
-            return []
-        }
-        
-        return rangeOfMonth.compactMap { day in
-            calendar.date(byAdding: .day, value: day - 1, to: startOfMonth)
-        }
-    }
-
 }
 
 #Preview {
-    ScrollCalendarView(selectedDate: .constant(Date()))
+    ScrollCalendarView(mealVM: DailyMealViewModel())
 }

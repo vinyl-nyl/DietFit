@@ -14,7 +14,6 @@ struct DietFitApp: App {
         var sharedModelContainer: ModelContainer = {
             let schema = Schema([
                 UserInfo.self,
-                SelectedDate.self,
                 RetroSpect.self,
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
