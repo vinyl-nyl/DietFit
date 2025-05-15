@@ -48,15 +48,10 @@ struct DailyFitnessView: View {
 
                     VStack(spacing: 16) {
                         FitnessListView(vm: mealVM)
-                            .modifier(CardStyleModifier())
-                            .padding(.horizontal, 16)
                     }
-
-
-//                            .modifier(CardStyleModifier())
-//                            .padding(16)
-//                            .background(Color(.systemGray6))
-
+                    .modifier(CardStyleModifier())
+                    .padding(.horizontal, 20)
+                    .padding(.top, 6)
 
                         // 메모
                     VStack(spacing: 16) {
@@ -65,6 +60,7 @@ struct DailyFitnessView: View {
                     }
                     .modifier(CardStyleModifier())
                     .padding(.horizontal, 20)
+                    .padding(.top, 6)
                 }
                 .scrollIndicators(.hidden)
                 .background(colorScheme == .dark ? .black : Color(.systemGray6))
