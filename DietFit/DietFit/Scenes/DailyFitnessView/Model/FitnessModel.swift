@@ -11,15 +11,17 @@ import Foundation
 @Model
 final class FitnessModel: Identifiable, Hashable  {
     var id = UUID()
+    var name: String
     var insertDate: Date
     var area: String
     var exercise: String
     var calories: Int
     var duration: Int
-    var intensity: Int
+    var intensity: String
 
-    init(id: UUID = UUID(), insertDate: Date = .now, area: String, exercise: String, calories: Int, duration: Int, intensity: Int) {
+    init(id: UUID = UUID(), name: String, insertDate: Date = .now, area: String, exercise: String, calories: Int, duration: Int, intensity: String) {
         self.id = id
+        self.name = name
         self.insertDate = insertDate
         self.area = area
         self.exercise = exercise
@@ -28,3 +30,5 @@ final class FitnessModel: Identifiable, Hashable  {
         self.intensity = intensity
     }
 }
+
+

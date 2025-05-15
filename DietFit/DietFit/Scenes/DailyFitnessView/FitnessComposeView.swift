@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FitnessComposeView: View {
     @Environment(\.modelContext) var context
@@ -14,11 +15,12 @@ struct FitnessComposeView: View {
     let area: String
     let exercise: String
 
-    @State var calories: Int = 109
+    @State var calories: Int = 0
     @State var duration: Int = 30
-    @State var intensity: Int = 30
-
+    @State private var intensity: String = "적당히"
     @State private var isPresented: Bool = false
+
+    @StateObject var excerciesList = ViewModel()
 
 
     var body: some View {
@@ -47,32 +49,29 @@ struct FitnessComposeView: View {
 
                 HStack {
                     Button {
-                        intensity = 30
+                        intensity = "가볍게"
                     } label: {
                         Text("가볍게")
                             .padding()
-    //                        .frame(maxWidth: .infinity)
-                            .background(.green)
+                            .background(intensity == "가볍게" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
                     Button {
-                        intensity = 60
+                        intensity = "적당히"
                     } label: {
                         Text("적당히")
                             .padding()
-    //                        .frame(maxWidth: .infinity)
-                            .background(.green)
+                            .background(intensity == "적당히" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
                     Button {
-                        intensity = 90
+                        intensity = "격하게"
                     } label: {
                         Text("격하게")
                             .padding()
-    //                        .frame(maxWidth: .infinity)
-                            .background(.green)
+                            .background(intensity == "격하게" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
@@ -83,7 +82,7 @@ struct FitnessComposeView: View {
             }
         }
         Button {
-            let model = FitnessModel(area: area, exercise: exercise, calories: calories, duration: duration, intensity: intensity)
+            let model = FitnessModel(name: "Kim", area: area, exercise: exercise, calories: calories, duration: duration, intensity: "가볍게")
 
             context.insert(model)
 
