@@ -19,11 +19,11 @@ struct CategoryView: View {
     @State private var isPresentedModal: Bool = false
 
     @State var area: String
-    @State var selected: [String] = []
+    @State var selectedExercise: String = ""
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
-    @StateObject var vm = ViewModel()
+    @StateObject var excerciesList = ViewModel()
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -32,10 +32,10 @@ struct CategoryView: View {
                     Button {
                         guard let value = areaToExercises[area] else { return }
                         self.area = area
-                        if !vm.list.isEmpty {
-                            vm.list.removeAll()
+                        if !excerciesList.list.isEmpty {
+                            excerciesList.list.removeAll()
                         }
-                        vm.list.append(contentsOf: value)
+                        excerciesList.list.append(contentsOf: value)
                     } label: {
                         Text(area)
                             .lineLimit(1)
@@ -56,11 +56,12 @@ struct CategoryView: View {
         }
 
         List {
-            ForEach(areaToExercises[self.area] ?? [], id: \.self) { str in
+            ForEach(areaToExercises[self.area] ?? [], id: \.self) { exercise in
                 Button {
+                    selectedExercise = exercise
                     isPresentedModal = true
                 } label: {
-                    Text(str)
+                    Text(exercise)
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.white)
@@ -69,12 +70,13 @@ struct CategoryView: View {
                     Image(systemName: "plus.circle.fill")
                 }
                 .buttonStyle(.plain)
+                .tag(exercise)
 
 
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView()
+            FitnessComposeView(area: area, exercise: selectedExercise)
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)

@@ -11,6 +11,9 @@ struct FitnessComposeView: View {
     @Environment(\.modelContext) var context
     @Environment(\.dismiss) var dismiss
 
+    let area: String
+    let exercise: String
+
     @State var calories: Int = 109
     @State var duration: Int = 30
     @State var intensity: Int = 30
@@ -24,7 +27,8 @@ struct FitnessComposeView: View {
             Section() {
                 TextField("칼로리 입력", value: $calories, format: .number)
             } header: {
-                Text("운동 이름")
+                Text(exercise)
+                    .font(.title3)
             }
 
             Section() {
@@ -36,6 +40,7 @@ struct FitnessComposeView: View {
 
             } header: {
                 Text("운동시간")
+                    .font(.headline)
             }
 
             Section() {
@@ -74,10 +79,11 @@ struct FitnessComposeView: View {
                 }
             } header: {
                 Text("운동 강도")
+                    .font(.headline)
             }
         }
         Button {
-            let model = FitnessModel(area: "", exercise: "", calories: calories, duration: duration, intensity: intensity)
+            let model = FitnessModel(area: area, exercise: exercise, calories: calories, duration: duration, intensity: intensity)
 
             context.insert(model)
 
@@ -99,5 +105,5 @@ struct FitnessComposeView: View {
 
 
 #Preview {
-    FitnessComposeView()
+    FitnessComposeView(area: "Chest", exercise: "Push-ups")
 }
