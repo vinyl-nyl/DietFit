@@ -7,46 +7,25 @@
 
 import Charts
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query(sort: \UserInfo.createdAt, order: .reverse) private var allUserInfo: [UserInfo]
+
     @State var showBmiSheet: Bool = false
     @State private var showWeightInput = false
-
     @State private var inputWeight: String = ""
-    @State var todayBmi: String = ""
 
-    @State private var selectedRange: TimeRange = .week
-
-    @State private var bmiEntries: [BMIEntry] = []
-
-    enum TimeRange: String, CaseIterable, Identifiable {
-        case week = "주"
-        case month = "월"
-        case year = "년"
-        case all = "전체"
-
-        var id: String { self.rawValue }
-    }
-
-    var filteredEntries: [BMIEntry] {
-        let calendar = Calendar.current
-        let now = Date()
-
-        switch selectedRange {
-        case .week:
-            guard let startDate = calendar.date(byAdding: .day, value: -6, to: now) else { return bmiEntries }
-            return bmiEntries.filter { $0.date >= startDate }
-
-        case .month:
-            guard let startDate = calendar.date(byAdding: .month, value: -1, to: now) else { return bmiEntries }
-            return bmiEntries.filter { $0.date >= startDate }
-
-        case .year:
-            guard let startDate = calendar.date(byAdding: .year, value: -1, to: now) else { return bmiEntries }
-            return bmiEntries.filter { $0.date >= startDate }
-
-        case .all:
-            return bmiEntries
+    var currentTodayBmiDisplayString: String {
+        if let todayEntry = allUserInfo.first(where: { Calendar.current.isDate($0.createdAt, inSameDayAs: Date()) }) {
+            if let bmiValue = todayEntry.bmi {
+                return String(format: "%.1f", bmiValue)
+            } else {
+                return "BMI 계산 오류"
+            }
+        } else {
+            return "몸무게를 입력해주세요"
         }
     }
 
@@ -73,23 +52,21 @@ struct HomeView: View {
                                     .buttonStyle(.plain)
                                     Spacer()
                                 }
+                                .frame(height: 20)
                             }
 
-
                             Button {
-                                if Double(todayBmi) == nil {
+                                if Double(currentTodayBmiDisplayString) == nil {
                                     showWeightInput = true
-                                } else {
-                                    showWeightInput = false
                                 }
                             } label: {
-                                if let bmi = Double(todayBmi) {
-                                    Text(todayBmi)
+                                if let bmiValue = Double(currentTodayBmiDisplayString) {
+                                    Text(currentTodayBmiDisplayString)
                                         .font(.largeTitle)
                                         .bold()
-                                        .foregroundStyle(BMITextColor(bmiData: bmi))
+                                        .foregroundStyle(BMITextColor(bmiData: bmiValue))
                                 } else {
-                                    Text(todayBmi)
+                                    Text(currentTodayBmiDisplayString)
                                         .font(.title3)
                                         .bold()
                                         .foregroundStyle(.gray)
@@ -106,12 +83,15 @@ struct HomeView: View {
                         .sheet(isPresented: $showWeightInput) {
                             VStack(alignment: .leading) {
                                 InputWeightPresentationView(showWeightInput: $showWeightInput, inputWeight: $inputWeight)
-
                                 Spacer()
                             }
                             .presentationDetents([.medium])
                         }
-
+                        .onChange(of: showWeightInput) { oldValue, newValue in
+                            if oldValue == true && newValue == false {
+                                saveNewWeight()
+                            }
+                        }
                         Spacer()
                     }
                     .padding(.bottom, 40)
@@ -122,19 +102,28 @@ struct HomeView: View {
             .navigationTitle("요약")
         }
         .padding(.horizontal, 20)
-        .onAppear {
-            bmiEntries = loadBMIData()
+    }
 
-            if let todayEntry = filteredEntries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
-                todayBmi = String(format: "%.1f", todayEntry.BMI)
-            } else {
-                todayBmi = "몸무게를 입력해주세요"
-            }
+    private func saveNewWeight() {
+        guard let newWeightValue = Double(inputWeight), newWeightValue > 0 else {
+            inputWeight = ""
+            return
         }
+
+        let nameToUse = allUserInfo.first?.name ?? "사용자"
+        var heightToUse = allUserInfo.first?.height
+
+        if heightToUse == nil || heightToUse! <= 0 {
+            heightToUse = 160.0
+        }
+
+        let newUserInfo = UserInfo(name: nameToUse, height: heightToUse!, weight: newWeightValue, detail: nil, bmi: nil)
+
+        modelContext.insert(newUserInfo)
+        inputWeight = ""
     }
 }
 
 #Preview {
     HomeView()
-        .environment(\.locale, Locale(identifier: "ko_kr"))
 }

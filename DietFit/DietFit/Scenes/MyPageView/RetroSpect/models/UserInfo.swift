@@ -14,15 +14,16 @@ class UserInfo {
     var name: String
     var height: Double
     var weight: Double
-    var detail: String? // 부가 설명
-    var createdAt: Date // ✅ 저장 시간
+    var detail: String?
+    var createdAt: Date
+    var bmi: Double?
 
-    init(name: String, height: Double, weight: Double, detail: String? = nil, createdAt: Date = Date()) {
+    init(name: String, height: Double, weight: Double, detail: String? = nil, bmi: Double?) {
         self.name = name
         self.height = height
         self.weight = weight
         self.detail = detail
-        self.createdAt = createdAt
+        self.createdAt = Date.now
+        self.bmi = weight / ((height/100) * (height/100))
     }
 }
-

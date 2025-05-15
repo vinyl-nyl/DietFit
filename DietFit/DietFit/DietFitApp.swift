@@ -15,6 +15,8 @@ struct DietFitApp: App {
             let schema = Schema([
                 UserInfo.self,
                 RetroSpect.self,
+//                SelectedDate.self,
+                FitnessModel.self,
                 MealRecord.self,
                 Meal.self,
                 Food.self,

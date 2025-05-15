@@ -38,7 +38,6 @@ struct UserDetailEditView: View {
             .toolbar {
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
-                        // SwiftData에서는 모델이 바인딩되어 있으므로 자동 반영됨
                         dismiss()
                     } label: {
                         Text("저장")
@@ -70,6 +69,6 @@ extension Binding where Value == String? {
 }
 
 #Preview {
-    UserDetailEditView(userInfo: UserInfo(name: "", height: 0.0, weight: 0.0, detail: ""))
+    UserDetailEditView(userInfo: UserInfo(name: "", height: 0.0, weight: 0.0, detail: "", bmi: nil))
         .modelContainer(for: UserInfo.self, inMemory: true)
 }

@@ -10,7 +10,7 @@ import SwiftData
 struct RetroSpectView: View {
     @Environment(\.modelContext) private var modelContext
     @Environment(\.colorScheme) private var colorScheme
-    @Query private var goals: [RetroSpect]
+    @Query(sort: \RetroSpect.createdAt, order: .reverse) private var goals: [RetroSpect]
 
     @State private var newGoalText: String = ""
 
@@ -18,7 +18,7 @@ struct RetroSpectView: View {
         NavigationStack {
             VStack {
                 TextField("새 목표 입력", text: $newGoalText)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .textFieldStyle(.roundedBorder)
                     .padding()
 
                 Button {
@@ -29,7 +29,7 @@ struct RetroSpectView: View {
                         .padding()
                         .background(
                             RoundedRectangle(cornerRadius: 12)
-                                .fill(.buttonPrimary)
+                                .fill(Color.buttonPrimary)
                         )
                 }
                 .disabled(newGoalText.isEmpty)
@@ -55,22 +55,28 @@ struct RetroSpectView: View {
                 }
             }
             .navigationTitle("나의 목표")
-            .toolbar {
-                EditButton()
-                    .tint(.buttonPrimary)
-            }
         }
     }
 
     private func addGoal() {
         let newGoal = RetroSpect(title: newGoalText)
         modelContext.insert(newGoal)
-        newGoalText = ""
+        do {
+            try modelContext.save()
+            newGoalText = ""
+        } catch {
+            print("Error saving new goal: \(error)")
+        }
     }
 
     private func deleteGoals(offsets: IndexSet) {
         for index in offsets {
             modelContext.delete(goals[index])
+        }
+        do {
+            try modelContext.save()
+        } catch {
+            print("Error deleting goal: \(error)")
         }
     }
 }
@@ -79,3 +85,4 @@ struct RetroSpectView: View {
     RetroSpectView()
         .modelContainer(for: RetroSpect.self, inMemory: true)
 }
+

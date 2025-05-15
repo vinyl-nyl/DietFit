@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import SwiftData
 
 class ViewModel: ObservableObject {
     var title: String = "Hello"
-    @Published var list = [String]()
+    @Published var selected: String = ""
 }
 
 struct CategoryView: View {
@@ -19,7 +20,7 @@ struct CategoryView: View {
     @State private var isPresentedModal: Bool = false
 
     @State var area: String
-    @State var selected: [String] = []
+    @State var count: Int = 0
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
@@ -30,12 +31,7 @@ struct CategoryView: View {
             HStack() {
                 ForEach(areas, id: \.self) { area in
                     Button {
-                        guard let value = areaToExercises[area] else { return }
                         self.area = area
-                        if !vm.list.isEmpty {
-                            vm.list.removeAll()
-                        }
-                        vm.list.append(contentsOf: value)
                     } label: {
                         Text(area)
                             .lineLimit(1)
@@ -44,9 +40,9 @@ struct CategoryView: View {
                             .cornerRadius(20)
                             .overlay {
                                 RoundedRectangle(cornerRadius: 20)
-                                    .stroke(.gray, lineWidth: 2)
+                                    .stroke(Color(.systemGray6), lineWidth: 2)
                             }
-                            .tint(area == self.area ? .white : .black)
+                            .tint(area == self.area ? .white : .gray)
                             .padding(5)
                     }
                 }
@@ -54,11 +50,12 @@ struct CategoryView: View {
         }
 
         List {
-            ForEach(areaToExercises[self.area] ?? [], id: \.self) { str in
+            ForEach(areaToExercises[self.area] ?? [], id: \.self) { exercise in
                 Button {
+                    vm.selected = exercise
                     isPresentedModal = true
                 } label: {
-                    Text(str)
+                    Text(exercise)
                         .padding()
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .background(.white)
@@ -67,18 +64,23 @@ struct CategoryView: View {
                     Image(systemName: "plus.circle.fill")
                 }
                 .buttonStyle(.plain)
+                .tag(exercise)
 
 
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView()
+            FitnessComposeView(area: area, exercise: vm.selected)
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(.ultraThickMaterial)
         }
 
+//        .onAppear {
+//            guard history.count > 0 else { return }
+//            dismiss()
+//        }
 
     }
 
@@ -164,5 +166,5 @@ extension CategoryView {
 
 
 #Preview {
-    CategoryView(area: "Back")
+//    CategoryView(area: "Back")
 }
