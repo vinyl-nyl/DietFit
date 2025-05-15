@@ -24,11 +24,11 @@ struct ContentView: View {
                 }
                 .tag(1)
 
-            // DailyFitnessView() // 주석 처리된 뷰
-            //     .tabItem {
-            //         Label("운동", systemImage: "dumbbell.fill")
-            //     }
-            //     .tag(2)
+             DailyFitnessView() // 주석 처리된 뷰
+                 .tabItem {
+                     Label("운동", systemImage: "dumbbell.fill")
+                 }
+                 .tag(3)
 
             MyPageView()
                 .tabItem {

@@ -15,7 +15,7 @@ struct FitnessComposeView: View {
     let area: String
     let exercise: String
 
-    @State var calories: Int = 0
+    @State var calories: Int? = nil
     @State var duration: Int = 30
     @State private var intensity: String = "적당히"
     @State private var isPresented: Bool = false
@@ -82,7 +82,7 @@ struct FitnessComposeView: View {
             }
         }
         Button {
-            let model = FitnessModel(name: "Kim", area: area, exercise: exercise, calories: calories, duration: duration, intensity: "가볍게")
+            let model = FitnessModel(name: "Kim", area: area, exercise: exercise, calories: calories ?? 0, duration: duration, intensity: "가볍게")
 
             context.insert(model)
 

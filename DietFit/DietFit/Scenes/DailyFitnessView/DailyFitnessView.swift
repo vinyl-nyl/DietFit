@@ -10,95 +10,92 @@ import SwiftUI
 struct DailyFitnessView: View {
     @Environment(\.colorScheme) private var colorScheme
 
+    @StateObject private var mealVM = DailyMealViewModel()
+    
     @State private var presentCalendar = false
     @State var presentAddFitness: Bool = false
     @State private var selectDate = Date()
 
     var body: some View {
 
-        VStack() {
-
-            HStack {
-                Button {
-                    presentCalendar = true
-                } label: {
-//                    Text(selectDate.description)
-//                        .font(.title3)
-//                        .bold()
-                    Image(systemName: "arrowtriangle.down.fill")
-                }
-                .sheet(isPresented: $presentCalendar) {
-                    VStack {
-                        DatePicker("Select a date", selection: $selectDate, displayedComponents: [.date])
-                            .datePickerStyle(.graphical)
-                            .tint(Color.buttonPrimary)
-                            .padding()
-                            .onChange(of: selectDate) {
-                                presentCalendar = false
-                            }
+        NavigationStack {
+            VStack(spacing: 0) {
+                // 상단 바 - 날짜 선택, 유저 아이콘
+                VStack(spacing: 0) {
+                    HStack {
+                        DatePickerButtonView(mealVM: mealVM)
                     }
-                    .presentationDetents([.fraction(0.6)])
-                    .presentationDragIndicator(.visible)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
+                    ScrollCalendarView(mealVM: mealVM)
                 }
-                .buttonStyle(.plain)
-                .padding(.horizontal)
 
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
+                ScrollView {
+                    VStack(spacing: 16) {
+                
+                        VStack(spacing: 16) {
+                            Text("운동 기록하기")
+                                .font(.title3)
+                                .bold()
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                                .padding()
 
-//            ScrollCalendarView(selectDate: $selectDate)
-        }
 
+                            Button {
+                                presentAddFitness = true
+                            } label: {
 
-        ScrollView {
+                                VStack(alignment: .center, spacing: 16) {
+                                    HStack(spacing: 25) {
+                                        Image(systemName: "plus")
+                                    }
+                                    .font(.title)
+                                    .imageScale(.large)
+                                }
+                                .dynamicTypeSize(.large)
 
-            VStack {
-                VStack(spacing: 16) {
-                    Text("운동 기록하기")
-                        .font(.title3)
-                        .bold()
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                            .buttonStyle(.plain)
+                            .frame(width: 300, height: 120)
+                            .background(Color(.systemGray6))
+                            .modifier(CardStyleModifier())
+                            .padding()
+
+                        }
+                        .frame(width: 360, height: 280)
+                        .modifier(CardStyleModifier())
                         .padding()
 
 
-                    Button {
-                        presentAddFitness = true
-                    } label: {
 
-                        VStack(alignment: .center, spacing: 16) {
-                            HStack(spacing: 25) {
-                                Image(systemName: "plus")
-                            }
-                            .font(.title)
-                            .imageScale(.large)
+                        // 메모
+                        VStack(spacing: 16) {
+                            CardMemoView(mealVM: mealVM)
+                                .buttonStyle(.plain)
                         }
-                        .dynamicTypeSize(.large)
+                        .modifier(CardStyleModifier())
+                        .padding(.horizontal, 20)
+
+
 
                     }
-                    .buttonStyle(.plain)
-                    .frame(width: 300, height: 120)
-                    .background(Color(.systemGray6))
-                    .modifier(CardStyleModifier())
-                    .padding()
+                    .padding(.top)
 
+                    .frame(maxWidth: .infinity)
                 }
-                .frame(width: 360, height: 280)
-                .modifier(CardStyleModifier())
-                .padding()
+                .scrollIndicators(.hidden)
+                .background(colorScheme == .dark ? .black : Color(.systemGray6))
+                //                .navigationDestination(for: MealType.self) { type in
+                //                    AddMealView(type: type)
+                //                }
+            }
+            .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
 
-
-
+            }, content: {
+                FitnessSearchView()
+            })
 
         }
-
-
-        }
-        .background(Color(.systemGray6))
-        .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
-
-        }, content: {
-            FitnessSearchView()
-        })
     }
 
 }
