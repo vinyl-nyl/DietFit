@@ -130,10 +130,9 @@ struct SettingsView: View {
             } message: {
                 Text("이 작업은 되돌릴 수 없습니다. 정말로 모든 데이터를 삭제하시겠습니까?")
             }
-            // StartView를 시트로 띄움 (내릴 수 없음)
-            .sheet(isPresented: $goToStartView) {
+           
+            .fullScreenCover(isPresented: $goToStartView) {
                 StartView()
-                    .interactiveDismissDisabled(true)
                     .environment(\.modelContext, context)
             }
         }

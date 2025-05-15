@@ -19,60 +19,56 @@ struct StartView: View {
     @State private var showContent = false
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                VStack(spacing: 20) {
-                    Image(systemName: "heart.circle.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 120, height: 120)
-                        .foregroundColor(Color.buttonPrimary)
+        ZStack {
+            VStack(spacing: 20) {
+                Image(systemName: "heart.circle.fill")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 120, height: 120)
+                    .foregroundColor(Color.buttonPrimary)
 
-                    Text("Welcome To DietFit!")
-                        .font(.title)
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                        .shadow(radius: 6, x: 0, y: 5)
+                Text("Welcome To DietFit!")
+                    .font(.title)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .shadow(radius: 6, x: 0, y: 5)
 
-                    Text("Start To Your Healthy Life!")
-                        .font(.subheadline)
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                        .shadow(radius: 3, x: 0, y: 5)
-                        .opacity(0.6)
+                Text("Start To Your Healthy Life!")
+                    .font(.subheadline)
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .shadow(radius: 3, x: 0, y: 5)
+                    .opacity(0.6)
 
-                    CustomTextField(title: "이름", systemName: "person.fill", value: $name)
-                    CustomTextField(title: "키", systemName: "figure.stand", value: $height)
-                    CustomTextField(title: "몸무게", systemName: "w.circle", value: $weight)
+                CustomTextField(title: "이름", systemName: "person.fill", value: $name)
+                CustomTextField(title: "키", systemName: "figure.stand", value: $height)
+                CustomTextField(title: "몸무게", systemName: "w.circle", value: $weight)
 
-                    Button {
-                        saveUserInfo()
-                    } label: {
-                        RoundedRectangle(cornerRadius: 15)
-                            .fill(Color.buttonPrimary)
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 50)
-                            .overlay {
-                                Text("Start dietFit")
-                                    .foregroundColor(.white)
-                                    .bold()
-                            }
-                    }
-                    .padding(.horizontal)
-                }
-                .padding()
-            }
-            .navigationDestination(isPresented: $showContent) {
-                ContentView()
-                    .navigationBarBackButtonHidden(true) // ContentView에서도 백버튼 숨김
-            }
-            .alert("모든 정보를 올바르게 입력해주세요.", isPresented: $showAlert) {
                 Button {
-                    // 확인 버튼 액션 필요 시 추가
+                    saveUserInfo()
                 } label: {
-                    Text("확인")
-                        .foregroundColor(.blue)
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.buttonPrimary)
+                        .frame(maxWidth: .infinity)
+                        .frame(height: 50)
+                        .overlay {
+                            Text("Start dietFit")
+                                .foregroundColor(.white)
+                                .bold()
+                        }
                 }
+                .padding(.horizontal)
             }
-            .navigationBarBackButtonHidden(true)  // StartView에서 백 버튼 숨김
+            .padding()
+        }
+        .fullScreenCover(isPresented: $showContent) {
+            ContentView() // 전체화면으로 ContentView 띄우기 (탭바 포함 정상 렌더링)
+        }
+        .alert("모든 정보를 올바르게 입력해주세요.", isPresented: $showAlert) {
+            Button {
+                // 확인 버튼 액션 필요 시 추가
+            } label: {
+                Text("확인")
+                    .foregroundColor(.blue)
+            }
         }
     }
 
