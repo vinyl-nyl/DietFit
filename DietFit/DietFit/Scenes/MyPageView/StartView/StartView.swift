@@ -65,9 +65,14 @@ struct StartView: View {
                 ContentView()
             }
             .alert("모든 정보를 올바르게 입력해주세요.", isPresented: $showAlert) {
-                Button("확인") {}
-                    .foregroundColor(.blue)
+                Button {
+                    
+                } label: {
+                    Text("확인")
+                        .foregroundColor(.blue)
+                }
             }
+
         }
     }
 

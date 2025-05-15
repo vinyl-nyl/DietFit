@@ -78,7 +78,6 @@ struct CategoryView: View {
                 .presentationBackground(.ultraThickMaterial)
         }
 
-
     }
 
 }

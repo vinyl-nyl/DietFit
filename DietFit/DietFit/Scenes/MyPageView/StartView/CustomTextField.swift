@@ -20,7 +20,7 @@ struct CustomTextField: View {
                 .symbolVariant(.fill)
                 .foregroundColor(colorScheme == .dark ? Color.white : .black)
                 TextField(title, text: $value)
-                .foregroundColor(.black)
+                .foregroundColor(colorScheme == .dark ? Color.white : .black)
             
         }
         .padding()
@@ -28,10 +28,10 @@ struct CustomTextField: View {
             Capsule()
                 .fill(colorScheme == .dark ? Color(.systemGray6) : .white)
         )
-        .overlay(
+        .overlay{
             Capsule()
                 .stroke(Color.buttonPrimary, lineWidth: 2)
-        )
+        }
         .clipShape(Capsule()) // ✅ 배경과 테두리를 벗어나지 않도록 클리핑
         .padding(10) // ✅ 외부 간격은 마지막에
     }

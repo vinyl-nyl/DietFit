@@ -55,10 +55,6 @@ struct RetroSpectView: View {
                 }
             }
             .navigationTitle("나의 목표")
-            .toolbar {
-                EditButton()
-                    .tint(Color.buttonPrimary)
-            }
         }
     }
 
