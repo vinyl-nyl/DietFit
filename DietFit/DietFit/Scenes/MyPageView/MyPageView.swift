@@ -21,13 +21,13 @@ struct MyPageView: View {
     
     @Environment(\.colorScheme) private var colorScheme
     @Environment(\.modelContext) private var context
-    @Query private var userInfos: [UserInfo]  // UserInfo 데이터를 불러옴
+    @Query private var userInfos: [UserInfo]
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack(spacing: 20) {
-                    // 사용자 정보 표시
+                    
                     VStack(alignment: .leading, spacing: 10) {
                         HStack {
                             Image(systemName: "person.crop.circle.fill")
@@ -75,7 +75,7 @@ struct MyPageView: View {
                     .sheet(isPresented: $showUserInfoListView) {
                         UserInfoListView()
                             .onAppear {
-                                // 데이터가 로드되면 첫 번째 사용자 정보를 가져옴
+                               
                                 if let user = userInfos.first {
                                     self.userName = user.name
                                     self.userHeight = user.height
@@ -85,7 +85,7 @@ struct MyPageView: View {
                             }
                     }
 
-                    // 설정 버튼
+                   
                     descriptionCard(text: "알림, 단위, 데이터 초기화 등 앱의 다양한 설정을 변경 및 초기화를 할 수 있어요.")
                     Button {
                         showSettingsView.toggle()
@@ -102,7 +102,7 @@ struct MyPageView: View {
         }
     }
 
-    // Description 카드
+   
     func descriptionCard(text: String) -> some View {
         Text(text)
             .tint(colorScheme == .dark ? Color(.systemGray6) : .black)
@@ -116,7 +116,7 @@ struct MyPageView: View {
             .cornerRadius(20)
     }
 
-    // 버튼 레이블
+    
     func buttonLabel(text: String, opacity: Double) -> some View {
         ZStack {
             RoundedRectangle(cornerRadius: 10)

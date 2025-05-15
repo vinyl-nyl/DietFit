@@ -12,7 +12,7 @@ struct RetroSpectView: View {
     @Environment(\.colorScheme) private var colorScheme
     @Query private var goals: [RetroSpect]
 
-    @AppStorage("newGoalText") private var newGoalText: String = ""
+    @State private var newGoalText: String = ""
 
     var body: some View {
         NavigationStack {
@@ -24,13 +24,13 @@ struct RetroSpectView: View {
                 Button {
                     addGoal()
                 } label: {
-                Text("목표 추가")
+                    Text("목표 추가")
                         .foregroundColor(.white)
-                                .padding()
-                                .background(
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(.buttonPrimary)
-                                )
+                        .padding()
+                        .background(
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(.buttonPrimary)
+                        )
                 }
                 .disabled(newGoalText.isEmpty)
                 .padding()
