@@ -15,6 +15,8 @@ struct CardMemoView: View {
 
     @Query private var mealRecords: [MealRecord]
 
+    var type: MemoType
+
     var todayMemo: String? {
         mealRecords.first(where: { $0.date == mealVM.selectedDate})?.mealMemo
     }
@@ -38,7 +40,7 @@ struct CardMemoView: View {
                         .foregroundStyle(.primary)
                         .padding()
                 } else {
-                    Text("식단 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
+                    Text("\(type.rawValue) 일지를 기록하세요.\n느낀점이나 회고도 좋아요.")
                         .foregroundStyle(.secondary)
                         .padding()
                 }
@@ -51,6 +53,6 @@ struct CardMemoView: View {
 }
 
 #Preview {
-    CardMemoView(mealVM: DailyMealViewModel())
+//    CardMemoView(mealVM: DailyMealViewModel())
 }
 

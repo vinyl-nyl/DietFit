@@ -50,5 +50,5 @@ struct MemoView: View {
 }
 
 #Preview {
-    CardMemoView(mealVM: DailyMealViewModel())
+//    CardMemoView(mealVM: DailyMealViewModel())
 }
