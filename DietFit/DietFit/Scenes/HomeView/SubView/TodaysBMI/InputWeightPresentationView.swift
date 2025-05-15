@@ -35,8 +35,7 @@ struct InputWeightPresentationView: View {
             .padding(.bottom, 30)
 
             Spacer().frame(height: 20)
-
-            // 본문 영역
+            
             VStack(spacing: 30) {
                 Text("몸무게를 입력해주세요")
                     .font(.title2)

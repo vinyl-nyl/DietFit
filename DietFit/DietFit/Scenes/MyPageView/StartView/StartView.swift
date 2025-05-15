@@ -77,7 +77,7 @@ struct StartView: View {
             return
         }
 
-        let newUser = UserInfo(name: name, height: heightValue, weight: weightValue)
+        let newUser = UserInfo(name: name, height: heightValue, weight: weightValue, bmi: nil)
         modelContext.insert(newUser)
         showContent = true
     }

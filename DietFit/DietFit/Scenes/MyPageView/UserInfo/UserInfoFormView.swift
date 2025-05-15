@@ -35,7 +35,7 @@ struct UserInfoFormView: View {
                             return
                         }
 
-                        let newUser = UserInfo(name: name, height: heightDouble, weight: weightDouble)
+                        let newUser = UserInfo(name: name, height: heightDouble, weight: weightDouble, bmi: nil)
                         modelContext.insert(newUser)
                         dismiss()
                     } label: {

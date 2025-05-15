@@ -70,6 +70,6 @@ extension Binding where Value == String? {
 }
 
 #Preview {
-    UserDetailEditView(userInfo: UserInfo(name: "", height: 0.0, weight: 0.0, detail: ""))
+    UserDetailEditView(userInfo: UserInfo(name: "", height: 0.0, weight: 0.0, detail: "", bmi: nil))
         .modelContainer(for: UserInfo.self, inMemory: true)
 }
