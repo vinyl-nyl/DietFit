@@ -10,9 +10,7 @@ import SwiftData
 
 class ViewModel: ObservableObject {
     var title: String = "Hello"
-//    @Published var selectedExercise: String = ""
-    @Published var full = [String]()
-    @Published var history = [String]()
+    @Published var list = [String]()
 }
 
 struct CategoryView: View {
@@ -27,7 +25,6 @@ struct CategoryView: View {
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
 
     @StateObject var excerciesList = ViewModel()
-//    @StateObject var selectedExcerciesList = ViewModel()
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -36,10 +33,10 @@ struct CategoryView: View {
                     Button {
                         guard let exercies = areaToExercises[area] else { return }
                         self.area = area
-                        if !excerciesList.full.isEmpty {
-                            excerciesList.full.removeAll()
-                        }
-                        excerciesList.full.append(exercies)
+//                        if !excerciesList.list.isEmpty {
+//                            excerciesList.list.removeAll()
+//                        }
+//                        excerciesList.list.append(exercies)
                     } label: {
                         Text(area)
                             .lineLimit(1)
@@ -62,7 +59,7 @@ struct CategoryView: View {
         List {
             ForEach(areaToExercises[self.area] ?? [], id: \.self) { exercise in
                 Button {
-                    excerciesList.history.append(exercise)
+//                    excerciesList.list.append(exercise)
 
                     isPresentedModal = true
                 } label: {
@@ -81,17 +78,13 @@ struct CategoryView: View {
             }
         }
         .sheet(isPresented: $isPresentedModal) {
-            FitnessComposeView(area: area, exercise: excerciesList.history.last ?? "")
+            FitnessComposeView(area: area, exercise: excerciesList.list.first ?? "")
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(.ultraThickMaterial)
         }
-        .onAppear {
-            guard history.count > 0 else { return }
-            dismiss()
-        }
-
+ 
     }
 
 }

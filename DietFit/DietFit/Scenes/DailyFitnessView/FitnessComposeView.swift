@@ -53,7 +53,7 @@ struct FitnessComposeView: View {
                     } label: {
                         Text("가볍게")
                             .padding()
-                            .background(intensity == "가볍게" ? .green : .gray)
+//                            .background(intensity == "가볍게" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
@@ -62,7 +62,7 @@ struct FitnessComposeView: View {
                     } label: {
                         Text("적당히")
                             .padding()
-                            .background(intensity == "적당히" ? .green : .gray)
+//                            .background(intensity == "적당히" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
@@ -71,7 +71,7 @@ struct FitnessComposeView: View {
                     } label: {
                         Text("격하게")
                             .padding()
-                            .background(intensity == "격하게" ? .green : .gray)
+//                            .background(intensity == "격하게" ? .green : .gray)
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .tint(.white)
                     }
