@@ -123,7 +123,6 @@ struct MyPageView: View {
                 .fill(Color.buttonPrimary.opacity(opacity))
                 .frame(maxWidth: .infinity)
                 .frame(height: 50)
-                .padding(.horizontal)
             Text(text)
                 .font(.title3)
                 .foregroundColor(.white)
