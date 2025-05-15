@@ -78,7 +78,13 @@ struct CategoryView: View {
                 .presentationDragIndicator(.hidden)
                 .presentationBackground(.ultraThickMaterial)
         }
- 
+
+//        .onAppear {
+//            guard history.count > 0 else { return }
+//            dismiss()
+//        }
+
+
     }
 
 }
