@@ -22,9 +22,9 @@ struct DailyFitnessView: View {
                 Button {
                     presentCalendar = true
                 } label: {
-                    Text(dateFormat(selectDate))
-                        .font(.title3)
-                        .bold()
+//                    Text(selectDate.description)
+//                        .font(.title3)
+//                        .bold()
                     Image(systemName: "arrowtriangle.down.fill")
                 }
                 .sheet(isPresented: $presentCalendar) {
@@ -46,7 +46,7 @@ struct DailyFitnessView: View {
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            ScrollCalendarView(selectDate: $selectDate)
+//            ScrollCalendarView(selectDate: $selectDate)
         }
 
 
