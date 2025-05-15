@@ -85,7 +85,6 @@ struct CategoryView: View {
         }
 
     }
-
 }
 
 extension CategoryView {

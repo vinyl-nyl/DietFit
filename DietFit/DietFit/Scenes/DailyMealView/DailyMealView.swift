@@ -78,5 +78,5 @@ struct DailyMealView: View {
 }
 
 #Preview {
-    DailyMealView(mealVM: DailyMealViewModel())
+//    DailyMealView()
 }

@@ -43,6 +43,7 @@ struct DailyFitnessView: View {
                     }
                     .modifier(CardStyleModifier())
                     .padding(.horizontal, 20)
+                    .padding(.top, 16)
 
 
                     VStack(spacing: 16) {
@@ -51,7 +52,7 @@ struct DailyFitnessView: View {
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
+                                .padding(.leading, 40)
 
                             NavigationLink {
                                 CategoryView()
@@ -66,7 +67,7 @@ struct DailyFitnessView: View {
                                 .dynamicTypeSize(.large)
                             }
                             .modifier(CardStyleModifier())
-                            .padding(.horizontal, 20)
+                            .padding(.horizontal, 16)
 
                         } else {
 
@@ -116,19 +117,13 @@ struct DailyFitnessView: View {
 
                                     }
                                 }
-                                .padding(.vertical, 20)
-//                                .modifier(CardStyleModifier())
-//                                .padding(.horizontal, 20)
-//                                .background(Color(.systemGray6))
+                                .padding(.vertical, 16)
+
                             }
                             .modifier(CardStyleModifier())
-                            .padding(20)
+                            .padding(16)
                             .background(Color(.systemGray6))
                         }
-
-
-
-
                         // 메모
                         VStack(spacing: 16) {
                             CardMemoView(mealVM: mealVM)
@@ -137,27 +132,17 @@ struct DailyFitnessView: View {
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
 
-
-
                     }
-                    .padding(.top)
-
                     .frame(maxWidth: .infinity)
                 }
                 .scrollIndicators(.hidden)
                 .background(colorScheme == .dark ? .black : Color(.systemGray6))
             }
-//            .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
-//
-//            }, content: {
-//                FitnessSearchView()
-//            })
-
         }
     }
 
 }
 
 #Preview {
-    DailyFitnessView(mealVM: DailyMealViewModel())
+//    DailyFitnessView()
 }
