@@ -12,10 +12,10 @@ import SwiftData
 struct TodayGoalsView: View {
     @EnvironmentObject var tabManager: TabSelectionManager
 
-    @Query private var goals: [Goal]
+    @Query var goal: [Goal]
 
     var mealGoal: Int {
-        goals.last(where: { $0.type == .meal })?.value ?? 1800
+        goal.last(where: { $0.type == .meal })?.value ?? 2500
     }
 
     var body: some View {
@@ -44,7 +44,7 @@ struct TodayGoalsView: View {
                             tabManager.selectedTabIndex = 2
                         } label: {
                             VStack(spacing: 10) {
-                                CircularProgressView(iconName: "dumbbell.fill", goalKcal: 2000, ongoingKcal: 380)
+                                CircularProgressView(iconName: "dumbbell.fill", goalKcal: 0, ongoingKcal: 0)
                             }
                         }
 
@@ -52,7 +52,7 @@ struct TodayGoalsView: View {
                             tabManager.selectedTabIndex = 1
                         } label: {
                             VStack(spacing: 10) {
-                                CircularProgressView(iconName: "fork.knife", goalKcal: mealGoal, ongoingKcal: 1000)
+                                CircularProgressView(iconName: "fork.knife", goalKcal: mealGoal, ongoingKcal: 0)
                             }
                         }
                     }
