@@ -15,7 +15,7 @@ class UserInfo {
     var height: Double
     var weight: Double
     var detail: String?
-    var createdAt: Date  // ✅ 사용자 정보 저장 시점
+    var createdAt: Date
 
     init(name: String, height: Double, weight: Double, detail: String? = nil, createdAt: Date = Date()) {
         self.name = name
