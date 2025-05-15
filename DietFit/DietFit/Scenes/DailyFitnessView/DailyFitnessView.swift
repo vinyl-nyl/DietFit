@@ -12,7 +12,6 @@ struct DailyFitnessView: View {
 
     @Environment(\.colorScheme) private var colorScheme
 
-//    @StateObject var fitness = DailyFitnessViewModel()
     @ObservedObject var mealVM: DailyMealViewModel
 
     @State private var presentCalendar = false
@@ -20,7 +19,6 @@ struct DailyFitnessView: View {
 
     init(mealVM: DailyMealViewModel) {
         self.mealVM = mealVM
-//        fitness.updateDays(from: mealVM.selectedDate)
     }
 
     var body: some View {
@@ -41,7 +39,7 @@ struct DailyFitnessView: View {
                 ScrollView {
 
                     VStack(spacing: 16) {
-                        CardSummaryView(mealVM: mealVM)
+                        FitnessSummaryView(vm: mealVM)
                     }
                     .modifier(CardStyleModifier())
                     .padding(.horizontal, 20)
