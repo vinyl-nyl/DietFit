@@ -26,47 +26,55 @@ struct FitnessSummaryView: View {
             .bold()
             .frame(maxWidth: .infinity, alignment: .leading)
             .padding(.leading, 40)
-        VStack {
-            ZStack {
-                Circle()
-                    .inset(by: -30)
-                    .rotation(.degrees(-180))
-                    .trim(from: 0, to: 0.5)
-                    .stroke(colorScheme == .dark ? Color(.systemGray4)  : Color(.systemGray6),
-                            style: .init(lineWidth: 40, lineCap: .round))
-                    .frame(width: 200, height: 200)
-                    .offset(y: 50)
 
-                Circle()
-                    .inset(by: -30)
-                    .rotation(.degrees(-180))
-                    .trim(from: 0, to: 0.2)
-                    .stroke(Color.buttonPrimary, style: .init(lineWidth: 40, lineCap: .round))
-                    .frame(width: 200, height: 200)
-                    .offset(y: 50)
-                //                                        .animation(.easeInOut, value: percentage)
-                let dayTotal = todayFitness.reduce(0) { $0 + $1.calories } 
-                VStack {
-                    Text("\(dayTotal)")
-                        .font(.title)
-                        .bold()
-                        .foregroundStyle(Color.buttonPrimary)
-                    Text("/ 2000 Kcal")
-                        .font(.title3)
+        if todayFitness.isEmpty {
+            Text("아직 운동을 하지 않았어요.")
+                .font(.headline)
+                .foregroundStyle(.secondary)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 40)
+        } else {
+
+            VStack {
+                Image("gym")
+                    .resizable()
+                    .frame(width: 100, height: 100)
+                    .padding()
+                ZStack {
+
+
+                    let durationTotal = todayFitness.reduce(0) { $0 + $1.duration }
+                    HStack {
+                        Text("\(durationTotal)분")
+                            .font(.title)
+                            .bold()
+                            .foregroundStyle(.black)
+                        Text("운동으로")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+    //                .offset(y: 50)
+
+                    let dayTotal = todayFitness.reduce(0) { $0 + $1.calories }
+                    HStack {
+                        Text("\(dayTotal)kcal")
+                            .font(.title)
+                            .bold()
+                            .foregroundStyle(Color.buttonPrimary)
+                        Text("태웠어요.")
+                            .font(.title3)
+                            .foregroundStyle(.secondary)
+                    }
+
+                    .offset(y: 25)
                 }
-                .offset(y: 25)
+                .padding(.bottom, 20)
             }
+            .frame(width: 200, height: 200)
         }
+
     }
 
-//    private var dayTotal: Int {
-//        // 해당 날짜에 MealRecord 가져오기
-//        guard let todayRecord = records.first(where: { $0.date == mealVM.selectedDate }) else {
-//            return 0
-//        }
-//        //
-//        return todayRecord .meals.reduce(0) { $0 + $1.totalCalories }
-//    }
 }
 
 #Preview {

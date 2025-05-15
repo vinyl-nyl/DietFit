@@ -136,6 +136,7 @@ struct SettingsView: View {
                     .environment(\.modelContext, context)
             }
         }
+        
     }
 
     private func loadOrCreateUserSettings() {

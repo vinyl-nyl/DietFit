@@ -73,6 +73,7 @@ struct UserInfoListView: View {
                 StartView() // 사용자 전부 삭제되면 StartView로 전환
             }
         }
+
     }
 
     private func deleteUser(_ user: UserInfo) {

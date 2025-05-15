@@ -69,7 +69,7 @@ struct DailyMealView: View {
 
                         // 메모
                         VStack(spacing: 16) {
-                            CardMemoView(mealVM: mealVM)
+                            CardMemoView(mealVM: mealVM, type: .meal)
                                 .buttonStyle(.plain)
                         }
                         .modifier(CardStyleModifier())
