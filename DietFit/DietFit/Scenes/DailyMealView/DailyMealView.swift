@@ -8,12 +8,10 @@
 import SwiftUI
 
 struct DailyMealView: View {
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.colorScheme) private var colorScheme
 
-    @State private var presentCalendar = false
-    @State private var selectedDate = Date()
-
-    @State var isOn: Bool = false
+    @StateObject private var mealVM = DailyMealViewModel()
 
     let mealTypes = MealType.allCases
 
@@ -23,12 +21,13 @@ struct DailyMealView: View {
                 // 상단 바 - 날짜 선택, 유저 아이콘
                 VStack(spacing: 0) {
                     HStack {
-                        DatePickerButton(selectedDate: $selectedDate)
+                        DatePickerButtonView(mealVM: mealVM)
                     }
                     .frame(maxWidth: .infinity, alignment: .leading)
 
-                    ScrollCalendarView(selectedDate: $selectedDate)
+                    ScrollCalendarView(mealVM: mealVM)
                 }
+                .background(Color(.systemGray6))
 
                 ScrollView {
                     VStack(spacing: 16) {
