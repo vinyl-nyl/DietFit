@@ -102,7 +102,7 @@ struct HomeView: View {
             }
             .navigationTitle("요약")
         }
-        .modifier(MemoStyleModifier())
+        .modifier(StyleModifier())
     }
 
     private func saveNewWeight() {
