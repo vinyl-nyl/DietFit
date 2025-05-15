@@ -9,49 +9,58 @@
 import SwiftUI
 
 struct TodayGoalsView: View {
+    @EnvironmentObject var tabManager: TabSelectionManager
+
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 20)
-                .foregroundStyle(Color(.systemGray6))
+        NavigationStack {
+            ZStack {
+                RoundedRectangle(cornerRadius: 20)
+                    .foregroundStyle(Color(.systemGray6))
 
-            VStack(spacing: 0) {
-                HStack {
-                    Text("하루 목표 달성")
-                        .fontWeight(.semibold)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
+                VStack(spacing: 0) {
+                    HStack {
+                        Text("하루 목표 달성")
+                            .fontWeight(.semibold)
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 10)
 
-                    Spacer()
-                }
-
-                Rectangle()
-                    .frame(height: 0.2)
-                    .foregroundStyle(.primary)
-                    .opacity(0.5)
-
-                HStack(spacing: 60) {
-                    Button {
-
-                    } label: {
-                        VStack(spacing: 10) {
-                            CircularProgressView(iconName: "dumbbell.fill", goalKcal: 2000, ongoingKcal: 380)
-                        }
+                        Spacer()
                     }
 
-                    Button {
+                    Rectangle()
+                        .frame(height: 0.2)
+                        .foregroundStyle(.primary)
+                        .opacity(0.5)
 
-                    } label: {
-                        VStack(spacing: 10) {
-                            CircularProgressView(iconName: "fork.knife", goalKcal: 1800, ongoingKcal: 1000)
+                    HStack(spacing: 60) {
+                        Button {
+
+                        } label: {
+                            VStack(spacing: 10) {
+                                CircularProgressView(iconName: "dumbbell.fill", goalKcal: 2000, ongoingKcal: 380)
+                            }
+                        }
+
+                        Button {
+                            tabManager.selectedTabIndex = 1
+                        } label: {
+                            VStack(spacing: 10) {
+                                CircularProgressView(iconName: "fork.knife", goalKcal: 1800, ongoingKcal: 1000)
+                            }
                         }
                     }
+                    .foregroundStyle(.placeholder)
+                    .padding(.vertical, 20)
                 }
-                .foregroundStyle(.placeholder)
-                .padding(.vertical, 20)
+                .frame(maxWidth: .infinity)
             }
-            .frame(maxWidth: .infinity)
+
         }
     }
+}
+
+class TabSelectionManager: ObservableObject {
+    @Published var selectedTabIndex: Int = 0
 }
 
 #Preview {

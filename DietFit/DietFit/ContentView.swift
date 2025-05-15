@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var selectedIndex = 0
+    @StateObject private var tabManager = TabSelectionManager()
 
     var body: some View {
-        TabView(selection: $selectedIndex) {
+        TabView(selection: $tabManager.selectedTabIndex) {
             HomeView()
                 .tabItem {
                     Label("요약", systemImage: "chart.bar.horizontal.page")
@@ -37,6 +37,7 @@ struct ContentView: View {
                 .tag(2)
         }
         .tint(.buttonPrimary)
+        .environmentObject(tabManager)
     }
 }
 
