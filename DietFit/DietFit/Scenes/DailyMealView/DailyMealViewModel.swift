@@ -10,9 +10,7 @@ import SwiftData
 
 class DailyMealViewModel: ObservableObject {
     @Published var selectedDate: Date = Date().startOfDay
-    @Published var days: [Date] = []
-    @Published var totalCalories: Int = 0
-    
+    @Published var days: [Date] = []    
 
     init() {
         days = generateDays(selectedDate)

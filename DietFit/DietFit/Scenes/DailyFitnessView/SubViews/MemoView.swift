@@ -16,7 +16,7 @@ struct MemoView: View {
     @Query private var mealRecords: [MealRecord]
 
     var todayMemo: String? {
-        mealRecords.first(where: { $0.date == fitnessVM.selectedDate})?.memo
+        mealRecords.first(where: { $0.date == fitnessVM.selectedDate})?.mealMemo
     }
 
     var body: some View {
@@ -46,7 +46,6 @@ struct MemoView: View {
             .buttonStyle(.plain)
             .frame(height: 180)
         }
-
     }
 }
 
