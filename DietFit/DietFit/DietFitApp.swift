@@ -30,7 +30,9 @@ struct DietFitApp: App {
         }()
 
         WindowGroup {
+
             StartView()
+
         }
         .modelContainer(sharedModelContainer)
     }

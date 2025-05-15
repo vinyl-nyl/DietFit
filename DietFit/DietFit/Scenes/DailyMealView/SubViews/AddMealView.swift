@@ -25,8 +25,6 @@ struct AddMealView: View {
 
     let today = Date().startOfDay
 
-
-
     var body: some View {
         VStack {
             VStack {
@@ -84,13 +82,14 @@ struct AddMealView: View {
                     Text("음식을 추가해주세요.")
                         .foregroundStyle(.gray)
                 } else {
-                    ForEach(foods, id: \.name) { food in
+                    ForEach(foods, id: \.id) { food in
                         HStack {
                             Text(food.name)
                             Spacer()
                             Text("\(food.calories) Kcal")
                         }
                     }
+                    .onDelete(perform: deleteFood)
                 }
             }
             .listStyle(.plain)
@@ -199,6 +198,25 @@ struct AddMealView: View {
         } else {
             foods = []
         }
+    }
+
+    private func deleteFood(at offsets: IndexSet) {
+        guard let todayRecord = records.first(where: { $0.date == today }) else {
+			return
+        }
+
+        guard let meal = todayRecord.meals.first(where: { $0.type == mealType }) else {
+            return
+        }
+
+        // 삭제할 Food 제거
+        meal.foods.remove(atOffsets: offsets)
+
+        // 저장
+        try? context.save()
+
+        // 리스트 업데이트
+        updateFood()
     }
 }
 

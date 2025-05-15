@@ -11,10 +11,14 @@ import SwiftData
 @Model
 final class Meal {
     var type: MealType
-    var foods: [Food]
+    var foods: [Food] = []
 
     init(type: MealType, foods: [Food] = []) {
         self.type = type
         self.foods = foods
     }
+
+    var totalCalories: Int {
+         foods.reduce(0) { $0 + $1.calories }
+     }
 }

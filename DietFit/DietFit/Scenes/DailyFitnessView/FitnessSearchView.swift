@@ -33,6 +33,9 @@ struct FitnessSearchView: View {
                     .bold()
                     .frame(maxWidth: .infinity, alignment: .leading)
 
+                ScrollView {
+
+                }
                 LazyVGrid(columns: columns) {
                     ForEach(areas, id: \.self) { area in
 
@@ -56,18 +59,18 @@ struct FitnessSearchView: View {
             
             }
             .padding()
-            .searchable(text: $searchText, isPresented: $isPresentedModal, placement: .toolbar, prompt: "운동명으로 검색")
-            .toolbar {
-                ToolbarItem {
-                    Button {
-                        dismiss()
-                    } label: {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.black)
-                            .bold()
-                    }
-                }
-            }
+//            .searchable(text: $searchText, isPresented: $isPresentedModal, placement: .toolbar, prompt: "운동명으로 검색")
+//            .toolbar {
+//                ToolbarItem {
+//                    Button {
+//                        dismiss()
+//                    } label: {
+//                        Image(systemName: "xmark")
+//                            .foregroundColor(.black)
+//                            .bold()
+//                    }
+//                }
+//            }
 
             Spacer()
         }
