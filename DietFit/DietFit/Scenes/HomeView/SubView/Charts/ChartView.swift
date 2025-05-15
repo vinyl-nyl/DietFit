@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Charts
+import SwiftData
 
 struct ChartView: View {
     @State private var selectedRange: TimeRange = .week
