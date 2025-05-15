@@ -31,7 +31,7 @@ struct DatePickerButtonView: View {
                     .datePickerStyle(.graphical)
                     .tint(Color.buttonPrimary)
                     .onChange(of: mealVM.selectedDate) { old, new in
-                        mealVM.days = mealVM.generateDays(new)
+                        mealVM.updateDays(from: new)
                         presentCalendar = false
                     }
             }

@@ -49,7 +49,7 @@ struct DailyMealView: View {
                                 ForEach(0..<2) { row in
                                     GridRow {
                                         ForEach(0..<2) { col in
-                                            CardMealButtonView(type: mealTypes[row * 2 + col])
+                                            CardMealButtonView(mealtype: mealTypes[row * 2 + col])
                                         }
                                     }
                                 }
@@ -58,7 +58,6 @@ struct DailyMealView: View {
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
 
-
                         // 메모
                         VStack(spacing: 16) {
                             CardMemoView(mealVM: mealVM)
@@ -66,9 +65,6 @@ struct DailyMealView: View {
                         }
                         .modifier(CardStyleModifier())
                         .padding(.horizontal, 20)
-
-
-
                     }
                     .padding(.top)
 
@@ -76,9 +72,6 @@ struct DailyMealView: View {
                 }
                 .scrollIndicators(.hidden)
                 .background(colorScheme == .dark ? .black : Color(.systemGray6))
-                //                .navigationDestination(for: MealType.self) { type in
-                //                    AddMealView(type: type)
-                //                }
             }
         }
     }

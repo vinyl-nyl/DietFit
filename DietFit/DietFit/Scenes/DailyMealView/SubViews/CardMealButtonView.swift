@@ -10,22 +10,22 @@ import SwiftUI
 struct CardMealButtonView: View {
     @Environment(\.colorScheme) private var colorScheme
 
-    let type: MealType
+    let mealtype: MealType
 
     var body: some View {
         NavigationLink {
-			AddMealView(type: type)
+            AddMealView(mealType: mealtype)
         } label: {
             VStack(alignment: .leading, spacing: 16) {
                 HStack(spacing: 25) {
-                    Image(systemName: type.icon)
+                    Image(systemName: mealtype.icon)
                     Image(systemName: "plus")
                 }
                 .font(.title)
                 .imageScale(.large)
 
                 VStack(alignment: .leading, spacing: 2) {
-                    Text(type.rawValue)
+                    Text(mealtype.rawValue)
                         .font(.callout)
                     Text("0 Kcal")
                         .font(.headline)
@@ -45,7 +45,7 @@ struct CardMealButtonView: View {
 
 #Preview {
     NavigationStack {
-        CardMealButtonView(type: MealType.breakfast)
+        CardMealButtonView(mealtype: MealType.breakfast)
     }
 }
 

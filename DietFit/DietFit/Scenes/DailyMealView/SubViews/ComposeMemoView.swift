@@ -22,9 +22,10 @@ struct ComposeMemoView: View {
     @State private var fitnessMemo: String = ""
 
     var body: some View {
-        VStack(spacing: 16) {
-            Divider()
+        Divider()
+            .padding(.horizontal)
 
+        VStack(spacing: 16) {
             ForEach (MemoType.allCases, id: \.self) { type in
                 HStack {
                     Image(systemName: type.icon)
@@ -68,7 +69,7 @@ struct ComposeMemoView: View {
             
             Spacer()
         }
-        .padding()
+        .modifier(MemoStyleModifier())
         .onAppear {
             if let existing = mealRecord.first(where: { $0.date == mealVM.selectedDate.startOfDay }) {
                 mealMemo = existing.memo ?? ""
@@ -79,7 +80,6 @@ struct ComposeMemoView: View {
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-
                     dismiss()
                 } label: {
                     Image(systemName: "chevron.left")

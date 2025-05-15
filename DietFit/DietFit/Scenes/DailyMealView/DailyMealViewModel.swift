@@ -16,10 +16,14 @@ class DailyMealViewModel: ObservableObject {
         days = generateDays(selectedDate)
     }
 
-    // selectedDate를 바꾸고 days도 갱신
-     func updateSelectedDate(to newDate: Date) {
+
+    // 범위를 넘어선 날짜인 경우 days 재생성
+    // selectedDate도 갱신
+     func updateDays(from newDate: Date) {
+         if !days.contains(where: { Calendar.current.isDate($0, inSameDayAs: newDate) }) {
+             days = generateDays(newDate)
+         }
          selectedDate = newDate
-         days = generateDays(newDate)
      }
 
     // 스크롤 캘린더 -60...60 범위의 날짜 배열

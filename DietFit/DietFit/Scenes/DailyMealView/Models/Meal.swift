@@ -11,7 +11,7 @@ import SwiftData
 @Model
 final class Meal {
     var type: MealType
-    var foods: [Food] = []
+    var foods: [Food]
 
     init(type: MealType, foods: [Food] = []) {
         self.type = type
