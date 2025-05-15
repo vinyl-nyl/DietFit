@@ -27,12 +27,15 @@ struct DailyMealView: View {
 
                     ScrollCalendarView(mealVM: mealVM)
                 }
-                .background(Color(.systemGray6))
 
                 ScrollView {
                     VStack(spacing: 16) {
                         // 통계
-                        CardSummaryView()
+                        VStack(spacing: 16) {
+                            CardSummaryView()
+                        }
+                        .modifier(CardStyleModifier())
+                        .padding(.horizontal, 20)
 
                         // 식단
                         VStack(spacing: 16) {
@@ -47,17 +50,25 @@ struct DailyMealView: View {
                                     GridRow {
                                         ForEach(0..<2) { col in
                                             CardMealButtonView(type: mealTypes[row * 2 + col])
-
                                         }
                                     }
                                 }
                             }
                         }
-                        .frame(width: 360, height: 360)
                         .modifier(CardStyleModifier())
+                        .padding(.horizontal, 20)
+
 
                         // 메모
-                        CardMemoView()
+                        VStack(spacing: 16) {
+                            CardMemoView(mealVM: mealVM)
+                                .buttonStyle(.plain)
+                        }
+                        .modifier(CardStyleModifier())
+                        .padding(.horizontal, 20)
+
+
+
                     }
                     .padding(.top)
 
@@ -65,19 +76,12 @@ struct DailyMealView: View {
                 }
                 .scrollIndicators(.hidden)
                 .background(colorScheme == .dark ? .black : Color(.systemGray6))
-//                .navigationDestination(for: MealType.self) { type in
-//                    AddMealView(type: type)
-//                }
+                //                .navigationDestination(for: MealType.self) { type in
+                //                    AddMealView(type: type)
+                //                }
             }
         }
     }
-}
-
-func dateFormat(_ date: Date) -> String {
-    let formatter = DateFormatter()
-    formatter.locale = Locale(identifier: "ko_KR")
-    formatter.dateFormat = "M.d E"
-    return formatter.string(from: date)
 }
 
 #Preview {
