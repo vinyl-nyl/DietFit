@@ -151,6 +151,6 @@ struct RetroSpectView: View {
 
 #Preview {
     RetroSpectView()
-    //        .modelContainer(for: RetroSpect.self, inMemory: true)
+            .modelContainer(for: Goal.self, inMemory: false)
 }
 

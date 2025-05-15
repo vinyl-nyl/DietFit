@@ -20,6 +20,7 @@ struct DietFitApp: App {
                 MealRecord.self,
                 Meal.self,
                 Food.self,
+                Goal.self,
             ])
             let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 

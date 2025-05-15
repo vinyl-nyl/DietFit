@@ -13,6 +13,7 @@ struct CardSummaryView: View {
 
     @ObservedObject var mealVM: DailyMealViewModel
     @Query var records: [MealRecord]
+    @Query var goal: [Goal]
 
     let today = Date().startOfDay
 
@@ -36,7 +37,7 @@ struct CardSummaryView: View {
                 Circle()
                     .inset(by: -30)
                     .rotation(.degrees(-180))
-                    .trim(from: 0, to: 0.2)
+                    .trim(from: 0, to: mealRatio)
                     .stroke(Color.buttonPrimary, style: .init(lineWidth: 40, lineCap: .round))
                     .frame(width: 200, height: 200)
                     .offset(y: 50)
@@ -49,12 +50,23 @@ struct CardSummaryView: View {
                         .font(.title)
                         .bold()
                         .foregroundStyle(Color.buttonPrimary)
-                    Text("/ 2000 Kcal")
+                    Text("/ \(mealGoal) Kcal")
                         .font(.title3)
                 }
                 .offset(y: 25)
             }
         }
+    }
+
+    private var mealGoal: Int {
+        goal.last(where: { $0.type == .meal })?.value ?? 2500
+    }
+
+    private var mealRatio: CGFloat {
+        guard mealGoal > 0 else {
+            return 0
+        }
+        return min(0.5, CGFloat(dayTotal) / CGFloat(mealGoal) / 2)
     }
 
     private var dayTotal: Int {
