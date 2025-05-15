@@ -52,7 +52,7 @@ struct DailyFitnessView: View {
                                 .font(.title3)
                                 .bold()
                                 .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding()
+                                .padding(.leading, 40)
 
                             NavigationLink {
                                 CategoryView()
