@@ -98,10 +98,11 @@ struct HomeView: View {
 
                     ChartView()
                 }
+                
             }
             .navigationTitle("요약")
         }
-        .padding(.horizontal, 20)
+        .modifier(MemoStyleModifier())
     }
 
     private func saveNewWeight() {

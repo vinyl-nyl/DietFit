@@ -34,7 +34,7 @@ struct TodayGoalsView: View {
 
                     HStack(spacing: 60) {
                         Button {
-
+                            tabManager.selectedTabIndex = 2
                         } label: {
                             VStack(spacing: 10) {
                                 CircularProgressView(iconName: "dumbbell.fill", goalKcal: 2000, ongoingKcal: 380)

@@ -96,7 +96,7 @@ struct ChartView: View {
             }
             .transition(.opacity)
             .scaleEffect(y: animationScale, anchor: UnitPoint.bottom)
-             // Data changes within the chart (e.g. new bar)
+            // Data changes within the chart (e.g. new bar)
             .animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 0.2), value: filteredEntries)
             .onAppear {
                 animationScale = 0
@@ -139,7 +139,7 @@ struct ChartView: View {
                 }
             }
             .chartOverlay { proxy in
-                 GeometryReader { geo in
+                GeometryReader { geo in
                     Rectangle()
                         .fill(.clear)
                         .contentShape(Rectangle())
@@ -212,13 +212,13 @@ struct ChartView: View {
                 let distance = abs(entry.createdAt.timeIntervalSince(date))
 
                 if Calendar.current.isDate(entryDateStartOfDay, inSameDayAs: targetDateStartOfDay) {
-                     if distance < minDistance {
-                         minDistance = distance
-                         closestEntry = entry
-                     } else if closestEntry == nil && distance < minDistance && Int(distance) < timeWindow {
-                         minDistance = distance
-                         closestEntry = entry
-                     }
+                    if distance < minDistance {
+                        minDistance = distance
+                        closestEntry = entry
+                    } else if closestEntry == nil && distance < minDistance && Int(distance) < timeWindow {
+                        minDistance = distance
+                        closestEntry = entry
+                    }
                 }
             }
             selectedEntry = closestEntry
