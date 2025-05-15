@@ -9,123 +9,130 @@ import Charts
 import SwiftUI
 
 struct HomeView: View {
-    @State var showAlert: Bool = false
-    @State var nowDate: Date = Date.now
+    @State var showBmiSheet: Bool = false
+    @State private var showWeightInput = false
+
+    @State private var inputWeight: String = ""
+    @State var todayBmi: String = ""
+
+    @State private var selectedRange: TimeRange = .week
+
     @State private var bmiEntries: [BMIEntry] = []
+
+    enum TimeRange: String, CaseIterable, Identifiable {
+        case week = "주"
+        case month = "월"
+        case year = "년"
+        case all = "전체"
+
+        var id: String { self.rawValue }
+    }
+
+    var filteredEntries: [BMIEntry] {
+        let calendar = Calendar.current
+        let now = Date()
+
+        switch selectedRange {
+        case .week:
+            guard let startDate = calendar.date(byAdding: .day, value: -6, to: now) else { return bmiEntries }
+            return bmiEntries.filter { $0.date >= startDate }
+
+        case .month:
+            guard let startDate = calendar.date(byAdding: .month, value: -1, to: now) else { return bmiEntries }
+            return bmiEntries.filter { $0.date >= startDate }
+
+        case .year:
+            guard let startDate = calendar.date(byAdding: .year, value: -1, to: now) else { return bmiEntries }
+            return bmiEntries.filter { $0.date >= startDate }
+
+        case .all:
+            return bmiEntries
+        }
+    }
 
     var body: some View {
         NavigationStack {
             ScrollView {
                 VStack {
                     TodayGoalsView()
-
-                    Divider()
-                        .padding(.top, 20)
-                        .padding(.bottom, 20)
+                        .padding(.bottom, 40)
 
                     HStack {
                         VStack(alignment: .leading) {
-                            Text("Today's BMI")
-                                .fontWeight(.semibold)
+                            HStack(spacing: 0) {
+                                Text("Today's BMI")
+                                    .fontWeight(.semibold)
+
+                                VStack {
+                                    Button {
+                                        showBmiSheet = true
+                                    } label: {
+                                        Image(systemName: "info.circle")
+                                            .font(.caption2)
+                                    }
+                                    .buttonStyle(.plain)
+                                    Spacer()
+                                }
+                            }
+
 
                             Button {
-                                showAlert = true
+                                if Double(todayBmi) == nil {
+                                    showWeightInput = true
+                                } else {
+                                    showWeightInput = false
+                                }
                             } label: {
-                                Text("23")
-                                    .font(.largeTitle)
-                                    .bold()
-                                    .foregroundStyle(.green)
+                                if let bmi = Double(todayBmi) {
+                                    Text(todayBmi)
+                                        .font(.largeTitle)
+                                        .bold()
+                                        .foregroundStyle(BMITextColor(bmiData: bmi))
+                                } else {
+                                    Text(todayBmi)
+                                        .font(.title3)
+                                        .bold()
+                                        .foregroundStyle(.gray)
+                                }
                             }
                         }
-                        .sheet(isPresented: $showAlert) {
+                        .sheet(isPresented: $showBmiSheet) {
                             HStack {
                                 BMIPresentationView()
                             }
                             .padding(.horizontal, 20)
                             .presentationDetents([.medium])
                         }
+                        .sheet(isPresented: $showWeightInput) {
+                            VStack(alignment: .leading) {
+                                InputWeightPresentationView(showWeightInput: $showWeightInput, inputWeight: $inputWeight)
+
+                                Spacer()
+                            }
+                            .presentationDetents([.medium])
+                        }
 
                         Spacer()
                     }
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 40)
 
-                    VStack {
-                        HStack {
-                            Text("BMI 히스토리")
-
-                            Spacer()
-                        }
-                        .fontWeight(.semibold)
-
-                        Chart {
-                            ForEach(bmiEntries) { entry in
-                                LineMark(
-                                    x: .value("Date", entry.date),
-                                    y: .value("BMI", entry.BMI)
-                                )
-                                .foregroundStyle(.red)
-                            }
-                        }
-                        .frame(height: 200)
-                    }
-
-                    Divider()
-                        .padding(.top, 20)
-                        .padding(.bottom, 20)
-
-                    VStack {
-                        HStack  {
-                            Text("몸무게 히스토리")
-
-                            Spacer()
-                        }
-                        .fontWeight(.semibold)
-
-                        Chart {
-                            ForEach(bmiEntries) { entry in
-                                LineMark(
-                                    x: .value("Date", entry.date),
-                                    y: .value("Weight", entry.weight)
-                                )
-                                .foregroundStyle(.green)
-                            }
-                        }
-                        .frame(height: 200)
-                    }
+                    ChartView()
                 }
             }
-            .padding(.vertical, 20)
-            .padding(.horizontal, 20)
             .navigationTitle("요약")
         }
+        .padding(.vertical, 20)
+        .padding(.horizontal, 20)
         .onAppear {
             bmiEntries = loadBMIData()
+
+            if let todayEntry = filteredEntries.first(where: { Calendar.current.isDate($0.date, inSameDayAs: Date()) }) {
+                todayBmi = String(format: "%.1f", todayEntry.BMI)
+            } else {
+                todayBmi = "몸무게를 입력해주세요"
+            }
         }
     }
-    // TODO: BMI = weight / (height(M)*height(M)) 함수 구현하기
-    // TODO: BMI 비만지수 분류하기
-    /*
-     BMI      수치분류
-     ~ 18.5      저체중
-     18.5 ~ 24.9  정상 체중
-     25.0 ~ 29.9   과체중
-     30.0 이상     비만
-     */
-}
-
-func BMIColor(circleColor: Color, text: String) -> some View {
-    HStack {
-        Circle()
-            .frame(width: 10, height: 10)
-            .foregroundStyle(circleColor)
-        Text(text)
-            .font(.callout)
-            .foregroundStyle(.secondary)
-    }
-}
-
-func date(year: Int, month: Int, day: Int = 1) -> Date {
-    Calendar.current.date(from: DateComponents(year: year, month: month, day: day)) ?? Date()
 }
 
 #Preview {
