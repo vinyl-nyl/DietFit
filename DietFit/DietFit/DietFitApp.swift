@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct DietFitApp: App {
+    @StateObject var vm = DailyMealViewModel()
     var body: some Scene {
         var sharedModelContainer: ModelContainer = {
             let schema = Schema([

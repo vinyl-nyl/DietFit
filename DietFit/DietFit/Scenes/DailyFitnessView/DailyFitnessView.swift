@@ -15,7 +15,7 @@ struct DailyFitnessView: View {
     @Query(sort: [SortDescriptor(\FitnessModel.insertDate, order: .reverse)])
     var datas: [FitnessModel]
 
-    @ObservedObject var mealVM = DailyMealViewModel()
+    @ObservedObject var mealVM: DailyMealViewModel
 
     @State private var presentCalendar = false
     @State var presentAddFitness: Bool = false
@@ -144,5 +144,5 @@ struct DailyFitnessView: View {
 }
 
 #Preview {
-    DailyFitnessView()
+//    DailyFitnessView()
 }
