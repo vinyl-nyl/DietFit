@@ -20,7 +20,7 @@ struct CustomTextField: View {
                 .symbolVariant(.fill)
                 .foregroundColor(colorScheme == .dark ? Color.white : .black)
                 TextField(title, text: $value)
-                .foregroundColor(.black)
+                .foregroundColor(colorScheme == .dark ? Color.white : .black)
             
         }
         .padding()
