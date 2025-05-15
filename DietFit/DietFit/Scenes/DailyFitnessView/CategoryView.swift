@@ -14,11 +14,9 @@ class ViewModel: ObservableObject {
 }
 
 struct CategoryView: View {
-    @Environment(\.dismiss) var dismiss
-
     @State private var isPresentedModal: Bool = false
-
-    @State var area: String
+    @Environment(\.dismiss) var dismiss
+    @State var area: String = ""
     @State var count: Int = 0
 
     let areas = [ "Chest", "Back", "Leg", "Shoulder", "Triceps", "Biceps", "Core", "Forearm", "Cardio", "Sports"]
@@ -26,26 +24,33 @@ struct CategoryView: View {
     @StateObject var vm = ViewModel()
 
     var body: some View {
-        ScrollView(.horizontal) {
-            HStack() {
-                ForEach(areas, id: \.self) { area in
-                    Button {
-                        self.area = area
-                    } label: {
-                        Text(area)
-                            .lineLimit(1)
-                            .padding(10)
-                            .background(area == self.area ? .gray : .clear)
-                            .cornerRadius(20)
-                            .overlay {
-                                RoundedRectangle(cornerRadius: 20)
-                                    .stroke(Color(.systemGray6), lineWidth: 2)
-                            }
-                            .tint(area == self.area ? .white : .gray)
-                            .padding(5)
+        HStack {
+            Text("Categories")
+                .padding(.leading)
+                .font(.title3)
+                .bold()
+
+            ScrollView(.horizontal) {
+                HStack() {
+                    ForEach(areas, id: \.self) { area in
+                        Button {
+                            self.area = area
+                        } label: {
+                            Text(area)
+                                .lineLimit(1)
+                                .padding(10)
+                                .background(area == self.area ? .gray : .clear)
+                                .cornerRadius(20)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 20)
+                                        .stroke(Color(.systemGray6), lineWidth: 2)
+                                }
+                                .tint(area == self.area ? .white : .gray)
+                                .padding(5)
+
+                        }
 
                     }
-
                 }
             }
         }
@@ -75,7 +80,7 @@ struct CategoryView: View {
                 .presentationDetents([.height(600), .fraction(0.7)])
                 .presentationCornerRadius(30)
                 .presentationDragIndicator(.hidden)
-                .presentationBackground(.ultraThickMaterial)
+//                .presentationBackground(.ultraThickMaterial) 
         }
 
     }

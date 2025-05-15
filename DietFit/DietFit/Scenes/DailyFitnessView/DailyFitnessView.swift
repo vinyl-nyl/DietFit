@@ -40,11 +40,9 @@ struct DailyFitnessView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                                 .padding()
 
-
-                            Button {
-                                presentAddFitness = true
+                            NavigationLink {
+                                CategoryView()
                             } label: {
-
                                 VStack(alignment: .center, spacing: 16) {
                                     HStack(spacing: 25) {
                                         Image(systemName: "plus")
@@ -53,7 +51,6 @@ struct DailyFitnessView: View {
                                     .imageScale(.large)
                                 }
                                 .dynamicTypeSize(.large)
-
                             }
                             .buttonStyle(.plain)
                             .frame(width: 300, height: 120)
@@ -89,11 +86,11 @@ struct DailyFitnessView: View {
                 //                    AddMealView(type: type)
                 //                }
             }
-            .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
-                dismiss()
-            }, content: {
-                FitnessSearchView()
-            })
+//            .fullScreenCover(isPresented: $presentAddFitness, onDismiss: {
+//
+//            }, content: {
+//                FitnessSearchView()
+//            })
 
         }
     }
