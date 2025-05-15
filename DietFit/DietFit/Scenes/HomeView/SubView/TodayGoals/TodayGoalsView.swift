@@ -13,9 +13,24 @@ struct TodayGoalsView: View {
     @EnvironmentObject var tabManager: TabSelectionManager
 
     @Query var goal: [Goal]
+    @ObservedObject var mealVM: DailyMealViewModel
+    @Query var records: [MealRecord]
 
     var mealGoal: Int {
         goal.last(where: { $0.type == .meal })?.value ?? 2500
+    }
+
+    var fitnessGoal: Int {
+        goal.last(where: { $0.type == .fitness })?.value ?? 2500
+    }
+
+    private var dayTotal: Int {
+        // 해당 날짜에 MealRecord 가져오기
+        guard let todayRecord = records.first(where: { $0.date == mealVM.selectedDate }) else {
+            return 0
+        }
+        //
+        return todayRecord.meals.reduce(0) { $0 + $1.totalCalories }
     }
 
     var body: some View {
@@ -44,7 +59,7 @@ struct TodayGoalsView: View {
                             tabManager.selectedTabIndex = 2
                         } label: {
                             VStack(spacing: 10) {
-                                CircularProgressView(iconName: "dumbbell.fill", goalKcal: 0, ongoingKcal: 0)
+                                CircularProgressView(iconName: "dumbbell.fill", goalKcal: fitnessGoal, ongoingKcal: 0)
                             }
                         }
 
@@ -52,7 +67,7 @@ struct TodayGoalsView: View {
                             tabManager.selectedTabIndex = 1
                         } label: {
                             VStack(spacing: 10) {
-                                CircularProgressView(iconName: "fork.knife", goalKcal: mealGoal, ongoingKcal: 0)
+                                CircularProgressView(iconName: "fork.knife", goalKcal: mealGoal, ongoingKcal: dayTotal)
                             }
                         }
                     }
@@ -71,5 +86,5 @@ class TabSelectionManager: ObservableObject {
 }
 
 #Preview {
-    TodayGoalsView()
+    TodayGoalsView(mealVM: DailyMealViewModel())
 }

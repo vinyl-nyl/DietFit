@@ -33,7 +33,7 @@ struct HomeView: View {
         NavigationStack {
             ScrollView {
                 VStack {
-                    TodayGoalsView()
+                    TodayGoalsView(mealVM: DailyMealViewModel())
                         .padding(.bottom, 40)
 
                     HStack {
