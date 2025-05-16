@@ -14,65 +14,58 @@ struct ScrollCalendarView: View {
 
     @ObservedObject var mealVM: DailyMealViewModel
 
-     private let calendar = Calendar.current
-     private let today = Date().startOfDay // 시분초 정규화
+    private let calendar = Calendar.current
+    private let today = Date().startOfDay // 시분초 정규화
 
     var body: some View {
-        // 날짜를 제어하고 초기 위치를 지정하기 위해 scrollViewReader 사용
-        ScrollViewReader { proxy in
-            ScrollView(.horizontal) {
-                HStack {
-                    ForEach(mealVM.days, id: \.self) { date in
-                        let isSelected = calendar.isDate(date, inSameDayAs: mealVM.selectedDate)
-                        let weekdayString = date.dateFormat("E")
-                        let dayString = date.dateFormat("d")
-                        VStack {
-                            Group {
-                                Text(weekdayString)
-                                    .foregroundStyle(.buttonPrimary)
-                                Button { // 선택한 날짜 가운데 정렬
-                                    withAnimation {
-//                                        mealVM.updateDays(from: date)
-                                        mealVM.selectedDate = date
-                                        scrollTargetId = date
-                                    }
-                                } label: {
-                                    Text(dayString)
-                                        .font(.subheadline)
+        ScrollView(.horizontal) {
+            HStack {
+                ForEach(mealVM.days, id: \.self) { date in
+                    let isSelected = calendar.isDate(date, inSameDayAs: mealVM.selectedDate)
+                    let weekdayString = date.dateFormat("E")
+                    let dayString = date.dateFormat("d")
+                    VStack {
+                        Group {
+                            Text(weekdayString)
+                                .foregroundStyle(.buttonPrimary)
+                            Button { // 선택한 날짜 가운데 정렬
+                                withAnimation {
+                                    // mealVM.updateDays(from: date)
+                                    mealVM.selectedDate = date
+                                    scrollTargetId = date
                                 }
-                                .buttonStyle(.plain)
-                                .frame(width: 36, height: 36)
-                                .foregroundStyle(isSelected ? .white : .buttonPrimary)
-                                .background(isSelected ? .buttonPrimary : .clear)
-                                .clipShape(Circle())
-                                .id(date)
+                            } label: {
+                                Text(dayString)
+                                    .font(.subheadline)
                             }
-                            .font(.callout)
-                            .bold()
+                            .buttonStyle(.plain)
+                            .frame(width: 36, height: 36)
+                            .foregroundStyle(isSelected ? .white : .buttonPrimary)
+                            .background(isSelected ? .buttonPrimary : .clear)
+                            .clipShape(Circle())
+                            .id(date)
                         }
-                        .padding(.horizontal, 4)
+                        .font(.callout)
+                        .bold()
                     }
-                }
-                .padding()
-                .background(colorScheme == .dark ? .black : .white)
-                .scrollTargetLayout()
-            }
-            .scrollIndicators(.hidden)
-            // .onAppear(): 뷰가 나타날 때마다 간단한 작업이나 업데이트를 수행
-            // .task(): 뷰가 나타날 때 비동기 작업을 수행
-            //	업데이트가 있더라도 View가 나타날때 한번만 작업이 수행되어야 할때
-            // 아직 어떤 이유로 동작에 차이가 있는건지 명확하지 않음 추가 공부가 필요함
-            .task {
-                if mealVM.selectedDate == today { // 처음 앱 진입 시에만 오늘 날짜로 설정
-                    scrollTargetId = today
+                    .padding(.horizontal, 4)
                 }
             }
-            .onChange(of: mealVM.selectedDate) {
-//                withAnimation {
-                    scrollTargetId = mealVM.selectedDate
-//                }
+            .padding()
+            .background(colorScheme == .dark ? .black : .white)
+            .scrollTargetLayout()
+
+        }
+        .scrollIndicators(.hidden)
+        .scrollTargetBehavior(.viewAligned)
+        .scrollPosition(id: $scrollTargetId, anchor: .center)
+        .task {
+            if  mealVM.selectedDate == today {
+                scrollTargetId = today
             }
-            .scrollPosition(id: $scrollTargetId, anchor: .center)
+        }
+        .onChange(of: mealVM.selectedDate) { _, newValue in
+            scrollTargetId = mealVM.selectedDate
         }
     }
 }
