@@ -58,7 +58,11 @@ struct ScrollCalendarView: View {
                 .scrollTargetLayout()
             }
             .scrollIndicators(.hidden)
-            .onAppear {
+            // .onAppear(): 뷰가 나타날 때마다 간단한 작업이나 업데이트를 수행
+            // .task(): 뷰가 나타날 때 비동기 작업을 수행
+            //	업데이트가 있더라도 View가 나타날때 한번만 작업이 수행되어야 할때
+            // 아직 어떤 이유로 동작에 차이가 있는건지 명확하지 않음 추가 공부가 필요함
+            .task {
                 if mealVM.selectedDate == today { // 처음 앱 진입 시에만 오늘 날짜로 설정
                     scrollTargetId = today
                 }

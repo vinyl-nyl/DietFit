@@ -16,6 +16,7 @@ struct CardMemoView: View {
 
     var type: MemoType
 
+    // 해딩 닐짜의 메모 불러오기
     var todayMealMemo: String? {
         mealRecords.first(where: { $0.date == mealVM.selectedDate})?.mealMemo
     }
