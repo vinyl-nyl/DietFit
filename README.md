@@ -1,6 +1,7 @@
-# DietFit
+# DietFit  
+<img src="https://img.shields.io/badge/swift-%23FA7343.svg?&style=for-the-badge&logo=swift&logoColor=white" />
 
-앱 소개: 건강한 삶을 위한 헬스케어 앱입니다. 식단과 운동을 손쉽게 기록하고, 목표를 설정하며, 건강 관리를 도와주는 기능을 제공합니다.
+> 건강한 삶을 위한 헬스케어 앱입니다. 식단과 운동을 손쉽게 기록하고, 목표를 설정하며, 건강 관리를 도와주는 기능을 제공합니다.
 
 <img width="150" alt="Image" src="https://github.com/user-attachments/assets/3b66fcec-df32-439f-a205-aa70517594c8" />
 <img width="150" alt="Image" src="https://github.com/user-attachments/assets/e7c14bd7-388d-48d2-b5bd-96cbec49126b" />
