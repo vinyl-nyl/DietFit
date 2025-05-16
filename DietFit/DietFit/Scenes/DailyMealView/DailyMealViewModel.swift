@@ -13,20 +13,22 @@ class DailyMealViewModel: ObservableObject {
     @Published var days: [Date] = []    
 
     init() {
-        days = generateDays(selectedDate)
+        days = generateDays(from: selectedDate)
     }
 
-    // 범위를 넘어선 날짜인 경우 days 재생성
+    
+    // days 재생성
     // selectedDate도 갱신
      func updateDays(from newDate: Date) {
-         if !days.contains(where: { Calendar.current.isDate($0, inSameDayAs: newDate) }) {
-             days = generateDays(newDate)
-         }
+         // 1. 새로운 days 배열 생성
+         days = generateDays(from: newDate)
+
+         // 2. selectedDate도 갱신
          selectedDate = newDate
      }
 
     // 스크롤 캘린더 원하는 범위의 날짜 배열
-    func generateDays(_ selectedDate: Date) -> [Date] {
+    func generateDays(from selectedDate: Date) -> [Date] {
         let calendar = Calendar.current
         let range = -60...60
 

@@ -17,6 +17,9 @@ struct ScrollCalendarView: View {
     private let calendar = Calendar.current
     private let today = Date().startOfDay // 시분초 정규화
 
+    @State private var isExpanded = false
+
+
     var body: some View {
         ScrollView(.horizontal) {
             HStack {
@@ -24,14 +27,15 @@ struct ScrollCalendarView: View {
                     let isSelected = calendar.isDate(date, inSameDayAs: mealVM.selectedDate)
                     let weekdayString = date.dateFormat("E")
                     let dayString = date.dateFormat("d")
+
                     VStack {
                         Group {
                             Text(weekdayString)
                                 .foregroundStyle(.buttonPrimary)
                             Button { // 선택한 날짜 가운데 정렬
-                                withAnimation {
-                                    // mealVM.updateDays(from: date)
-                                    mealVM.selectedDate = date
+                                mealVM.updateDays(from: date)
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//                                    mealVM.selectedDate = date
                                     scrollTargetId = date
                                 }
                             } label: {
@@ -54,18 +58,19 @@ struct ScrollCalendarView: View {
             .padding()
             .background(colorScheme == .dark ? .black : .white)
             .scrollTargetLayout()
-
         }
         .scrollIndicators(.hidden)
         .scrollTargetBehavior(.viewAligned)
         .scrollPosition(id: $scrollTargetId, anchor: .center)
-        .task {
-            if  mealVM.selectedDate == today {
-                scrollTargetId = today
+        .onAppear { //SwiftUI 렌더링 완료 보장용
+            // SwiftUI 뷰 렌더링 자체가 너무 느릴 때, 한 번 밀어도 부족해서 명시적 시간 지연이 필요할 때
+            // 뷰 구조가 크거나, LazyVStack처럼 뷰 생성이 지연되는 경우 자주 씀
+            
+            // DispatchQueue.main.async 렌더 한 턴 밀기
+            //  대부분의 상태 업데이트 문제에 충분
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                scrollTargetId = mealVM.selectedDate
             }
-        }
-        .onChange(of: mealVM.selectedDate) { _, newValue in
-            scrollTargetId = mealVM.selectedDate
         }
     }
 }
